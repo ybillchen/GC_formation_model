@@ -9,7 +9,7 @@ def handle_merger_tree(sim_base, save_base, hid):
 
     tree = il.sublink.loadTree(sim_base, 99, hid, fields, False)
 
-    filename = save_base + 'merger_tree_%d.hdf5'
+    filename = save_base + 'merger_tree_%d.hdf5'%hid
 
     with h5py.File(filename, 'w') as f:
         for field, dtype in zip(fields, dtypes):
