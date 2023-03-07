@@ -2,10 +2,10 @@ import numpy as np
 
 from params import params
 import form
-import offset
-import assign
-import get_tid
-import disrupt
+# import offset
+# import assign
+# import get_tid
+# import disrupt
 
 def run(params):
 
