@@ -20,3 +20,6 @@ def run(params):
     # assign.assign(run_params)
     # get_tid.get_tid(run_params)
     # disrupt.disrupt(run_params)
+
+if __name__ == '__main__':
+    run()
