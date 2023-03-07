@@ -91,6 +91,8 @@ subs = [523889]
 # Cluster GCs. Options right now are "LG14", "CGL18", "V19"
 color_metallicity = 'CGL18' 
 
+UVB_constraint = 'KM22'
+
 resultspath = '/n/holyscratch01/vogelsberger/billchen/temp/'
 
 params = {'mode':mode, 'disrupt_mode':disrupt_mode,
@@ -107,4 +109,5 @@ params = {'mode':mode, 'disrupt_mode':disrupt_mode,
     'allcat_base':allcat_base, 'merit_name':merit_name,
     'low_mass':low_mass, 'log_Mmin_low_mass':log_Mmin_low_mass,
     'form_nuclear_cluster':form_nuclear_cluster, 'low_mass_attempt_N':low_mass_attempt_N,
-    'no_random_at_formation':no_random_at_formation, 'gaussian_process':gaussian_process}
+    'no_random_at_formation':no_random_at_formation, 'gaussian_process':gaussian_process,
+    'UVB_constraint':UVB_constraint}
