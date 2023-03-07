@@ -71,7 +71,7 @@ class cosmo(object):
         z_mul = 1.0 - 0.5*(1.0-a)
         return sm+np.log10(z_mul/(1.0+np.exp(-1.12882*(sm-10.1993)))) #returns m_bulge in 
 
-    def virialRadius(self, self, m, z):
+    def virialRadius(self, m, z):
         ez = self.E(z)
         rhocrit = 3*self.H0*self.H0*ez*ez/(8*np.pi*G)
         return (3*m/(4*np.pi*self.overdensity(z)*rhocrit))**(1./3)
