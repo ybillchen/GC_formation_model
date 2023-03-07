@@ -78,20 +78,20 @@ no_random_at_formation = False
 
 # base path of TNG50-1
 base = '/n/holylfs05/LABS/hernquist_lab/IllustrisTNG/Runs/L35n2160TNG/output/' 
+base_tree = '/n/holyscratch01/vogelsberger/billchen/temp/'
 
 # redshift list
 redshift_snap = np.loadtxt('../data/test/TNG_z_list.txt', dtype=float) 
 
 # subhalo list
-subs = np.loadtxt('../data/test/selected_subhalo_TNG50_seed2_central_full.txt', 
-    dtype=int)[::3][:64] # compact3
+subs = [523889]
 
 
 # Input: color-metallicity transformations to be used for the Virgo
 # Cluster GCs. Options right now are "LG14", "CGL18", "V19"
 color_metallicity = 'CGL18' 
 
-resultspath = '../results/210311/'
+resultspath = '/n/holyscratch01/vogelsberger/billchen/temp/'
 
 params = {'mode':mode, 'disrupt_mode':disrupt_mode,
     'p2':p2, 'p3':p3, 'kappa':kappa, 'd_tid':d_tid,
@@ -102,7 +102,7 @@ params = {'mode':mode, 'disrupt_mode':disrupt_mode,
     'mmr_evolution':mmr_evolution, 'max_feh':max_feh,
     'tdep':tdep,'sigma_mg':sigma_mg, 'sigma_mc':sigma_mc, 'sigma_gas':sigma_gas,
     'sm_scat':sm_scat,'log_Mmin':log_Mmin, 'pr':pr, 't_lag':t_lag,
-    'base':base, 'redshift_snap':redshift_snap, 'subs':subs,
+    'base':base, 'base_tree':base_tree, 'redshift_snap':redshift_snap, 'subs':subs,
     'color_metallicity':color_metallicity, 'resultspath':resultspath,
     'allcat_base':allcat_base, 'merit_name':merit_name,
     'low_mass':low_mass, 'log_Mmin_low_mass':log_Mmin_low_mass,

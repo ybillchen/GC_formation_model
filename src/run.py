@@ -16,7 +16,7 @@ def run(params):
     run_params['allcat_name'] = allcat_name
 
     form.form(run_params)
-    offset.offset(run_params)
-    assign.assign(run_params)
-    get_tid.get_tid(run_params)
-    disrupt.disrupt(run_params)
+    # offset.offset(run_params)
+    # assign.assign(run_params)
+    # get_tid.get_tid(run_params)
+    # disrupt.disrupt(run_params)
