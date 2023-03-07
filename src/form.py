@@ -3,14 +3,9 @@ import sys
 import time
 import numpy as np
 from scipy.interpolate import interp1d
-from astropy.cosmology import Planck15 as cosmo # Use same cosmology as TNG
 import astro_utils
 import schechter_interp
 import loader
-
-# Use same cosmology as TNG
-h100 = cosmo.h   # Hubble constant
-fb = cosmo.Ob0 / cosmo.Om0     # universal baryon fraction
 
 # Input: stellar evolution mass loss table
 fm = open('../data/massloss.txt')
@@ -66,7 +61,7 @@ def gasMass(SM, Mh, z, params) :
     if params['UVB_constraint'] == 'MG10':
         # Model extragalactic UVB as in Muratov & Gnedin 2010
         Mc = 3.6e9*np.exp(-.6*(1+z))/h100
-        Mc_min = 1.5e10*(180**(-.5))/(astro_utils.E(z)*h100)
+        Mc_min = 1.5e10*(180**(-.5))/(params['cosmo'].E(z)*h100)
         if Mc < Mc_min : 
             Mc = Mc_min
         fin = 1/((1+(Mc/Mh))**3)
@@ -309,7 +304,7 @@ def organize_tree(tree, params):
         mpi_tree[0] = despike(mpi_tree[0]) # remove spikes in mass
 
         zlist = [params['redshift_snap'][s] for s in mpi_tree[5]]
-        tlist = [astro_utils.cosmicTime(z, units = 'Gyr') for z in zlist]
+        tlist = [params['cosmo'].cosmicTime(z, units = 'Gyr') for z in zlist]
         dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=2)
         dsm = gaussian_process_sm(params['rng'], tlist, zlist, l=2)
 
@@ -426,8 +421,8 @@ def form(params):
 
             zbefore = params['redshift_snap'][snapnum[progIdx]]
 
-            dt = ( astro_utils.cosmicTime(znow, units = 'Gyr') - 
-                astro_utils.cosmicTime(zbefore, units = 'Gyr') ) 
+            dt = ( params['cosmo'].cosmicTime(znow, units = 'Gyr') - 
+                params['cosmo'].cosmicTime(zbefore, units = 'Gyr') ) 
             ratio = ratio/dt # This is just (dMh/Mh)/dt
 
             if params['gaussian_process']:

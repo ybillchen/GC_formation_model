@@ -1,10 +1,13 @@
 import numpy as np
+import astro_utils
 
 # mode: run or calibrate
 mode = 'run'
 
 # disrupt mode: constant, density, tidal, tidal_centrifugal, Mark_Gieles
 disrupt_mode = 'Mark_Gieles'
+
+cosmo = astro_utils.cosmo(h=0.6774, omega_matter=0.3089)
 
 # adjustable model parameters (run mode)
 p2 = 8.8
@@ -96,6 +99,7 @@ UVB_constraint = 'KM22'
 resultspath = '/n/holyscratch01/vogelsberger/billchen/temp/'
 
 params = {'mode':mode, 'disrupt_mode':disrupt_mode,
+    'cosmo': cosmo,
     'p2':p2, 'p3':p3, 'kappa':kappa, 'd_tid':d_tid,
     'p2_arr':p2_arr, 'p3_arr':p3_arr, 'kappa_arr':kappa_arr,
     'log_mc':log_mc, 'run_all':run_all, 

@@ -4,7 +4,7 @@ import numpy as np
 from scipy import interpolate
 import mpmath
 import sys
-import smhm
+import astro_utils
 
 log_mv = np.linspace(3.9, 8.6, num = 2000)
 dlog_mv_inv = 1./(log_mv[1] - log_mv[0])
@@ -13,10 +13,10 @@ s = 0.02
 log_mmaxt = np.arange(4.01, 8.6, step = s)
 
 def upper_gamma2(log_mvv): # linear interpolation of the upper incomplete gamma function for the case of a -2 power law
-	return smhm.lininterp(log_mvv, log_mv, gamma_arr2, dlog_mv_inv)
+	return astro_utils.lininterp(log_mvv, log_mv, gamma_arr2, dlog_mv_inv)
 
 def upper_gamma1(log_mvv): # linear interpolation of the upper incomplete gamma function for the case of a -1 power law
-	return smhm.lininterp(log_mvv, log_mv, gamma_arr1, dlog_mv_inv)
+	return astro_utils.lininterp(log_mvv, log_mv, gamma_arr1, dlog_mv_inv)
 
 def init(mc, alpha = -2.0):
 	for i in range(len(log_mv)):
