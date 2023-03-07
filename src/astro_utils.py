@@ -11,7 +11,9 @@ def lininterp(xarb, x, y, d_inv):
 
 class cosmo(object):
     def __init__(self, h, omega_matter):
+        self.h = h
         self.H0 = h * 1.02e-4 # Myr^-1
+        self.omega_matter = omega_matter
         self.omega_lambda = 1. - omega_matter
         self.ratio = omega_matter/self.omega_lambda
 

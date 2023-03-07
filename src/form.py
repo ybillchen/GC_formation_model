@@ -271,7 +271,7 @@ def organize_tree(tree, params):
                 data[i] = 0
         return data
 
-    m = tree['SubhaloMass'] * 1e10 / h100 # 0
+    m = tree['SubhaloMass'] * 1e10 / params['cosmo'].h # 0
     fp = tree['FirstProgenitorID'] # 1
     sp = tree['NextProgenitorID'] # 2
     descid = tree['DescendantID'] # 3
