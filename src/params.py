@@ -81,7 +81,7 @@ base = '/n/holylfs05/LABS/hernquist_lab/IllustrisTNG/Runs/L35n2160TNG/output/'
 base_tree = '/n/holyscratch01/vogelsberger/billchen/temp/'
 
 # redshift list
-redshift_snap = np.loadtxt('../data/test/TNG_z_list.txt', dtype=float) 
+redshift_snap = np.loadtxt('/n/holyscratch01/vogelsberger/billchen/temp/TNG_z_list.txt', dtype=float) 
 
 # subhalo list
 subs = [523889]
