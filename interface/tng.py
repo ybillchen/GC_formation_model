@@ -1,0 +1,16 @@
+import h5py
+import illustris_python_true as il
+
+def handle_merger_tree(sim_base, save_base, hid):
+    filename = base + 'merger_tree_%d.hdf5'
+
+    fields = ['SubhaloMass', 'FirstProgenitorID', 'SubhaloID', 'SnapNum', 
+        'MainLeafProgenitorID', 'NextProgenitorID', 'DescendantID', 'SubfindID']
+    dtypes = ['f8', 'i16', 'i16', 'i8', 'i16', 'i16', 'i16', 'i16']
+
+    tree = il.sublink.loadTree(sim_base, 99, hid, fields, False)
+
+    with h5py.File(filename, 'w') as f:
+        for field, dtype in zip(fields, dtypes):
+            data = tree[field]
+            f.create_dataset(field, data=data, dtype=dtype)
