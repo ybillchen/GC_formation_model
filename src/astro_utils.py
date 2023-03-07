@@ -13,7 +13,7 @@ class cosmo(object):
     def __init__(self, h, omega_matter):
         self.H0 = h * 1.02e-4 # Myr^-1
         self.omega_lambda = 1. - omega_matter
-        self.ratio = omega_matter/omega_lambda
+        self.ratio = omega_matter/self.omega_lambda
 
         self.dz = .0001
         self.zt = np.arange(-0.2, 1000, step = dz)
