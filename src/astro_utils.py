@@ -22,7 +22,7 @@ class cosmo(object):
         t = 2./3./np.sqrt(1-omega_matter)*np.log((1.+np.sqrt(1.+f))/np.sqrt(f)) #in units of 1/H0
         self.ct = t/self.H0
         #compute E(z)
-        self.ezt = (omega_matter*((1+self.zt)**3) + omega_lambda)**0.5
+        self.ezt = (omega_matter*((1+self.zt)**3) + self.omega_lambda)**0.5
         #compute evolving virial overdensity (Bryan & Norman 1998)
         omega = omega_matter*(1+self.zt)**3 / (self.ezt*self.ezt)
         x = omega - 1.0
