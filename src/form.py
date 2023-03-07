@@ -13,7 +13,7 @@ h100 = cosmo.h   # Hubble constant
 fb = cosmo.Ob0 / cosmo.Om0     # universal baryon fraction
 
 # Input: stellar evolution mass loss table
-fm = open('./massloss.txt')
+fm = open('../data/massloss.txt')
 flost, t_solar, t_subsolar = np.loadtxt(fm, usecols = (1,2,3), unpack = True)
 ssub = interp1d(t_subsolar, flost, kind='linear')
 ssolar = interp1d(t_solar, flost, kind='linear')
