@@ -1,6 +1,5 @@
 import os
 import sys
-from dataclasses import dataclass
 import numpy as np
 from scipy.interpolate import interp1d
 from astropy.cosmology import Planck15 as cosmo # Use same cosmology as TNG
@@ -21,17 +20,19 @@ ssolar = interp1d(t_solar, flost, kind='linear')
 
 
 # Define globular cluster class to store data about each cluster
-@dataclass
-class GC:
-    mass: float
-    originHaloMass: float
-    origin_redshift: float
-    metallicity: float
-    origin_sm: float
-    origin_mgas: float
-    is_mpb: bool
-    idform: int
-    snapnum: int
+class GC(object): 
+    def __init__(self, mass, origin_mh, origin_redshift, metallicity, 
+        origin_sm, origin_mgas, is_mpb, idform, snapnum) : 
+
+        self.mass = mass
+        self.originHaloMass = origin_mh
+        self.origin_redshift = origin_redshift
+        self.metallicity = metallicity
+        self.origin_sm = origin_sm
+        self.origin_mgas = origin_mgas
+        self.is_mpb = is_mpb
+        self.idform = idform
+        self.snapnum = snapnum
 
 
 # Calculate gas mass given stellar mass, halo mass, redshift using scaling 
