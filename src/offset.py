@@ -70,6 +70,9 @@ def offset(params):
             idx_in_root += 1
     ends_in_detail.append(len(ends))
 
+    print([subfindids_root, begins_root, ends_root, 
+        begins_in_detail, ends_in_detail])
+
     output_root = np.array([subfindids_root, begins_root, ends_root, 
         begins_in_detail, ends_in_detail], dtype=int).T
     header = 'SubfindID(z=0) | BeginIdx | EndIdx+1 | BeginIdx in offset | EndIdx in offset'
