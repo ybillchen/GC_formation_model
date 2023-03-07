@@ -40,7 +40,7 @@ def offset(params):
             ends_root.append(j)
 
         # at the begining of a subhalo
-        if hid[j-1] != hid[np.clip(j,0,len(hid)-1)]: # note j = 0 is naturally included
+        if j==0 or hid[j-1] != hid[np.clip(j,0,len(hid)-1)]: # note j = 0 is naturally included
             num_run += 1
             print('########## number', num_run, '##########')
             print('subhalo id:', hid[j])
