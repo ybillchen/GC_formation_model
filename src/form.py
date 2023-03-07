@@ -55,8 +55,8 @@ def gasMass(SM, Mh, z, params) :
         log_ratio += params['rng'].normal(0, sigma_gas)
     ratio = 10**log_ratio
     Mg = SM*ratio
-    fstar = SM/(fb*Mh)
-    fgas = Mg/(fb*Mh)
+    fstar = SM/(params['cosmo'].fb*Mh)
+    fgas = Mg/(params['cosmo'].fb*Mh)
 
     if params['UVB_constraint'] == 'MG10':
         # Model extragalactic UVB as in Muratov & Gnedin 2010
@@ -81,7 +81,7 @@ def gasMass(SM, Mh, z, params) :
     
     if fstar+fgas > fin: 
         fgas = fin-fstar
-        Mg = fgas*fb*Mh
+        Mg = fgas*params['cosmo'].fb*Mh
 
     return Mg
 
@@ -110,7 +110,7 @@ def clusterFormation(Mg, halomass, redshift, metallicity, SM, is_mpb, subid,
     gc_list = []
 
     # Total mass of all GCs formed in cluster formation event
-    Mgc = (3e-5/fb)*Mg*params['p2'] 
+    Mgc = (3e-5/params['cosmo'].fb)*Mg*params['p2'] 
 
     log_Mgc = np.log10(Mgc)
     if Mgc < Mmin: # Not enough mass to form a single cluster of mass Mmin

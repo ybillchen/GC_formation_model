@@ -7,7 +7,7 @@ mode = 'run'
 # disrupt mode: constant, density, tidal, tidal_centrifugal, Mark_Gieles
 disrupt_mode = 'Mark_Gieles'
 
-cosmo = astro_utils.cosmo(h=0.6774, omega_matter=0.3089)
+cosmo = astro_utils.cosmo(h=0.6774, omega_baryon=0.0486, omega_matter=0.3089)
 
 # adjustable model parameters (run mode)
 p2 = 8.8
