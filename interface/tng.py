@@ -14,3 +14,12 @@ def handle_merger_tree(sim_base, save_base, hid):
         for field, dtype in zip(fields, dtypes):
             data = tree[field]
             f.create_dataset(field, data=data, dtype=dtype)
+
+if __name__ == '__main__':
+
+    # base path of TNG50-1
+    sim_base = '/n/holylfs05/LABS/hernquist_lab/IllustrisTNG/Runs/L35n2160TNG/output/'
+    save_base = '/n/holyscratch01/vogelsberger/billchen/temp/'
+    hid = 523889
+
+    handle_merger_tree(sim_base, save_base, hid) 
