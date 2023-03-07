@@ -1,12 +1,12 @@
 import os
 import sys
+import time
 import numpy as np
 from scipy.interpolate import interp1d
 from astropy.cosmology import Planck15 as cosmo # Use same cosmology as TNG
 import astro_utils
 import schechter_interp
-# import load_tree_illustris
-import time
+import loader
 
 # Use same cosmology as TNG
 h100 = cosmo.h   # Hubble constant
