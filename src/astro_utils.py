@@ -16,7 +16,7 @@ class cosmo(object):
         self.ratio = omega_matter/self.omega_lambda
 
         self.dz = .0001
-        self.zt = np.arange(-0.2, 1000, step = dz)
+        self.zt = np.arange(-0.2, 1000, step = self.dz)
         #compute cosmic time(z)
         f = (omega_matter/(1-omega_matter))*((1+self.zt)**3)
         t = 2./3./np.sqrt(1-omega_matter)*np.log((1.+np.sqrt(1.+f))/np.sqrt(f)) #in units of 1/H0
