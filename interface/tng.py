@@ -1,11 +1,14 @@
 import h5py
 import illustris_python_true as il
 
-def handle_merger_tree(sim_base, save_base, hid):
+def handle_merger_tree(sim_base, save_base, hid, fields=None, dtypes=None):
 
-    fields = ['SubhaloMass', 'FirstProgenitorID', 'SubhaloID', 'SnapNum', 
-        'MainLeafProgenitorID', 'NextProgenitorID', 'DescendantID', 'SubfindID']
-    dtypes = ['f8', 'i8', 'i8', 'i8', 'i8', 'i8', 'i8', 'i8']
+    if fields is None:
+        fields = ['SubhaloMass', 'FirstProgenitorID', 'SubhaloID', 'SnapNum', 
+            'MainLeafProgenitorID', 'NextProgenitorID', 'DescendantID', 
+            'SubfindID', 'SubhaloPos']
+    if dtypes is None:
+        dtypes = ['f8', 'i8', 'i8', 'i8', 'i8', 'i8', 'i8', 'i8', 'f8']
 
     tree = il.sublink.loadTree(sim_base, 99, hid, fields, False)
 
@@ -16,6 +19,35 @@ def handle_merger_tree(sim_base, save_base, hid):
             data = tree[field]
             f.create_dataset(field, data=data, dtype=dtype)
 
+def handle_halo(sim_base, save_base, hid, parttypes=None, fields_list=None, dtypes_list=None):
+
+    if parttypes is None:
+        parttypes = ['dm', 'stars', 'gas']
+    if fields_list is None:
+        fields_list = [
+            ['Coordinates', 'ParticleIDs'],
+            ['Coordinates', 'GFM_StellarFormationTime', 'ParticleIDs'],
+            ['Coordinates', 'ParticleIDs']]
+    if dtypes_list is None:
+        dtypes_list = [['f8', 'i8'], ['f8', 'f8', 'i8'], ['f8', 'i8']]
+
+    tree = il.sublink.loadTree(sim_base, 99, hid, ['SubfindID', 'SnapNum'], False)
+
+    filename = save_base + 'halo_%d.hdf5'%hid
+
+    snap_range = np.unique(tree['SnapNum'])
+
+
+    with h5py.File(filename, 'w') as f:
+        for h, s in zip(tree['SubfindID'], tree['SnapNum']):
+            d = f.create_group('snap_%d_halo_%d'%(s,h))
+            for parttype, fields, dtypes in zip(parttypes, fields_list, dtypes_list):
+                cutout = il.snapshot.loadSubhalo(sim_base, s, h, parttype, fields=fields)
+
+                for field, dtype in zip(fields, dtypes):
+                    data = cutout[field]
+                    d.create_dataset(field, data=data, dtype=dtype)
+
 if __name__ == '__main__':
 
     # base path of TNG50-1
@@ -24,3 +56,4 @@ if __name__ == '__main__':
     hid = 523889
 
     handle_merger_tree(sim_base, save_base, hid) 
+    handle_halo(sim_base, save_base, hid)

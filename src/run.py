@@ -9,6 +9,8 @@ import offset
 
 def run(params):
 
+    print('########## GC formation and evolution model ##########')
+
     allcat_name = params['allcat_base'] + '_%.1f_%.1f.txt'%(
         params['p2'], params['p3'])
 

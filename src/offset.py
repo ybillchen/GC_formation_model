@@ -1,10 +1,8 @@
 import numpy as np
 
 def offset(params):
-
+    
     print('########## calculating offsets ##########')
-    print('last edited by bill')
-    print('version 1')
 
     fin_name = params['resultspath'] + params['allcat_name']
 

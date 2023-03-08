@@ -343,9 +343,6 @@ def organize_tree(tree, params):
 def form(params):
 
     print('########## formation model started ##########')
-    print('this model is based on choksi & gnedin 19')
-    print('last edited by bill')
-    print('version 1')
 
     Mmin = 10**params['log_Mmin']
 
@@ -357,16 +354,9 @@ def form(params):
         print('########## NO.', num_run, '##########')
         print('subhalo id:', hid_num)
 
-        rng = np.random.default_rng(params['seed']) # initialize seed
-        params['rng'] = rng
+        params['rng'] = np.random.default_rng(params['seed']) # initialize seed
 
         t0 = time.time()
-
-        # fields = ['SubhaloMass', 'FirstProgenitorID', 'SubhaloID', 'SnapNum', 
-        #     'MainLeafProgenitorID', 'NextProgenitorID', 'DescendantID', 
-        #     'SubfindID']
-        # tree = il.sublink.loadTree(
-        #     params['base'], 99, hid_num, fields, params['mpb_only'])
 
         tree = loader.load_merger_tree(params['base_tree'], hid_num)
 
