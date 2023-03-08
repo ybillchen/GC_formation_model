@@ -27,7 +27,7 @@ def load_halo(base, hid_root, hid, snap, parttype, fields=None):
     filename = base + 'halo_%d.hdf5'%hid_root
 
     with h5py.File(filename, 'r') as f:
-        d = f['snap_%d'%snap]['halo_%d'%hid]['parttype']
+        d = f['snap_%d_halo_%d'%(snap,hid)][parttype]
         for field in fields:
             res[field] = d[field][:]
 

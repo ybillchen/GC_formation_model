@@ -1,5 +1,8 @@
 # GC-formation-model
 
+[![version](https://img.shields.io/badge/version-v0.0-brightgreen.svg?style=flat)](https://github.com/EnthalpyBill/GC-formation-model)
+[![license](https://img.shields.io/github/license/EnthalpyBill/GC-formation-model?style=flat)](LICENSE)
+
 A post-processing model for globular cluster formation in cosmological simulations.
 
 ## Table of Contents
