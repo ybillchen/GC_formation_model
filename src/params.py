@@ -82,6 +82,7 @@ no_random_at_formation = False
 # base path of TNG50-1
 base = '/n/holylfs05/LABS/hernquist_lab/IllustrisTNG/Runs/L35n2160TNG/output/' 
 base_tree = '/n/holyscratch01/vogelsberger/billchen/temp/'
+base_halo = '/n/holyscratch01/vogelsberger/billchen/temp/'
 
 # redshift list
 redshift_snap = np.loadtxt('/n/holyscratch01/vogelsberger/billchen/temp/TNG_z_list.txt', dtype=float) 
@@ -134,6 +135,7 @@ params = {
     't_lag':t_lag,
     'base':base, 
     'base_tree':base_tree, 
+    'base_halo':base_halo,
     'redshift_snap':redshift_snap, 
     'subs':subs,
     'color_metallicity':color_metallicity, 
