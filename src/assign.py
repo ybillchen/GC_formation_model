@@ -121,7 +121,7 @@ def assign(params):
             x = pos[:,0] - hpos[0]
             y = pos[:,1] - hpos[1]
             z = pos[:,2] - hpos[2]
-            r2_s = (x**2 + y**2 + z**2) * (scale_a / cosmo.h)**2 # in kpc
+            r2_s = (x**2 + y**2 + z**2) * (scale_a / params['cosmo'].h)**2 # in kpc
 
             # select stars with valid scale factor (0-1)
             idx_valid_s = np.where( (a_s>=0) & (a_s<=1) & (r2_s<9))[0] 
