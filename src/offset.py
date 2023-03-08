@@ -1,13 +1,13 @@
 import numpy as np
 
 def offset(params):
-    
+
     print('########## calculating offsets ##########')
 
     fin_name = params['resultspath'] + params['allcat_name']
 
     hid, logmh, logms, logmh_form, logms_form, logm_form, z_form, feh, \
-        ismpb, hid_form, snapnum_form = np.loadtxt(fin_name, unpack = True)
+        ismpb, hid_form, snapnum_form = np.loadtxt(fin_name, ndmin=2, unpack=True)
 
     # setting indices to int type
     hid = hid.astype(int)
