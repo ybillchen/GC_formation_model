@@ -49,7 +49,7 @@ def handle_halo(sim_base, save_base, hid, mh_min=1e8, parttypes=None, fields_lis
             # if m * 1e10 / h100 < mh_min: # skip small halos
             #     continue
 
-            n += 1
+            n += 1 
             if n % 100 == 0:
                 print(n, ntot)
 
