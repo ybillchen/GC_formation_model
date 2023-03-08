@@ -6,9 +6,10 @@ bio: gc assign model
 note: version 1!
 '''
 
+import time
 import numpy as np
 import astro_utils
-import time
+import loader
 
 def assign(params):
 
