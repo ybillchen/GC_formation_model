@@ -36,7 +36,7 @@ def handle_halo(sim_base, save_base, hid, mh_min=1e8, parttypes=None, fields_lis
         dtypes_list = [['f8', 'i8'], ['f8', 'f8', 'i8'], ['f8', 'i8']]
 
     tree = il.sublink.loadTree(sim_base, 99, hid, ['SubhaloMass', 'SubfindID', 'SnapNum'], False)
-    print(len(tree['SubfindID']))
+    print(len(tree['SubhaloMass'][tree['SubhaloMass'] * 1e10 / h100 < mh_min]))
 
     filename = save_base + 'halo_%d.hdf5'%hid
     if os.path.exists(filename):
