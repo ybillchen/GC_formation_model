@@ -35,9 +35,6 @@ def handle_halo(sim_base, save_base, hid, parttypes=None, fields_list=None, dtyp
 
     filename = save_base + 'halo_%d.hdf5'%hid
 
-    snap_range = np.unique(tree['SnapNum'])
-
-
     with h5py.File(filename, 'w') as f:
         for h, s in zip(tree['SubfindID'], tree['SnapNum']):
             d = f.create_group('snap_%d_halo_%d'%(s,h))
