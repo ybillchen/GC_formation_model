@@ -2,6 +2,8 @@ import os
 import h5py
 import illustris_python_true as il
 
+h100 = 0.6774
+
 def handle_merger_tree(sim_base, save_base, hid, fields=None, dtypes=None):
 
     if fields is None:
@@ -21,7 +23,7 @@ def handle_merger_tree(sim_base, save_base, hid, fields=None, dtypes=None):
         for field, dtype in zip(fields, dtypes):
             f.create_dataset(field, data=tree[field], dtype=dtype)
 
-def handle_halo(sim_base, save_base, hid, parttypes=None, fields_list=None, dtypes_list=None):
+def handle_halo(sim_base, save_base, hid, mh_min=1e8, parttypes=None, fields_list=None, dtypes_list=None):
 
     if parttypes is None:
         parttypes = ['dm', 'stars', 'gas']
@@ -33,14 +35,17 @@ def handle_halo(sim_base, save_base, hid, parttypes=None, fields_list=None, dtyp
     if dtypes_list is None:
         dtypes_list = [['f8', 'i8'], ['f8', 'f8', 'i8'], ['f8', 'i8']]
 
-    tree = il.sublink.loadTree(sim_base, 99, hid, ['SubfindID', 'SnapNum'], False)
+    tree = il.sublink.loadTree(sim_base, 99, hid, ['SubhaloMass', 'SubfindID', 'SnapNum'], False)
 
     filename = save_base + 'halo_%d.hdf5'%hid
     if os.path.exists(filename):
         os.remove(filename)
 
     with h5py.File(filename, 'w') as f:
-        for h, s in zip(tree['SubfindID'], tree['SnapNum']):
+        for h, s, m in zip(tree['SubfindID'], tree['SnapNum'], tree['SubhaloMass']):
+            if m * 1e10 / h100 < mh_min: # skip small halos
+                continue
+
             d = f.create_group('snap_%d_halo_%d'%(s,h))
 
             for parttype, fields, dtypes in zip(parttypes, fields_list, dtypes_list):
