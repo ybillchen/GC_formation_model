@@ -89,6 +89,8 @@ redshift_snap = np.loadtxt('/n/holyscratch01/vogelsberger/billchen/temp/TNG_z_li
 # subhalo list
 subs = [523889]
 
+# full snap list if not all snaps are full
+full_snap = [2,3,4,6,8,11,13,17,21,25,33,40,50,59,67,72,78,84,91,99]
 
 # Input: color-metallicity transformations to be used for the Virgo
 # Cluster GCs. Options right now are "LG14", "CGL18", "V19"
@@ -103,7 +105,7 @@ verbose = True
 params = {
     'mode':mode, 
     'disrupt_mode':disrupt_mode,
-    'cosmo': cosmo,
+    'cosmo':cosmo,
     'p2':p2, 
     'p3':p3, 
     'kappa':kappa, 
@@ -145,4 +147,5 @@ params = {
     'no_random_at_formation':no_random_at_formation, 
     'gaussian_process':gaussian_process,
     'UVB_constraint':UVB_constraint, 
-    'verbose':verbose}
+    'verbose':verbose,
+    }
