@@ -22,7 +22,7 @@ def assign(params):
     offset_name = fin_name[:-4] + '_offset.txt'
 
     hid, logmh, logms, logmh_form, logms_form, logm_form, z_form, feh, \
-        ismpb, hid_form, snapnum_form = np.loadtxt(fin_name, unpack = True)
+        ismpb, hid_form, snapnum_form = np.loadtxt(fin_name).T
 
     # setting indices to int type
     hid = hid.astype(int)
@@ -31,10 +31,10 @@ def assign(params):
     snapnum_form = snapnum_form.astype(int)
 
     hid_root, idx_root_beg, idx_root_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
-        root_name, unpack = True, dtype='int64')
+        root_name, dtype=int).T
 
     snap_form_offset, hid_offset, idx_beg, idx_end = np.loadtxt(
-        offset_name, unpack = True, dtype='int64')
+        offset_name, dtype=int).T
 
     i = 0 # pointer of the begining of a group of GCs formed at a same subhalo
     j = 0 # pointer of the end of a group of GCs formed at a same subhalo
