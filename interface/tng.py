@@ -36,16 +36,22 @@ def handle_halo(sim_base, save_base, hid, mh_min=1e8, parttypes=None, fields_lis
         dtypes_list = [['f8', 'i8'], ['f8', 'f8', 'i8'], ['f8', 'i8']]
 
     tree = il.sublink.loadTree(sim_base, 99, hid, ['SubhaloMass', 'SubfindID', 'SnapNum'], False)
-    print(len(tree['SubhaloMass'][tree['SubhaloMass'] * 1e10 / h100 < mh_min]))
+    ntot = len(tree['SubhaloMass'])
 
     filename = save_base + 'halo_%d.hdf5'%hid
     if os.path.exists(filename):
         os.remove(filename)
 
+    n = 0
+
     with h5py.File(filename, 'w') as f:
         for h, s, m in zip(tree['SubfindID'], tree['SnapNum'], tree['SubhaloMass']):
-            if m * 1e10 / h100 < mh_min: # skip small halos
-                continue
+            # if m * 1e10 / h100 < mh_min: # skip small halos
+            #     continue
+
+            n += 1
+            if n % 100 == 0:
+                print(n, ntot)
 
             d = f.create_group('snap_%d_halo_%d'%(s,h))
 
