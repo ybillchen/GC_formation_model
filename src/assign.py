@@ -8,7 +8,6 @@ note: version 1!
 
 import time
 import numpy as np
-import astro_utils
 import loader
 
 def assign(params):
@@ -130,7 +129,7 @@ def assign(params):
 
             # cosmic time of stars
             z_s = -1 + 1./a_s # redshift of stars
-            t_s = np.array(astro_utils.cosmicTime(z_s, units = 'Gyr'))
+            t_s = np.array(params['cosmo'].cosmicTime(z_s, units = 'Gyr'))
 
             # minimum time lag is time_lag
             idx_in_lag_min = np.where((t_s < t_form) & (t_s > t_form - time_lag))[0]
