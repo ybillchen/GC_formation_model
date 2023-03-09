@@ -35,7 +35,7 @@ Placeholder
 
 ## Maintainers
 
-- [@Bill Chen](https://github.com/EnthalpyBill)
+- [@Bill Chen](https://github.com/ybillchen)
 - [@Oleg Gnedin](https://github.com/ognedin)
 
 ## License
