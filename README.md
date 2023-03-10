@@ -1,4 +1,4 @@
-# GC-formation-model
+# GC_formation_model
 
 [![version](https://img.shields.io/badge/version-v0.0-blue.svg?style=flat)](https://github.com/EnthalpyBill/GC-formation-model)
 [![license](https://img.shields.io/github/license/EnthalpyBill/GC-formation-model?style=flat)](LICENSE)
@@ -28,7 +28,7 @@ This is a long developing project starting from [Muratov \& Gnedin (2010)](https
 
 ## Install
 
-We have tested `GC-formation-model` on `3.8 <= python <= 3.11`. However, lower/higher versions may also work. 
+We have tested `GC_formation_model` on `3.8 <= python <= 3.11`. However, lower/higher versions may also work. 
 
 To download the packge, you can `git clone` the source package from [GitHub](https://github.com/ybillchen/GC-formation-model):
 ```shell
