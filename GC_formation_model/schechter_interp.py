@@ -1,10 +1,14 @@
+# Licensed under BSD-3-Clause License - see LICENSE
+
 # Compute maximum cluster mass, Mmax, as a function of the total mass in clusters, Mgc for a schechter function, dN/dM \propto exp(-M/Mc)M^(alpha)
+
+import sys
 
 import numpy as np
 from scipy import interpolate
 import mpmath
-import sys
-import astro_utils
+
+from . import astro_utils
 
 log_mv = np.linspace(3.9, 8.6, num = 2000)
 dlog_mv_inv = 1./(log_mv[1] - log_mv[0])

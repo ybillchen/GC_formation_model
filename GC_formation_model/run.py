@@ -1,3 +1,5 @@
+# Licensed under BSD-3-Clause License - see LICENSE
+
 import numpy as np
 
 from .form import form
@@ -5,6 +7,8 @@ from .offset import offset
 from .assign import assign
 # from .get_tid import get_tid
 # from .disrupt import disrupt
+
+__all__ = ['run']
 
 def run(params):
 
@@ -24,6 +28,3 @@ def run(params):
     # assign(run_params)
     # get_tid(run_params)
     # disrupt(run_params)
-
-if __name__ == '__main__':
-    run(params)

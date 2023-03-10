@@ -1,3 +1,5 @@
+# Licensed under BSD-3-Clause License - see LICENSE
+
 import h5py
 
 def load_merger_tree(base, hid, fields=None):

@@ -1,3 +1,5 @@
+# Licensed under BSD-3-Clause License - see LICENSE
+
 import numpy as np
 from scipy import interpolate
 
