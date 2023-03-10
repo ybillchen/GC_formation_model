@@ -3,6 +3,7 @@ import h5py
 import illustris_python_true as il
 
 h100 = 0.6774
+full_snap = [2,3,4,6,8,11,13,17,21,25,33,40,50,59,67,72,78,84,91,99]
 
 def handle_merger_tree(sim_base, save_base, hid, fields=None, dtypes=None):
 
@@ -33,7 +34,7 @@ def handle_halo(sim_base, save_base, hid, mh_min=1e8, parttypes=None, fields_lis
             ['Coordinates', 'ParticleIDs', 'Potential', 'GFM_StellarFormationTime'],
             ['Coordinates', 'ParticleIDs', 'Potential']]
     if dtypes_list is None:
-        dtypes_list = [['f8', 'i8'], ['f8', 'f8', 'i8'], ['f8', 'i8']]
+        dtypes_list = [['f8', 'i8', 'f8'], ['f8', 'i8', 'f8', 'f8'], ['f8', 'i8', 'f8']]
 
     tree = il.sublink.loadTree(sim_base, 99, hid, ['SubhaloMass', 'SubfindID', 'SnapNum'], False)
     ntot = len(tree['SubhaloMass'])
@@ -56,17 +57,23 @@ def handle_halo(sim_base, save_base, hid, mh_min=1e8, parttypes=None, fields_lis
             d = f.create_group('snap_%d_halo_%d'%(s,h))
 
             for parttype, fields, dtypes in zip(parttypes, fields_list, dtypes_list):
+                if not s in full_snap:
+                    fs = fields[:-1]
+                    ds = dtypes[:-1]
+                else:
+                    fs = fields
+                    ds = dtypes
                 d2 = d.create_group(parttype)
-                cutout = il.snapshot.loadSubhalo(sim_base, s, h, parttype, fields=fields)
+                cutout = il.snapshot.loadSubhalo(sim_base, s, h, parttype, fields=fs)
 
                 if cutout['count'] == 0: # no particle
                     d2.attrs['count'] = 0
-                    for field, dtype in zip(fields, dtypes):
+                    for field, dtype in zip(fs, ds):
                         d2.create_dataset(field, data=[], dtype=dtype)
 
                 else:
-                    d2.attrs['count'] = len(cutout[fields[0]])
-                    for field, dtype in zip(fields, dtypes):
+                    d2.attrs['count'] = len(cutout[fs[0]])
+                    for field, dtype in zip(fs, ds):
                         d2.create_dataset(field, data=cutout[field], dtype=dtype)
 
 if __name__ == '__main__':
