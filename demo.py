@@ -1,3 +1,1 @@
-import src as gm
-
-gm
+import GC_formation_model as gm

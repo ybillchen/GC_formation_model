@@ -19,7 +19,7 @@ def run(params):
 
     # form.form(run_params)
     # offset.offset(run_params)
-    assign.assign(run_params)
+    # assign.assign(run_params)
     # get_tid.get_tid(run_params)
     # disrupt.disrupt(run_params)
 
