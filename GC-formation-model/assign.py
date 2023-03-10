@@ -1,14 +1,8 @@
-'''
-created: dec 2020 by bill
-last modified: mar 2021 by bill
-
-bio: gc assign model
-note: version 1!
-'''
-
 import time
+
 import numpy as np
-import loader
+
+from . import loader
 
 def assign(params):
 

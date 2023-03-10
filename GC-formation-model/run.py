@@ -1,11 +1,11 @@
 import numpy as np
 
-from params import params
-import form
-import offset
-import assign
-# import get_tid
-# import disrupt
+from .params import params
+from . import form
+from . import offset
+from . import assign
+# from . import get_tid
+# from . import disrupt
 
 def run(params):
 

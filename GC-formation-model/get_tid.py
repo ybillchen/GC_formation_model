@@ -1,9 +1,10 @@
+import time
 
 import numpy as np
 from scipy.interpolate import interp1d, LinearNDInterpolator
 import scipy.spatial as sp
-import astro_utils
-import time
+
+from . import astro_utils
 
 file_prefix = 'combine_'
 # file_prefix = 'allcat_sats_14.0_0.7_'

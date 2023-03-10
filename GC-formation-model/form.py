@@ -1,11 +1,14 @@
 import os
 import sys
 import time
+
 import numpy as np
 from scipy.interpolate import interp1d
-import astro_utils
-import schechter_interp
-import loader
+
+
+from . import astro_utils
+from . import schechter_interp
+from . import loader
 
 # Input: stellar evolution mass loss table
 fm = open('../data/massloss.txt')
