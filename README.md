@@ -35,11 +35,11 @@ scipy
 h5py
 ```
 
-To download the packge, you can `git clone` the source package from [GitHub](https://github.com/ybillchen/GC_formation_model):
+To download the packge, `git clone` the source code from [GitHub](https://github.com/ybillchen/GC_formation_model):
 ```shell
 $ git clone https://github.com/ybillchen/GC_formation_model.git
 ```
-To build and install `GC_formation_model`, `cd` the folder and `pip install` it:
+Next, `cd` the folder and use `pip` to install it:
 ```shell
 $ cd GC_formation_model/
 $ pip install -e .
@@ -48,12 +48,9 @@ The `-e` command allows you to make changes to the code.
 
 ## Usage
 
-To use the package, just import it as
-```python
->>> import GC_formation_model as gm
-```
 To start with, let's run the model with default settings
 ```python
+>>> import GC_formation_model as gm
 >>> gm.run()
 ```
 
