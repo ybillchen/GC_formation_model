@@ -28,7 +28,12 @@ This is a long developing project starting from [Muratov \& Gnedin (2010)](https
 
 ## Install
 
-We have tested `GC_formation_model` on `3.8 <= python <= 3.11`. However, lower/higher versions may also work. 
+We have tested `GC_formation_model` on `python >= 3.8`. However, lower/higher versions may also work. The prerequisites of this package are
+```
+numpy
+scipy
+h5py
+```
 
 To download the packge, you can `git clone` the source package from [GitHub](https://github.com/ybillchen/GC_formation_model):
 ```shell
