@@ -28,11 +28,27 @@ This is a long developing project starting from [Muratov \& Gnedin (2010)](https
 
 ## Install
 
-Placeholder
+you can `git clone` the source package from [GitHub](https://github.com/ybillchen/GC-formation-model):
+```shell
+$ git clone https://github.com/ybillchen/GC-formation-model.git
+```
+To build and install `GC_formation_model`, `cd` the folder and `pip install` it:
+```shell
+$ cd mesh_illustris/
+$ pip install -e .
+```
+The `-e` command allows you to make changes to the code.
 
 ## Usage
 
-Placeholder
+To use the package, just import it as
+```python
+>>> import GC_formation_model as gm
+```
+To start with, let's run the model with default settings
+```python
+>>> gm.run()
+```
 
 ## Maintainers
 
