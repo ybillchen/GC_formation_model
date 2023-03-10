@@ -113,6 +113,7 @@ def assign(params):
             a_s = cutout['GFM_StellarFormationTime']
             sid = cutout['ParticleIDs'].astype(int)
             pos = cutout['Coordinates']
+            print(pos.shape)
             x = pos[:,0] - hpos[0]
             y = pos[:,1] - hpos[1]
             z = pos[:,2] - hpos[2]
