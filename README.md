@@ -28,7 +28,9 @@ This is a long developing project starting from [Muratov \& Gnedin (2010)](https
 
 ## Install
 
-you can `git clone` the source package from [GitHub](https://github.com/ybillchen/GC-formation-model):
+We have tested `GC-formation-model` on `3.8 <= python <= 3.11`. However, lower/higher versions may also work. 
+
+To download the packge, you can `git clone` the source package from [GitHub](https://github.com/ybillchen/GC-formation-model):
 ```shell
 $ git clone https://github.com/ybillchen/GC-formation-model.git
 ```
