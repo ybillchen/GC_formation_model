@@ -29,9 +29,9 @@ def handle_halo(sim_base, save_base, hid, mh_min=1e8, parttypes=None, fields_lis
         parttypes = ['dm', 'stars', 'gas']
     if fields_list is None:
         fields_list = [
-            ['Coordinates', 'ParticleIDs'],
-            ['Coordinates', 'GFM_StellarFormationTime', 'ParticleIDs'],
-            ['Coordinates', 'ParticleIDs']]
+            ['Coordinates', 'ParticleIDs', 'Potential'],
+            ['Coordinates', 'ParticleIDs', 'Potential', 'GFM_StellarFormationTime'],
+            ['Coordinates', 'ParticleIDs', 'Potential']]
     if dtypes_list is None:
         dtypes_list = [['f8', 'i8'], ['f8', 'f8', 'i8'], ['f8', 'i8']]
 
@@ -60,12 +60,12 @@ def handle_halo(sim_base, save_base, hid, mh_min=1e8, parttypes=None, fields_lis
                 cutout = il.snapshot.loadSubhalo(sim_base, s, h, parttype, fields=fields)
 
                 if cutout['count'] == 0: # no particle
-                    d2.create_dataset('count', data=0, dtype='i8')
+                    d2.attrs['count'] = 0
                     for field, dtype in zip(fields, dtypes):
                         d2.create_dataset(field, data=[], dtype=dtype)
 
                 else:
-                    d2.create_dataset('count', data=len(cutout[fields[0]]), dtype='i8')
+                    d2.attrs['count'] = len(cutout[fields[0]])
                     for field, dtype in zip(fields, dtypes):
                         d2.create_dataset(field, data=cutout[field], dtype=dtype)
 
