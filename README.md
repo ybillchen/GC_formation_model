@@ -8,11 +8,11 @@ A post-processing model for globular cluster formation in cosmological simulatio
 
 If you use this code for a publication, we kindly request you to acknowledge the following original papers.
 
-- [A. L. Muratov and O. Y. Gnedin (2010)](https://ui.adsabs.harvard.edu/abs/2010ApJ...718.1266M/abstract), ApJ, **718**, 1266
-- [H. Li and O. Y. Gnedin (2014)](https://ui.adsabs.harvard.edu/abs/2014ApJ...796...10L/abstract), ApJ, **796**, 10
-- [N. Choksi, O. Y. Gnedin, and H. Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract), MNRAS, **480**, 2343
-- [Y. Chen and O. Y. Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract), MNRAS, **514**, 4736
-- [Y. Chen and O. Y. Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023arXiv230108218C/abstract), MNRAS submitted (arXiv:2301.08218)
+- [A. L. Muratov \& O. Y. Gnedin (2010)](https://ui.adsabs.harvard.edu/abs/2010ApJ...718.1266M/abstract), ApJ, **718**, 1266
+- [H. Li \& O. Y. Gnedin (2014)](https://ui.adsabs.harvard.edu/abs/2014ApJ...796...10L/abstract), ApJ, **796**, 10
+- [N. Choksi, O. Y. Gnedin, \& H. Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract), MNRAS, **480**, 2343
+- [Y. Chen \& O. Y. Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract), MNRAS, **514**, 4736
+- [Y. Chen \& O. Y. Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023arXiv230108218C/abstract), MNRAS submitted (arXiv:2301.08218)
 
 ## Table of Contents
 
