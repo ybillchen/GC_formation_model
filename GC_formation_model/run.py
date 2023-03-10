@@ -25,6 +25,6 @@ def run(params):
 
     # form(run_params)
     # offset(run_params)
-    # assign(run_params)
+    assign(run_params)
     # get_tid(run_params)
     # disrupt(run_params)
