@@ -6,6 +6,8 @@
 
 A post-processing model for globular cluster formation in cosmological simulations.
 
+## Cite
+
 If you use this code for a publication, we kindly request you to acknowledge the following original papers.
 
 - [Muratov \& Gnedin (2010)](https://ui.adsabs.harvard.edu/abs/2010ApJ...718.1266M/abstract)
@@ -51,6 +53,10 @@ To start with, let's run the model with default settings
 ```python
 >>> gm.run()
 ```
+
+## Contribute
+
+Feel free to dive in! [Raise an issue](https://github.com/ybillchen/GC_formation_model/issues/new) or submit pull requests.
 
 ## Maintainers
 
