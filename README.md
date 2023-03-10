@@ -1,8 +1,8 @@
 # GC_formation_model
 
-[![version](https://img.shields.io/badge/version-v0.0-blue.svg?style=flat)](https://github.com/EnthalpyBill/GC-formation-model)
-[![license](https://img.shields.io/github/license/EnthalpyBill/GC-formation-model?style=flat)](LICENSE)
-[![workflows](https://img.shields.io/github/actions/workflow/status/ybillchen/GC-formation-model/build.yaml?logo=github)](https://github.com/ybillchen/GC-formation-model/actions/workflows/build.yaml)
+[![version](https://img.shields.io/badge/version-v0.0-blue.svg?style=flat)](https://github.com/EnthalpyBill/GC_formation_model)
+[![license](https://img.shields.io/github/license/EnthalpyBill/GC_formation_model?style=flat)](LICENSE)
+[![workflows](https://img.shields.io/github/actions/workflow/status/ybillchen/GC_formation_model/build.yaml?logo=github)](https://github.com/ybillchen/GC_formation_model/actions/workflows/build.yaml)
 
 A post-processing model for globular cluster formation in cosmological simulations.
 
@@ -30,9 +30,9 @@ This is a long developing project starting from [Muratov \& Gnedin (2010)](https
 
 We have tested `GC_formation_model` on `3.8 <= python <= 3.11`. However, lower/higher versions may also work. 
 
-To download the packge, you can `git clone` the source package from [GitHub](https://github.com/ybillchen/GC-formation-model):
+To download the packge, you can `git clone` the source package from [GitHub](https://github.com/ybillchen/GC_formation_model):
 ```shell
-$ git clone https://github.com/ybillchen/GC-formation-model.git
+$ git clone https://github.com/ybillchen/GC_formation_model.git
 ```
 To build and install `GC_formation_model`, `cd` the folder and `pip install` it:
 ```shell
