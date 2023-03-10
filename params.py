@@ -1,5 +1,4 @@
 import numpy as np
-import astro_utils
 
 # mode: run or calibrate
 mode = 'run'
@@ -7,7 +6,10 @@ mode = 'run'
 # disrupt mode: constant, density, tidal, tidal_centrifugal, Mark_Gieles
 disrupt_mode = 'Mark_Gieles'
 
-cosmo = astro_utils.cosmo(h=0.6774, omega_baryon=0.0486, omega_matter=0.3089)
+# cosmological parameters
+h100 = 0.6774
+Ob = 0.0486
+Om = 0.3089
 
 # adjustable model parameters (run mode)
 p2 = 8.8
@@ -106,7 +108,9 @@ verbose = True
 params = {
     'mode':mode, 
     'disrupt_mode':disrupt_mode,
-    'cosmo':cosmo,
+    'h100':h100,
+    'Ob':Ob,
+    'Om':Om,
     'p2':p2, 
     'p3':p3, 
     'kappa':kappa, 

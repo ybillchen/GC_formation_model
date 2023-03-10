@@ -1,11 +1,10 @@
 import numpy as np
 
-from .params import params
-from . import form
-from . import offset
-from . import assign
-# from . import get_tid
-# from . import disrupt
+from .form import form
+from .offset import offset
+from .assign import assign
+# from .get_tid import get_tid
+# from .disrupt import disrupt
 
 def run(params):
 
@@ -17,11 +16,14 @@ def run(params):
     run_params = params
     run_params['allcat_name'] = allcat_name
 
-    # form.form(run_params)
-    # offset.offset(run_params)
-    # assign.assign(run_params)
-    # get_tid.get_tid(run_params)
-    # disrupt.disrupt(run_params)
+    run_params['cosmo'] = astro_utils.cosmo(h=run_params['h100'], 
+        omega_baryon=run_params['Ob'], omega_matter=run_params['Om'])
+
+    # form(run_params)
+    # offset(run_params)
+    # assign(run_params)
+    # get_tid(run_params)
+    # disrupt(run_params)
 
 if __name__ == '__main__':
     run(params)

@@ -1,1 +1,3 @@
-import GC_formation_model as gm
+import GC_formation_model.run
+
+print(run)
