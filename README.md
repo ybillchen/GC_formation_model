@@ -34,7 +34,7 @@ $ git clone https://github.com/ybillchen/GC-formation-model.git
 ```
 To build and install `GC_formation_model`, `cd` the folder and `pip install` it:
 ```shell
-$ cd mesh_illustris/
+$ cd GC_formation_model/
 $ pip install -e .
 ```
 The `-e` command allows you to make changes to the code.
