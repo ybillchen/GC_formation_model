@@ -63,7 +63,7 @@ Feel free to dive in! [Raise an issue](https://github.com/ybillchen/GC_formation
 
 ## Maintainers
 
-- [@Bill Chen](https://github.com/ybillchen)
+- [@Yingtian (Bill) Chen](https://github.com/ybillchen)
 - [@Oleg Gnedin](https://github.com/ognedin)
 
 ## License
