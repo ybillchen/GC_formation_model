@@ -7,17 +7,9 @@ import time
 import numpy as np
 from scipy.interpolate import interp1d
 
-
 from . import astro_utils
 from . import schechter_interp
 from . import loader
-
-# Input: stellar evolution mass loss table
-fm = open('../data/massloss.txt')
-flost, t_solar, t_subsolar = np.loadtxt(fm, usecols = (1,2,3), unpack = True)
-ssub = interp1d(t_subsolar, flost, kind='linear')
-ssolar = interp1d(t_solar, flost, kind='linear')
-
 
 # Define globular cluster class to store data about each cluster
 class GC(object): 

@@ -89,7 +89,10 @@ base_tree = '/n/holyscratch01/vogelsberger/billchen/temp/'
 base_halo = '/n/holyscratch01/vogelsberger/billchen/temp/'
 
 # redshift list
-redshift_snap = np.loadtxt('/n/holyscratch01/vogelsberger/billchen/temp/TNG_z_list.txt', dtype=float) 
+redshift_snap = np.loadtxt('/n/holyscratch01/vogelsberger/billchen/temp/TNG_z_list.txt', dtype=float)
+
+# mass loss
+flost, t_solar, t_subsolar = np.loadtxt('data/massloss.txt', usecols=(1,2,3), unpack=True)
 
 # subhalo list
 subs = [523889]
