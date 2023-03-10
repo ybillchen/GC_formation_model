@@ -6,22 +6,13 @@
 
 A post-processing model for globular cluster formation in cosmological simulations.
 
-## Cite
-
-If you use this code for a publication, we kindly request you to acknowledge the following original papers.
-
-- [Muratov \& Gnedin (2010)](https://ui.adsabs.harvard.edu/abs/2010ApJ...718.1266M/abstract)
-- [Li \& Gnedin (2014)](https://ui.adsabs.harvard.edu/abs/2014ApJ...796...10L/abstract)
-- [Choksi, Gnedin, \& Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract)
-- [Chen \& Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract)
-- [Chen \& Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023arXiv230108218C/abstract)
-
 ## Table of Contents
 
 - [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
 - [Maintainers](#maintainers)
+- [Cite](#cite)
 - [License](#license)
 
 ## Background
@@ -62,6 +53,16 @@ Feel free to dive in! [Raise an issue](https://github.com/ybillchen/GC_formation
 
 - [@Bill Chen](https://github.com/ybillchen)
 - [@Oleg Gnedin](https://github.com/ognedin)
+
+## Cite
+
+If you use this code for a publication, we kindly request you to acknowledge the following original papers.
+
+- [Muratov \& Gnedin (2010)](https://ui.adsabs.harvard.edu/abs/2010ApJ...718.1266M/abstract)
+- [Li \& Gnedin (2014)](https://ui.adsabs.harvard.edu/abs/2014ApJ...796...10L/abstract)
+- [Choksi, Gnedin, \& Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract)
+- [Chen \& Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract)
+- [Chen \& Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023arXiv230108218C/abstract)
 
 ## License
 
