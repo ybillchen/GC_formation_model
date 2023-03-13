@@ -32,7 +32,7 @@ def load_halo(base, hid_root, hid, snap, parttype, fields=None):
         d = f['snap_%d_halo_%d'%(snap,hid)][parttype]
 
         if 'GFM_StellarFormationTime' in fields:
-            print(d.attrs['count'])
+            print(d.attrs['count'], 'snap_%d_halo_%d'%(snap,hid))
         res['count'] = d.attrs['count']
         for field in fields:
             res[field] = d[field][:]
