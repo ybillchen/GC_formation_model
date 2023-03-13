@@ -10,9 +10,9 @@ For computational efficiency, we use the `hdf5` format. For each halo (galaxy), 
 
 - File name: `merger_tree_[haloID].hdf5`
 	- `dataset (int)`: `SnapNum`: snapshot number
-	- `dataset (int)`: `SubfindID`: halo ID in the halo finder
-	- `dataset (int)`: `SubhaloID`: halo ID in the merger tree (may differ from `SubfindID`)
-	- `dataset (float)`: `SubhaloMass`: total mass of the halo in 1e10 Msun/h
+	- `dataset (int)`: `SubfindID`: ID of the halo in the halo finder
+	- `dataset (int)`: `SubhaloID`: ID of the halo in the merger tree (may differ from `SubfindID`)
+	- `dataset (float)`: `SubhaloMass`: total mass of the halo in 10^10 Msun/h
 	- `dataset (int)`: `FirstProgenitorID`: `SubhaloID` of the first progenitor
 	- `dataset (int)`: `MainLeafProgenitorID`: `SubhaloID` of the leaf halo along this branch
 	- `dataset (int)`: `NextProgenitorID`: `SubhaloID` of the second progenitor
