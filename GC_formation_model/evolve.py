@@ -2,6 +2,17 @@
 
 import numpy as np
 
+# fix missing snaps for P
+def fix_P(P, tag):
+    for i in range(len(P)):
+        if tag[i][-1] == 0:
+            continue
+        for j in range(len(P[0])-1, -1, -1):
+            if tag[i][j] == 0:
+                P[i][j] = P[i][j+1]
+                tag[i][j] = tag[i][j+1]
+    return P, tag
+
 def evolve(params, snap_range=None, return_t_disrupt=False):
     z_list = params['redshift_snap']
     base = params['base']
