@@ -2,9 +2,6 @@
 
 import numpy as np
 
-# mode: run or calibrate
-mode = 'run'
-
 # disrupt mode: constant, tidal
 disrupt_mode = 'tidal'
 
@@ -28,26 +25,12 @@ disrupt_y = 4./3.
 # Normalized period of rotation for disruption if disrupt_mode == 'constant'
 pr = 0.5 
 
-# adjustable model parameters (calibrate mode) Below, we'll loop
-# over all combinations of p2_arr and p3_arr: if you want to just run
-# a single set of model params, then just make each array a list of
-# length 1
-p2_arr = [10, 12, 14, 16, 18, 20] # 6 p2
-p3_arr = [0.5, 0.6, 0.7] # 3 p3
-kappa_arr = [1, 2, 2.5, 3, 3.5, 4] # more kappa
-
 # log(Mcut) - knee of the Schechter function. Anything with log_mc >
 # 10 will be treated as a pure power-law, to speed up runtime
 # (analytic solution).
 log_mc = 7.0 
 
-# Various things you can play with (solely for ease of use, doesn't
-# affect model calculations at all)
-run_all = True
-log_mh_min, log_mh_max = 6., 16.  
-##MW: 11.86, 12.38
-N = 9999
-seed = 0
+seed = 0 # random seed
 
 # Output file names: will result in cat_base_mcvalue_p2_p3.txt ,
 # allcat_base_mcvalue_p2_p3.txt, merits_base.txt
@@ -104,6 +87,7 @@ subs = [523889]
 
 # full snap list if not all snaps are full
 full_snap = [2,3,4,6,8,11,13,17,21,25,33,40,50,59,67,72,78,84,91,99]
+full_snap = np.loadtxt('/nfs/astro2/ybchen/tng50_halos/TNG_full_snap.txt', dtype=int)
 # full_snap = [2,3]
 
 # Input: color-metallicity transformations to be used for the Virgo
@@ -117,7 +101,6 @@ resultspath = '/nfs/astro2/ybchen/temp/'
 verbose = True
 
 params = {
-    'mode':mode, 
     'disrupt_mode':disrupt_mode,
     'h100':h100,
     'Ob':Ob,
@@ -128,14 +111,7 @@ params = {
     'd_tid':d_tid,
     'disrupt_x':disrupt_x,
     'disrupt_y':disrupt_y,
-    'p2_arr':p2_arr, 
-    'p3_arr':p3_arr, 
-    'kappa_arr':kappa_arr,
     'log_mc':log_mc, 
-    'run_all':run_all, 
-    'log_mh_min':log_mh_min, 
-    'log_mh_max':log_mh_max, 
-    'N':N, 
     'seed':seed,
     'mpb_only':mpb_only, 
     'mmr_slope':mmr_slope, 
