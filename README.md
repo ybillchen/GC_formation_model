@@ -1,6 +1,6 @@
 # GC_formation_model
 
-[![version](https://img.shields.io/badge/version-v0.0-blue.svg)](https://github.com/ybillchen/GC_formation_model)
+[![version](https://img.shields.io/badge/version-0.0-blue.svg)](https://github.com/ybillchen/GC_formation_model)
 [![license](https://img.shields.io/github/license/ybillchen/GC_formation_model)](LICENSE)
 [![workflows](https://img.shields.io/github/actions/workflow/status/ybillchen/GC_formation_model/build.yaml?logo=github)](https://github.com/ybillchen/GC_formation_model/actions/workflows/build.yaml)
 
