@@ -92,11 +92,11 @@ no_random_at_formation = False
 
 # base path of TNG50-1
 base = '/n/holylfs05/LABS/hernquist_lab/IllustrisTNG/Runs/L35n2160TNG/output/' 
-base_tree = '/n/holyscratch01/vogelsberger/billchen/temp/'
-base_halo = '/n/holyscratch01/vogelsberger/billchen/temp/'
+base_tree = '/nfs/astro2/ybchen/tng50_halos/'
+base_halo = '/nfs/astro2/ybchen/tng50_halos/'
 
 # redshift list
-redshift_snap = np.loadtxt('/n/holyscratch01/vogelsberger/billchen/temp/TNG_z_list.txt', dtype=float)
+redshift_snap = np.loadtxt('/nfs/astro2/ybchen/tng50_halos/TNG_z_list.txt', dtype=float)
 
 # path of mass loss due to stellar evolution
 path_massloss = 'data/massloss.txt'
