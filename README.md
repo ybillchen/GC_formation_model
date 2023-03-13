@@ -50,8 +50,9 @@ The `-e` command allows you to make changes to the code.
 
 To start with, let's run the model with default settings
 ```python
->>> import GC_formation_model as gm
->>> gm.run()
+>>> from GC_formation_model import run
+>>> from params_example import params
+>>> run(params)
 ```
 
 ## Contribute
