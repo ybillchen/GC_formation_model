@@ -57,8 +57,8 @@ def gasMass(SM, Mh, z, params) :
 
     if params['UVB_constraint'] == 'MG10':
         # Model extragalactic UVB as in Muratov & Gnedin 2010
-        Mc = 3.6e9*np.exp(-.6*(1+z))/h100
-        Mc_min = 1.5e10*(180**(-.5))/(params['cosmo'].E(z)*h100)
+        Mc = 3.6e9*np.exp(-.6*(1+z))/params['h100']
+        Mc_min = 1.5e10*(180**(-.5))/(params['cosmo'].E(z)*params['h100'])
         if Mc < Mc_min : 
             Mc = Mc_min
         fin = 1/((1+(Mc/Mh))**3)
@@ -69,7 +69,8 @@ def gasMass(SM, Mh, z, params) :
         z_re = 6
         gam = 15
         beta = z_re / (np.log(1.82e3*np.exp(-0.63*z_re)-1))**(1/gam)
-        Mc = 1.69e10*np.exp(-.63*z)/(1+np.exp((z/beta)**gam))
+        Mc = 1.69e10*np.exp(-.63*z)/(1+np.exp(
+            np.clip((z/beta)**gam, 0, 500))) # too large number results in overflow
         fin = s(Mc/Mh,2)
 
     else:

@@ -4,7 +4,7 @@ import numpy as np
 
 def offset(params):
 
-    print('########## calculating offsets ##########')
+    print('########## offset calculation started ##########')
 
     fin_name = params['resultspath'] + params['allcat_name']
 
@@ -68,9 +68,6 @@ def offset(params):
             ends_in_detail.append(k)
             idx_in_root += 1
     ends_in_detail.append(len(ends))
-
-    print([subfindids_root, begins_root, ends_root, 
-        begins_in_detail, ends_in_detail])
 
     output_root = np.array([subfindids_root, begins_root, ends_root, 
         begins_in_detail, ends_in_detail], dtype=int).T
