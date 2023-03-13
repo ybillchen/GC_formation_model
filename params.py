@@ -147,6 +147,7 @@ params = {
     'base_halo':base_halo,
     'redshift_snap':redshift_snap, 
     'subs':subs,
+    'full_snap':full_snap,
     'color_metallicity':color_metallicity, 
     'resultspath':resultspath,
     'allcat_base':allcat_base, 

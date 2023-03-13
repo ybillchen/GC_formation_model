@@ -115,7 +115,7 @@ def assign(params):
             a_s = 1 / (redshift_snap[snap_form_offset[i]]+1) * np.ones(cutout['count']) ### temp !!!!!!
             sid = cutout['ParticleIDs'].astype(int)
             pos = cutout['Coordinates']
-            print(cutout['count'], pos.shape)
+            
             x = pos[:,0] - hpos[0]
             y = pos[:,1] - hpos[1]
             z = pos[:,2] - hpos[2]
