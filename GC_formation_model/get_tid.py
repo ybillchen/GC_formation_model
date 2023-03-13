@@ -114,7 +114,7 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
     print('########## number', i, '##########')
 
     t0 = time.time()
-    
+
     # load merger tree
     fields = ['SnapNum', 'SubfindID', 'SubhaloMass']
     # tree = il.sublink.loadTree(base, 99, hid_root[i], fields, mpb_only)
@@ -232,14 +232,11 @@ def get_tid(params):
     print('pre-load data...')
 
     # load GC id
-
-    gcid = np.loadtxt(gcid_name, unpack=True, dtype='int64')
-    if len(gcid.shape) > 1:
-        gcid = gcid[0]
+    gcid, quality = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
     # load root offset
     hid_root, idx_beg, idx_end = np.loadtxt(
-        root_name, unpack=True, dtype='int64')[:3]
+        root_name, ndmin=2, unpack=True, dtype='int64')[:3]
 
     tag = np.zeros([len(gcid), len(full_snap)], dtype=int)
     eig_max = np.zeros([len(gcid), len(full_snap)])
