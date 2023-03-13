@@ -74,7 +74,6 @@ def assign(params):
             fields = ['Coordinates', 'GFM_StellarFormationTime', 'ParticleIDs']
             # cutout = il.snapshot.loadSubhalo(base, snap_form_offset[i], 
             #     hid_offset[i], 'stars', fields=fields)
-
             cutout = loader.load_halo(params['base_halo'], hid_root[j], 
                 hid_offset[i], snap_form_offset[i], 'stars', fields)
 
