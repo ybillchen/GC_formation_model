@@ -207,9 +207,9 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
             t4 += time.time() - t44 # calc eig
 
         if params['verbose']:
-            print(' NO. %d, hid: %d, snap: %d, %d/%d found, time: %.1fs'%(
+            print('  * NO. %d, hid: %d, snap: %d, %d/%d found, time: %.1fs'%(
                 i, hid_root[i], snap, count, len(idx_exist_gc), time.time()-t1))
-            print(' - load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(t2,t3,t4))
+            print('   - load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(t2,t3,t4))
 
     if params['verbose']:
         print('id: %d completed, total time: %.1f s'%(i, time.time()-t0))
@@ -245,7 +245,7 @@ def get_tid(params):
 
     for i in range(len(hid_root)):
         if params['verbose']:
-            print(' ***** NO. %d, halo id: %d'%(i,hid_root[i]))
+            print(' ** NO. %d, halo id: %d'%(i,hid_root[i]))
 
         tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params)
 
@@ -259,6 +259,6 @@ def get_tid(params):
     np.savetxt(fin_name[:-4]+'_tideig1.txt', eig_1, fmt='%.3e')
     np.savetxt(fin_name[:-4]+'_tideig2.txt', eig_2, fmt='%.3e')
     np.savetxt(fin_name[:-4]+'_tideig3.txt', eig_3, fmt='%.3e')
-    
+
     if params['verbose']:
         print('########## tidal tensor calculation done ##########')

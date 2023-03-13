@@ -351,7 +351,7 @@ def form(params):
 
     for num_run, hid_num in enumerate(params['subs']):
         if params['verbose']:
-            print(' ***** NO. %d, halo id: %d'%(num_run,hid_num))
+            print(' ** NO. %d, halo id: %d'%(num_run,hid_num))
 
         params['rng'] = np.random.default_rng(params['seed']) # initialize seed
 
@@ -361,7 +361,7 @@ def form(params):
 
         t1 = time.time() # t1 - t0 is time for loading tree
         if params['verbose']:
-            print(' - load tree: %.2f s'%(t1-t0))
+            print('  - load tree: %.2f s'%(t1-t0))
 
         organized_tree, dfeh, dsm = organize_tree(tree, params)
         if len(organized_tree) < 1:
@@ -370,7 +370,7 @@ def form(params):
 
         t2 = time.time() # t2 - t1 is time for re-organizing tree
         if params['verbose']:
-            print(' - organize tree: %.2f s'%(t2-t1))
+            print('  - organize tree: %.2f s'%(t2-t1))
 
         msub = np.max(m)
         mpbi = mpi[m == np.max(m)][0]
@@ -461,7 +461,7 @@ def form(params):
 
         t3 = time.time() # t3 - t2 is time for modeling gcs 
         if params['verbose']:
-            print(' - model gc: %.2f s'%(t3-t2))
+            print('  - model gc: %.2f s'%(t3-t2))
 
         # All GCs that form, regardless of survival -- for use w/ allcat.txt
         GC_mets = np.array([cluster.metallicity for cluster in clusters])
@@ -500,10 +500,10 @@ def form(params):
         
         t4 = time.time() # t4 - t3 is time for post-processing
         if params['verbose']:
-            print(' - post process: %.2f s'%(t4-t3))
+            print('  - post process: %.2f s'%(t4-t3))
 
-            print(' total time: %.2f s'%(t4-t0))
-            print(' number of GCs:', len(clusters))
+            print('  total time: %.2f s'%(t4-t0))
+            print('  number of GCs:', len(clusters))
 
     header = ('subfindID(z=0) | logMh(z=0) | logM*(z=0) | logMh(zform) | logM*(zform)' +
         ' | logM(tform) | zform | feh | isMPB | subfindID(zfrom) | snapnum(zform) \n')
@@ -512,5 +512,5 @@ def form(params):
         fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
 
     if params['verbose']:
-        print(" ***** Model was run on %d available halo(s)."%(num_run+1))
+        print(" ** Model was run on %d available halo(s)."%(num_run+1))
         print('########## formation model done ##########')

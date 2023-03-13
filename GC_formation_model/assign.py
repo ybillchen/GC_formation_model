@@ -34,21 +34,16 @@ def assign(params):
         offset_name, ndmin=2, unpack=True, dtype=int)
 
     gcid = []
-    # quality list old:
-    # 2: good (all star particles):
-    # 1: half (patial stellar particles, and this is stellar particle)
-    # 0: bad (this is dm particle)
-    # quality list new:
+    quality = [] 
+    # quality:
     # 2: good (star with t_s > t_form - time_lag):
     # 1: half (star with t_s < t_form - time_lag)
     # 0: bad (dm particle)
-    quality = [] 
-
 
     # loop over all subhalos 
     for j in range(len(hid_root)):
         if params['verbose']:
-            print(' ***** NO. %d, halo id: %d'%(j,hid_root[j]))
+            print(' ** NO. %d, halo id: %d'%(j,hid_root[j]))
 
         params['rng'] = np.random.default_rng(params['seed']) # initialize seed
 
