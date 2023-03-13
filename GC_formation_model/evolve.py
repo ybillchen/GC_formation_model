@@ -168,13 +168,12 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
 
     # save data
     if params['disrupt_mode'] == 'constant':
-        np.savetxt(fin_name[:-4]+'_%g_logm_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), m_out, fmt='%.3f')
+        np.savetxt(fin_name[:-4]+'_p%g_logm_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), m_out, fmt='%.3f')
     elif params['disrupt_mode'] == 'tidal':
-        np.savetxt(fin_name[:-4]+'_%g_logm_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), m_out, fmt='%.3f')
+        np.savetxt(fin_name[:-4]+'_k%g_logm_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), m_out, fmt='%.3f')
 
     if return_t_disrupt:
         if params['disrupt_mode'] == 'constant':
-            np.savetxt(fin_name[:-4]+'_%g_t_disrupt_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
+            np.savetxt(fin_name[:-4]+'_p%g_t_disrupt_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
         elif params['disrupt_mode'] == 'tidal':
-            np.savetxt(fin_name[:-4]+'_%g_t_disrupt_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
-        return m_out, t_disrupt
+            np.savetxt(fin_name[:-4]+'_k%g_t_disrupt_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')

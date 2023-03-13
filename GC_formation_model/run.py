@@ -15,7 +15,7 @@ def run(params):
 
     print('########## GC formation and evolution model ##########')
 
-    allcat_name = params['allcat_base'] + '_%g_%g.txt'%(
+    allcat_name = params['allcat_base'] + '_p2%g_p3%g.txt'%(
         params['p2'], params['p3'])
 
     run_params = params
@@ -24,8 +24,8 @@ def run(params):
     run_params['cosmo'] = astro_utils.cosmo(h=run_params['h100'], 
         omega_baryon=run_params['Ob'], omega_matter=run_params['Om'])
 
-    # form(run_params)
-    # offset(run_params)
-    # assign(run_params)
-    # get_tid(run_params)
+    form(run_params)
+    offset(run_params)
+    assign(run_params)
+    get_tid(run_params)
     evolve(run_params)
