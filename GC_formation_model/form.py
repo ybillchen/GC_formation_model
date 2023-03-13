@@ -349,7 +349,7 @@ def form(params):
 
     for num_run, hid_num in enumerate(params['subs']):
         print('########## NO.', num_run, '##########')
-        print('subhalo id:', hid_num)
+        print('halo id:', hid_num)
 
         params['rng'] = np.random.default_rng(params['seed']) # initialize seed
 

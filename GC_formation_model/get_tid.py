@@ -206,10 +206,10 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
 
             t4 += time.time() - t44 # calc eig
 
-        print('id: %d, snap: %d, %d/%d found, time: %.1fs'%(
-            i, snap, count, len(idx_exist_gc), time.time()-t1))
-        print('id: %d, snap: %d, load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(
-            i, snap, t2, t3, t4))
+        print('number %d, hid: %d, snap: %d, %d/%d found, time: %.1fs'%(
+            i, hid_root[i], snap, count, len(idx_exist_gc), time.time()-t1))
+        print('number %d, hid: %d, snap: %d, load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(
+            i, hid_root[i], snap, t2, t3, t4))
 
     print('id: %d completed, total time: %.1f s'%(i, time.time()-t0))
 
@@ -243,7 +243,7 @@ def get_tid(params):
 
     for i in range(len(hid_root)):
         print('########## number', i, '##########')
-        print('subhalo id:', hid_root[i])
+        print('halo id:', hid_root[i])
 
         tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params)
 
