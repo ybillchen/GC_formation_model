@@ -12,7 +12,6 @@ def assign(params):
         print('\n########## assigning model started ##########')
 
     time_lag = params['t_lag']
-    base = params['base']
     redshift_snap = params['redshift_snap']
     fin_name = params['resultspath'] + params['allcat_name']
     root_name = fin_name[:-4] + '_offset_root.txt'
@@ -65,23 +64,16 @@ def assign(params):
             dt = t_form - t_before
             scale_a = 1 / (1 + redshift_snap[snap_form_offset[i]])
 
-            # hpos = il.groupcat.loadSingle(base, snap_form_offset[i], 
-            #     subhaloID=hid_offset[i])['SubhaloPos']
-
             hpos = tree['SubhaloPos'][idx_in_tree]
 
             # load cutout snapshot of the subhalo
             fields = ['Coordinates', 'GFM_StellarFormationTime', 'ParticleIDs']
-            # cutout = il.snapshot.loadSubhalo(base, snap_form_offset[i], 
-            #     hid_offset[i], 'stars', fields=fields)
             cutout = loader.load_halo(params['base_halo'], hid_root[j], 
                 hid_offset[i], snap_form_offset[i], 'stars', fields)
 
             if cutout['count'] == 0:
                 # if there is no sellar particles in this subhalo, use dm particles
                 fields = ['Coordinates', 'ParticleIDs']
-                # cutout = il.snapshot.loadSubhalo(base, snap_form_offset[i], 
-                #     hid_offset[i], 'dm', fields=fields)
                 cutout = loader.load_halo(params['base_halo'], hid_root[j], 
                     hid_offset[i], snap_form_offset[i], 'dm', fields)
 
@@ -138,12 +130,8 @@ def assign(params):
                         quality.append(1)
 
                 # second, use dm particles
-                # hpos = il.groupcat.loadSingle(base, snap_form_offset[i], 
-                #     subhaloID=hid_offset[i])['SubhaloPos']
-                # hpos = tree['SubhaloPos'][idx_in_tree]
+                hpos = tree['SubhaloPos'][idx_in_tree]
                 fields = ['Coordinates', 'ParticleIDs']
-                # cutout = il.snapshot.loadSubhalo(base, snap_form_offset[i], 
-                #     hid_offset[i], 'dm', fields=fields)
                 cutout = loader.load_halo(params['base_halo'], hid_root[j], 
                     hid_offset[i], snap_form_offset[i], 'dm', fields)
 

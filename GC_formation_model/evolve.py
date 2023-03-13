@@ -44,7 +44,6 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
         print('\n########## evolution started ##########')
 
     z_list = params['redshift_snap']
-    base = params['base']
     redshift_snap = params['redshift_snap']
     full_snap = params['full_snap']
     fin_name = params['resultspath'] + params['allcat_name']

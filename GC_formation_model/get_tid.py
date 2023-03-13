@@ -115,7 +115,6 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
 
     # load merger tree
     fields = ['SnapNum', 'SubfindID', 'SubhaloMass']
-    # tree = il.sublink.loadTree(base, 99, hid_root[i], fields, mpb_only)
     tree = loader.load_merger_tree(params['base_tree'], hid_root[i], fields)
 
     if len(gcid.shape) > 1:
@@ -150,7 +149,6 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
             t22 = time.time()
             # first, consider all GCs represented by dm
             fields = ['Coordinates', 'ParticleIDs', 'Potential']
-            # cutout = il.snapshot.loadSubhalo(base, snap, subid, 'dm', fields=fields)
             cutout = loader.load_halo(params['base_halo'], hid_root[i], 
                 subid, snap, 'dm', fields)
             pos = cutout['Coordinates'] * scale_a # in kpc/h
@@ -159,7 +157,6 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
 
             # second, consider all GCs represented by stars
             fields = ['Coordinates', 'ParticleIDs', 'Potential']
-            # cutout = il.snapshot.loadSubhalo(base, snap, subid, 'stars', fields=fields)
             cutout = loader.load_halo(params['base_halo'], hid_root[i], 
                 subid, snap, 'stars', fields)
             if cutout['count'] > 0:
@@ -178,7 +175,6 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
                 continue
 
             fields = ['Coordinates', 'Potential']
-            # cutout = il.snapshot.loadSubhalo(base, snap, subid, 'gas', fields=fields)
             cutout = loader.load_halo(params['base_halo'], hid_root[i], 
                 subid, snap, 'gas', fields)
             if cutout['count'] > 0:
@@ -222,7 +218,6 @@ def get_tid(params):
         print('\n########## tidal tensor calculation started ##########')
 
     time_lag = params['t_lag']
-    base = params['base']
     redshift_snap = params['redshift_snap']
     full_snap = params['full_snap']
     fin_name = params['resultspath'] + params['allcat_name']
