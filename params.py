@@ -101,9 +101,6 @@ redshift_snap = np.loadtxt('/n/holyscratch01/vogelsberger/billchen/temp/TNG_z_li
 # path of mass loss due to stellar evolution
 path_massloss = 'data/massloss.txt'
 
-# mass loss
-flost, t_solar, t_subsolar = np.loadtxt('data/massloss.txt', usecols=(1,2,3), unpack=True)
-
 # subhalo list
 subs = [523889]
 
@@ -160,6 +157,7 @@ params = {
     'base_tree':base_tree, 
     'base_halo':base_halo,
     'redshift_snap':redshift_snap, 
+    'path_massloss':path_massloss,
     'subs':subs,
     'full_snap':full_snap,
     'color_metallicity':color_metallicity, 
