@@ -100,6 +100,7 @@ subs = [523889]
 
 # full snap list if not all snaps are full
 full_snap = [2,3,4,6,8,11,13,17,21,25,33,40,50,59,67,72,78,84,91,99]
+full_snap = [2,3]
 
 # Input: color-metallicity transformations to be used for the Virgo
 # Cluster GCs. Options right now are "LG14", "CGL18", "V19"

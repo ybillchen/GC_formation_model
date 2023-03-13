@@ -32,9 +32,6 @@ def assign(params):
     snap_form_offset, hid_offset, idx_beg, idx_end = np.loadtxt(
         offset_name, ndmin=2, unpack=True, dtype=int)
 
-    i = 0 # pointer of the begining of a group of GCs formed at a same subhalo
-    j = 0 # pointer of the end of a group of GCs formed at a same subhalo
-    num_run = 0
     gcid = []
     # quality list old:
     # 2: good (all star particles):

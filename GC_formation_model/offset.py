@@ -18,7 +18,6 @@ def offset(params):
     snapnum_form = snapnum_form.astype(int)
 
     i = 0 # pointer of the begining of a group of GCs formed at a same subhalo
-    j = 0 # pointer of the end of a group of GCs formed at a same subhalo
     num_run = 0
 
     # root offset, for each galaxy
