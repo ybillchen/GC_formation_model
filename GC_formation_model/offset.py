@@ -5,7 +5,7 @@ import numpy as np
 def offset(params):
 
     if params['verbose']:
-        print('########## offset calculation started ##########')
+        print('\n########## offset calculation started ##########')
 
     fin_name = params['resultspath'] + params['allcat_name']
 

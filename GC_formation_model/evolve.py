@@ -39,6 +39,10 @@ def fix_P(P, tag):
     return P, tag
 
 def evolve(params, snap_range=None, return_t_disrupt=False):
+
+    if params['verbose']:
+        print('\n########## evolution started ##########')
+
     z_list = params['redshift_snap']
     base = params['base']
     redshift_snap = params['redshift_snap']

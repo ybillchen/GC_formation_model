@@ -341,7 +341,7 @@ def organize_tree(tree, params):
 def form(params):
 
     if params['verbose']:
-        print('########## formation model started ##########')
+        print('\n########## formation model started ##########')
 
     Mmin = 10**params['log_Mmin']
 

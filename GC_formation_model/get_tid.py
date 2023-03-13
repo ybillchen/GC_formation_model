@@ -209,8 +209,7 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
         if params['verbose']:
             print('number %d, hid: %d, snap: %d, %d/%d found, time: %.1fs'%(
                 i, hid_root[i], snap, count, len(idx_exist_gc), time.time()-t1))
-            print(' - load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(
-                i, hid_root[i], snap, t2, t3, t4))
+            print(' - load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(t2,t3,t4))
 
     if params['verbose']:
         print('id: %d completed, total time: %.1f s'%(i, time.time()-t0))
@@ -220,7 +219,7 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
 def get_tid(params):
 
     if params['verbose']:
-        print('########## tidal tensor calculation started ##########')
+        print('\n########## tidal tensor calculation started ##########')
 
     time_lag = params['t_lag']
     base = params['base']

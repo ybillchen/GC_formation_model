@@ -9,7 +9,7 @@ from . import loader
 def assign(params):
 
     if params['verbose']:
-        print('########## assigning model started ##########')
+        print('\n########## assigning model started ##########')
 
     time_lag = params['t_lag']
     base = params['base']
@@ -49,7 +49,7 @@ def assign(params):
     for j in range(len(hid_root)):
         if params['verbose']:
             print('##### NO. %d'%j)
-            print('##### halo id %d:'%hid_root[j])
+            print('##### halo id: %d'%hid_root[j])
 
         params['rng'] = np.random.default_rng(params['seed']) # initialize seed
 

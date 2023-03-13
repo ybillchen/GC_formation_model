@@ -13,4 +13,4 @@ def print_logo():
     print(r'                                                 ')
 
 def print_version():
-    print('version: %s\n'%Version(__version__))
+    print('version: %s'%Version(__version__))
