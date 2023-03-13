@@ -30,7 +30,7 @@ def load_halo(base, hid_root, hid, snap, parttype, fields=None):
 
     with h5py.File(filename, 'r') as f:
         res['count'] = d.attrs['count']
-        if res['count'] == 0
+        if res['count'] == 0:
             for field in fields:
                 res[field] = []
         else:
