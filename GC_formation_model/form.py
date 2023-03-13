@@ -453,10 +453,6 @@ def form(params):
                     galaxy_metallicity, SM, is_mpb, subfindid[i], mgc_to_mmax, 
                     Mmin, ug52, snapnum[i], params))
 
-        t3 = time.time() # t3 - t2 is time for modeling gcs 
-        if params['verbose']:
-            print('  - model gc: %.2f s'%(t3-t2))
-
         # All GCs that form, regardless of survival -- for use w/ allcat.txt
         GC_mets = np.array([cluster.metallicity for cluster in clusters])
         GC_log_masses = np.log10(np.array(
@@ -492,11 +488,10 @@ def form(params):
         else:
             save_output = np.concatenate((save_output,output))
         
-        t4 = time.time() # t4 - t3 is time for post-processing
+        t3 = time.time() # t3 - t2 is time for modeling gcs 
         if params['verbose']:
-            print('  - post process: %.2f s'%(t4-t3))
-
-            print('  total time: %.2f s'%(t4-t0))
+            print('  - model gc: %.2f s'%(t3-t2))
+            print('  total time: %.2f s'%(t3-t0))
             print('  number of GCs:', len(clusters))
 
     header = ('subfindID(z=0) | logMh(z=0) | logM*(z=0) | logMh(zform) | logM*(zform)' +

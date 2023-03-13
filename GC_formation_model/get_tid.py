@@ -212,7 +212,7 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
             print('   - load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(t2,t3,t4))
 
     if params['verbose']:
-        print('id: %d completed, total time: %.1f s'%(i, time.time()-t0))
+        print(' NO. %d, halo id: %d completed, total time: %.1f s'%(i, hid_root[i], time.time()-t0))
 
     return tag, eig_1, eig_2, eig_3
 
