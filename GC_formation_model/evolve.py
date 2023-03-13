@@ -1,6 +1,31 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
 import numpy as np
+from scipy.interpolate import interp1d
+
+class MassLoss(object):
+    def __init__(self, path):
+        self.flost, self.t_solar, self.t_subsolar = np.loadtxt(path, usecols=(1,2,3), unpack=True)
+        self.massFraction = np.vectorize(self.massFraction_scalar)
+
+    # Metallicity dependent stellar evolution, as calculated by Prieto & Gnedin 
+    def massFraction_scalar(self, fe_h, t_alive):
+        ssub = interp1d(self.t_subsolar, self.flost, kind='linear')
+        ssolar = interp1d(self.t_solar, self.flost, kind='linear')
+
+        t_alive *= 1e9 # transfer Gyr to yr
+        if fe_h >= 0: # supersolar metallicity
+            return ssolar(t_alive)
+        elif fe_h <= -0.69: # if Z<= 0.2Zsun
+            return ssub(t_alive)
+        else: # intermediate case: interpolate between .2*Z_sun and Z_sun
+            slope = (self.t_solar - self.t_subsolar)/0.69
+
+            # new intermediate MS lifetime table
+            t_int= self.t_subsolar + slope*(fe_h - -0.69) 
+
+            sint = interp1d(t_int, self.flost, kind = 'linear') 
+            return sint(t_alive)
 
 # fix missing snaps for P
 def fix_P(P, tag):
@@ -29,6 +54,8 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
 
     if snap_range is None:
         snap_range = len(full_snap)
+
+    ml = MassLoss(params['path_massloss'])
 
     # load GC catalog
     hid, logmh, logms, logmh_form, logms_form, logm_form, z_form, feh, \
@@ -107,11 +134,6 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
 
             t_iso = 1e10 # i.e., no iso disruption. 17 * (m_now[idx_exist_gc]/2e5) # in Gyr
 
-            # mass lost due to stellar evolution
-            # f_lost = ((1-massFraction(feh[idx_exist_gc], t_snap - t_form[idx_exist_gc])) /
-            #     (1-massFraction(feh[idx_exist_gc], t_now - t_form[idx_exist_gc])))
-            f_lost = 1
-
             idx_tid = np.where(np.greater(t_iso, t_tid))[0]
             idx_iso = np.where(np.less_equal(t_iso, t_tid))[0]
 
@@ -121,7 +143,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
                 dt = t_tid[idx_tid] / gamma
                 k1 = 1 - (t_snap-t_now[idx_tid]) / dt
                 k1 = np.clip(k1, 0, 1)
-                m_now[idx_exist_gc[idx_tid]] = (m_now[idx_exist_gc[idx_tid]] * k1**(1/gamma) * f_lost)
+                m_now[idx_exist_gc[idx_tid]] = m_now[idx_exist_gc[idx_tid]] * k1**(1/gamma)
 
                 idx_d = np.where((dt - (t_snap-t_now[idx_tid])) <= 0)[0] # disrupted
                 t_disrupt[idx_exist_gc[idx_tid[idx_d]]] = t_now[idx_tid[idx_d]] + dt[idx_d]
@@ -135,7 +157,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
             snap_now[idx_exist_gc] = snap * np.ones(len(idx_exist_gc), dtype=int)
 
         if len(idx_exist_gc):
-            m_now[idx_exist_gc] = m_now[idx_exist_gc] * (1-massFraction(feh[idx_exist_gc], 
+            m_now[idx_exist_gc] = m_now[idx_exist_gc] * (1-ml.massFraction(feh[idx_exist_gc], 
                 t_snap - t_form[idx_exist_gc]))
 
     idx_valid = np.where(
