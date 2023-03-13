@@ -2,8 +2,6 @@
 
 import numpy as np
 
-from . import astro_utils
-
 def evolve(params, snap_range=None, return_t_disrupt=False):
     z_list = params['redshift_snap']
     base = params['base']
@@ -32,7 +30,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
     snapnum_form = snapnum_form.astype(int)
 
     z_form = z_list[snapnum_form] 
-    t_form = astro_utils.cosmicTime(z_form, units='Gyr')
+    t_form = params['cosmo'].cosmicTime(z_form, units='Gyr')
 
     # load GC id
     gcid, quality = np.loadtxt(gcid_name, unpack=True, dtype='int64')
@@ -88,9 +86,9 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
 
             # redshift and time of GCs before disruption
             z_now = z_list[snap_now[idx_exist_gc]] 
-            t_now = astro_utils.cosmicTime(z_now, units = 'Gyr')
+            t_now = params['cosmo'].cosmicTime(z_now, units = 'Gyr')
             # cosmic time of the current snapshot
-            t_snap = astro_utils.cosmicTime(z_snap, units = 'Gyr')
+            t_snap = params['cosmo'].cosmicTime(z_snap, units = 'Gyr')
 
             mi = 10**logm_form[idx_exist_gc]
             t_tid = 10 * (mi/2e5)**params['disrupt_x'] * (m_now[idx_exist_gc]/mi)**params['disrupt_y'] / \
