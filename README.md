@@ -48,12 +48,14 @@ The `-e` command allows you to make changes to the code.
 
 ## Usage
 
-To start with, let's run the model with default settings
+To start with, let's run the model with default parameters
 ```python
 >>> from GC_formation_model import run
 >>> from params_example import params
 >>> run(params)
 ```
+You may want to use your own paramters. Then simply replace `params_example` with the name of your paramter file.
+
 
 ## Contribute
 
