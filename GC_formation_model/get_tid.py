@@ -8,9 +8,6 @@ import scipy.spatial as sp
 
 from . import astro_utils
 
-file_prefix = 'combine_'
-# file_prefix = 'allcat_sats_14.0_0.7_'
-
 def calc_eig(tree, pos_gc, pot_gc, pos, pot, d_tid):
     # phi in km^2/s^2
     # pos and d_tid in kpc/h
@@ -107,44 +104,29 @@ def calc_eig_new(tree, pos_gc, pos, mass):
     return 20642 * np.linalg.eig(T)[0] # in Gyr^-2
 
 # get tidal tensor for one galaxy
-def get_tid_unit(i, params):
+def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, tree, params):
     mpb_only = params['mpb_only']
-    d_tid = params['d_tid'] * h100 # in kpc/h
+    d_tid = params['d_tid'] * params['h100'] # in kpc/h
     z_list = params['redshift_snap']
     base = params['base']
     gcid_name = params['resultspath'] + file_prefix + 'gcid.txt'
     root_name = params['resultspath'] + file_prefix + 'offset_root.txt'
     full_snap = params['full_snap']
 
-    print('########## number', i+1, '##########')
-
-    print('pre-load data...')
-
-    # load GC id
-
-    gcid = np.loadtxt(gcid_name, unpack = True, dtype='int64')
-    if len(gcid.shape) > 1:
-        gcid = gcid[0]
-
-    # load root offset
-    hid_root, idx_beg, idx_end = np.loadtxt(
-        root_name, unpack = True, dtype='int64')[:3]
-
-    tag = np.zeros([len(gcid), len(full_snap)], dtype=int)
-    eig_max = np.zeros([len(gcid), len(full_snap)])
-    eig_1 = np.zeros([len(gcid), len(full_snap)])
-    eig_2 = np.zeros([len(gcid), len(full_snap)])
-    eig_3 = np.zeros([len(gcid), len(full_snap)])
-
-    print('pre-load data... done!')
+    print('########## number', i, '##########')
 
     t0 = time.time()
 
-    # load merger tree
-    fields = ['SnapNum', 'SubfindID', 'SubhaloMass']
-    # tree = il.sublink.loadTree(base, 99, hid_root[i], fields, mpb_only)
-    tree = loader.load_merger_tree(params['base_tree'], hid_root[i], fields)
+    if len(gcid.shape) > 1:
+        gcid = gcid[0]
 
+    # existing GCs at this snapshot
+    idx_exist_gc = np.arange(idx_beg[i], idx_end[i])
+
+    tag = np.zeros([len(idx_exist_gc), len(full_snap)], dtype=int)
+    eig_1 = np.zeros([len(idx_exist_gc), len(full_snap)])
+    eig_2 = np.zeros([len(idx_exist_gc), len(full_snap)])
+    eig_3 = np.zeros([len(idx_exist_gc), len(full_snap)])
 
     for j in range(len(full_snap)):
 
@@ -155,8 +137,6 @@ def get_tid_unit(i, params):
 
         snap = full_snap[j]
         scale_a = 1 / (1 + z_list[snap])
-        # existing GCs at this snapshot
-        idx_exist_gc = np.arange(idx_beg[i], idx_end[i])
 
         # all subhalos at this snapshot
         idx_sub = np.where((tree['SnapNum']==snap))[0]
@@ -168,8 +148,7 @@ def get_tid_unit(i, params):
             t22 = time.time()
             # first, consider all GCs represented by dm
             fields = ['Coordinates', 'ParticleIDs', 'Potential']
-            # cutout = il.snapshot.loadSubhalo(base, snap, 
-            #     subid, 'dm', fields=fields)
+            # cutout = il.snapshot.loadSubhalo(base, snap, subid, 'dm', fields=fields)
             cutout = loader.load_halo(params['base_halo'], hid_root[i], 
                 subid, snap, 'dm', fields)
             pos = cutout['Coordinates'] * scale_a # in kpc/h
@@ -178,8 +157,7 @@ def get_tid_unit(i, params):
 
             # second, consider all GCs represented by stars
             fields = ['Coordinates', 'ParticleIDs', 'Potential']
-            # cutout = il.snapshot.loadSubhalo(base, snap, 
-            #     subid, 'stars', fields=fields)
+            # cutout = il.snapshot.loadSubhalo(base, snap, subid, 'stars', fields=fields)
             cutout = loader.load_halo(params['base_halo'], hid_root[i], 
                 subid, snap, 'stars', fields)
             if cutout['count'] > 0:
@@ -198,8 +176,9 @@ def get_tid_unit(i, params):
                 continue
 
             fields = ['Coordinates', 'Potential']
-            cutout = il.snapshot.loadSubhalo(base, snap, 
-                subid, 'gas', fields=fields)
+            # cutout = il.snapshot.loadSubhalo(base, snap, subid, 'gas', fields=fields)
+            cutout = loader.load_halo(params['base_halo'], hid_root[i], 
+                subid, snap, 'gas', fields)
             if cutout['count'] > 0:
                 pos = np.concatenate((pos, cutout['Coordinates'] * scale_a)) # in kpc
                 pot = np.concatenate((pot, cutout['Potential'] / scale_a)) # in km^2/s^2
@@ -213,16 +192,15 @@ def get_tid_unit(i, params):
             t3 += (t44 - t33) # build tree
 
             # update the density matrix
-            tag[idx_exist_gc[idx_2],j] = np.ones(len(xy), dtype=int)
+            tag[idx_2,j] = np.ones(len(xy), dtype=int)
             count += len(xy)
 
             eig = calc_eig(kdtree, pos_gc, pot_gc, pos, pot, d_tid) # in Gyr^-2
-            eig_max[idx_exist_gc[idx_2],j] = np.max(np.abs(eig), axis=1)
-
             eig_sorted = np.sort(eig, axis=1)
-            eig_1[idx_exist_gc[idx_2],j] = eig_sorted[:,2]
-            eig_2[idx_exist_gc[idx_2],j] = eig_sorted[:,1]
-            eig_3[idx_exist_gc[idx_2],j] = eig_sorted[:,0]
+
+            eig_1[idx_2,j] = eig_sorted[:,2]
+            eig_2[idx_2,j] = eig_sorted[:,1]
+            eig_3[idx_2,j] = eig_sorted[:,0]
 
             t4 += time.time() - t44 # calc eig
 
@@ -231,32 +209,63 @@ def get_tid_unit(i, params):
         print('id: %d, snap: %d, load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(
             i, snap, t2, t3, t4))
 
-    # update exsisting data
-    eig_now = np.loadtxt(params['resultspath']+file_prefix+'tideig.txt')
-    tag_now = np.loadtxt(params['resultspath']+file_prefix+'tidtag.txt')
+    print('id: %d completed, total time: %.1f s'%(i, time.time()-t0))
 
-    eig1_now = np.loadtxt(params['resultspath']+file_prefix+'tideig1.txt')
-    eig2_now = np.loadtxt(params['resultspath']+file_prefix+'tideig2.txt')
-    eig3_now = np.loadtxt(params['resultspath']+file_prefix+'tideig3.txt')
-
-    eig_now[idx_beg[i]:idx_end[i]] = eig_max[idx_beg[i]:idx_end[i]]
-    tag_now[idx_beg[i]:idx_end[i]] = tag[idx_beg[i]:idx_end[i]]
-
-    eig1_now[idx_beg[i]:idx_end[i]] = eig_1[idx_beg[i]:idx_end[i]]
-    eig2_now[idx_beg[i]:idx_end[i]] = eig_2[idx_beg[i]:idx_end[i]]
-    eig3_now[idx_beg[i]:idx_end[i]] = eig_3[idx_beg[i]:idx_end[i]]
-
-    header = ( 'Maximum eigenvalue of tidal tensor in Gyr^-2 at snapshot %s' 
-        % ', '.join(map(str , full_snap)) )
-    np.savetxt(params['resultspath']+file_prefix+'tideig.txt', eig_now, fmt='%.2e', header=header)
-    np.savetxt(params['resultspath']+file_prefix+'tidtag.txt', tag_now, fmt='%d')
-
-    np.savetxt(params['resultspath']+file_prefix+'tideig1.txt', eig1_now, fmt='%.2e')
-    np.savetxt(params['resultspath']+file_prefix+'tideig2.txt', eig2_now, fmt='%.2e')
-    np.savetxt(params['resultspath']+file_prefix+'tideig3.txt', eig3_now, fmt='%.2e')
-        
-    print('id: %d, total time: %.1f s'%(i, time.time()-t0))
-
-    # return eig_max, tag
+    return tag, eig_1, eig_2, eig_3
 
 def get_tid(params):
+
+    print('########## tidal tensor calculation started ##########')
+
+    time_lag = params['t_lag']
+    base = params['base']
+    redshift_snap = params['redshift_snap']
+    full_snap = params['full_snap']
+    fin_name = params['resultspath'] + params['allcat_name']
+    root_name = fin_name[:-4] + '_offset_root.txt'
+    offset_name = fin_name[:-4] + '_offset.txt'
+    print('pre-load data...')
+
+    # load GC id
+
+    gcid = np.loadtxt(gcid_name, unpack=True, dtype='int64')
+    if len(gcid.shape) > 1:
+        gcid = gcid[0]
+
+    # load root offset
+    hid_root, idx_beg, idx_end = np.loadtxt(
+        root_name, unpack=True, dtype='int64')[:3]
+
+    # existing GCs at this snapshot
+    idx_exist_gc = np.arange(idx_beg[i], idx_end[i])
+
+    tag = np.zeros([len(gcid), len(full_snap)], dtype=int)
+    eig_max = np.zeros([len(gcid), len(full_snap)])
+    eig_1 = np.zeros([len(gcid), len(full_snap)])
+    eig_2 = np.zeros([len(gcid), len(full_snap)])
+    eig_3 = np.zeros([len(gcid), len(full_snap)])
+
+    # load merger tree
+    fields = ['SnapNum', 'SubfindID', 'SubhaloMass']
+    # tree = il.sublink.loadTree(base, 99, hid_root[i], fields, mpb_only)
+    tree = loader.load_merger_tree(params['base_tree'], hid_root[i], fields)
+
+    print('pre-load data... done!')
+
+
+    for i in range(len(hid_root)):
+        print('########## number', i, '##########')
+        print('subhalo id:', hid_root[j])
+
+        tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params)
+
+        tag[idx_exist_gc] = tag_i
+        eig_1[idx_exist_gc] = eig_1_i
+        eig_2[idx_exist_gc] = eig_2_i
+        eig_3[idx_exist_gc] = eig_3_i
+
+    # save data
+    np.savetxt(fin_name[:-4]+'_tidtag.txt', tag, fmt='%d')
+    np.savetxt(fin_name[:-4]+'_tideig1.txt', eig_1, fmt='%.2e')
+    np.savetxt(fin_name[:-4]+'_tideig2.txt', eig_2, fmt='%.2e')
+    np.savetxt(fin_name[:-4]+'_tideig3.txt', eig_3, fmt='%.2e')
