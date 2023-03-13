@@ -506,5 +506,4 @@ def form(params):
         fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
 
     if params['verbose']:
-        print(" ** Model was run on %d available halo(s)."%(num_run+1))
         print('########## formation model done ##########')

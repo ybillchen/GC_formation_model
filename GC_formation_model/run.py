@@ -17,7 +17,7 @@ def run(params):
     if params['verbose']:
         logo.print_logo()
         logo.print_version()
-        print("\nRuning model on %d halo(s).\n"%len(params['subs']))
+        print('\nRuning model on %d halo(s).'%len(params['subs']))
 
     allcat_name = params['allcat_base'] + '_p2%g_p3%g.txt'%(
         params['p2'], params['p3'])
@@ -35,4 +35,4 @@ def run(params):
     evolve(run_params)
 
     if params['verbose']:
-        print("\nModel was run on %d halo(s).\n"%len(params['subs']))
+        print('\nModel was run on %d halo(s).\n'%len(params['subs']))
