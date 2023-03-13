@@ -39,10 +39,11 @@ def offset(params):
             ends_root.append(j)
 
         # at the begining of a subhalo
-        if j==0 or hid[j-1] != hid[np.clip(j,0,len(hid)-1)]: # note j = 0 is naturally included
+        if j == 0 or hid[j-1] != hid[np.clip(j,0,len(hid)-1)]:
+            print('########## NO.', num_run, '##########')
+            print('halo id:', hid[num_run])
+            
             num_run += 1
-            print('########## number', num_run, '##########')
-            print('halo id:', hid[j])
 
             subfindids_root.append(hid[j])
             begins_root.append(j)

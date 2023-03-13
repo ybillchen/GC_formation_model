@@ -101,7 +101,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
     t_disrupt = -1 * np.ones(len(m_now))
 
     for i in range(len(hid_root)):
-        print('########## number', i+1, '##########')
+        print('########## NO.', i+1, '##########')
         print('subhalo id:', hid_root[i])
         # t0 = time.time()
 

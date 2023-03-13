@@ -46,7 +46,7 @@ def assign(params):
 
     # loop over all subhalos 
     for j in range(len(hid_root)):
-        print('########## number', j, '##########')
+        print('########## NO.', j, '##########')
         print('halo id:', hid_root[j])
 
         params['rng'] = np.random.default_rng(params['seed']) # initialize seed
