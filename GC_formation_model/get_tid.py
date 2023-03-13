@@ -108,9 +108,6 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, tree, params):
     mpb_only = params['mpb_only']
     d_tid = params['d_tid'] * params['h100'] # in kpc/h
     z_list = params['redshift_snap']
-    base = params['base']
-    gcid_name = params['resultspath'] + file_prefix + 'gcid.txt'
-    root_name = params['resultspath'] + file_prefix + 'offset_root.txt'
     full_snap = params['full_snap']
 
     print('########## number', i, '##########')
@@ -222,8 +219,10 @@ def get_tid(params):
     redshift_snap = params['redshift_snap']
     full_snap = params['full_snap']
     fin_name = params['resultspath'] + params['allcat_name']
+    gcid_name = params['resultspath'] + file_prefix + 'gcid.txt'
     root_name = fin_name[:-4] + '_offset_root.txt'
     offset_name = fin_name[:-4] + '_offset.txt'
+
     print('pre-load data...')
 
     # load GC id
