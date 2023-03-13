@@ -190,7 +190,7 @@ def assign(params):
             else:
                 # if there are enough stellar particles in time_lag, 
                 # just randomly pick
-                sid = sid[np.random.choice(idx_in_lag_min, num_gc, replace=False)]
+                sid = sid[params['rng'].choice(idx_in_lag_min, num_gc, replace=False)]
                 for s in sid:
                     gcid.append(s)
                     quality.append(2)
