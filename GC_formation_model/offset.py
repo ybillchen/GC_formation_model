@@ -79,3 +79,6 @@ def offset(params):
     output = np.array([snapnums, subfindids, begins, ends], dtype=int).T
     header = 'Snapnum | SubfindID | BeginIdx | EndIdx+1'
     np.savetxt(fin_name[:-4]+'_offset.txt', output, fmt='%d ', header=header)
+
+    if params['verbose']:
+        print('########## offset calculation done ##########')

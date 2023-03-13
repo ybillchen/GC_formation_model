@@ -502,8 +502,8 @@ def form(params):
         if params['verbose']:
             print(' - post process: %.2f s'%(t4-t3))
 
-            print('total time: %.2f s'%(t4-t0))
-            print('number of GCs:', len(clusters))
+            print(' total time: %.2f s'%(t4-t0))
+            print(' number of GCs:', len(clusters))
 
     header = ('subfindID(z=0) | logMh(z=0) | logM*(z=0) | logMh(zform) | logM*(zform)' +
         ' | logM(tform) | zform | feh | isMPB | subfindID(zfrom) | snapnum(zform) \n')
@@ -512,5 +512,5 @@ def form(params):
         fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
 
     if params['verbose']:
-        print('##### all done')
-        print("##### Model was run on %d available halos."%(num_run+1))
+        print(" ***** Model was run on %d available halo(s)."%(num_run+1))
+        print('########## formation model done ##########')

@@ -199,3 +199,6 @@ def assign(params):
     output = np.array([gcid, quality], dtype=int).T
     header = 'GC ID'
     np.savetxt(fin_name[:-4]+'_gcid.txt', output, fmt='%d', header=header)
+
+    if params['verbose']:
+        print('########## assigning model done ##########')
