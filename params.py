@@ -70,6 +70,7 @@ sigma_gas = 0.3 # Cold gas fraction ratio scatter, in dex
 sm_scat = True  
 gaussian_process = True # whether to evole it with Gaussian process
 
+log_Mhmin = 8.0 # Min halo mass
 log_Mmin = 4.0 # Min cluster mass to draw from CIMF
 pr = 0.5 # Normalized period of rotation for disruption; t_tid \propto P
 
@@ -139,6 +140,7 @@ params = {
     'sigma_mc':sigma_mc, 
     'sigma_gas':sigma_gas,
     'sm_scat':sm_scat,
+    'log_Mhmin':log_Mhmin,
     'log_Mmin':log_Mmin, 
     'pr':pr, 
     't_lag':t_lag,

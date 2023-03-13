@@ -278,7 +278,7 @@ def organize_tree(tree, params):
     subfindid = tree['SubfindID'] # 7
     old_tree = np.array([m, fp, sp, descid, subid, snapnum, mpi, subfindid], dtype=int)
 
-    idx_valid = (m > 1e8) & (fp != -1)
+    idx_valid = (m > 10**params['log_Mhmin']) & (fp != -1)
     new_tree = update(idx_valid, old_tree)
 
     # new_tree[0] = despike(new_tree[0]) # remove spikes in mass

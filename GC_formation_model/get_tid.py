@@ -111,8 +111,6 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
     z_list = params['redshift_snap']
     full_snap = params['full_snap']
 
-    print('########## number', i, '##########')
-
     t0 = time.time()
 
     # load merger tree
@@ -142,7 +140,8 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
         scale_a = 1 / (1 + z_list[snap])
 
         # all subhalos at this snapshot
-        idx_sub = np.where((tree['SnapNum']==snap))[0]
+        idx_sub = np.where((tree['SnapNum']==snap) & 
+            (tree['SubhaloMass'] > 10**(params['log_Mhmin']-10)*params['h100']))[0]
         subfindid = tree['SubfindID'][idx_sub]
 
         count = 0 # found GCs
@@ -229,8 +228,6 @@ def get_tid(params):
     root_name = fin_name[:-4] + '_offset_root.txt'
     offset_name = fin_name[:-4] + '_offset.txt'
 
-    print('pre-load data...')
-
     # load GC id
     gcid, quality = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
@@ -243,9 +240,6 @@ def get_tid(params):
     eig_1 = np.zeros([len(gcid), len(full_snap)])
     eig_2 = np.zeros([len(gcid), len(full_snap)])
     eig_3 = np.zeros([len(gcid), len(full_snap)])
-
-    print('pre-load data... done!')
-
 
     for i in range(len(hid_root)):
         print('########## number', i, '##########')
