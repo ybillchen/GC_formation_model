@@ -249,7 +249,7 @@ def get_tid(params):
 
     for i in range(len(hid_root)):
         print('########## number', i, '##########')
-        print('subhalo id:', hid_root[j])
+        print('subhalo id:', hid_root[i])
 
         tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params)
 
