@@ -27,4 +27,4 @@ For computational efficiency, we use the `hdf5` format. For each halo (galaxy), 
 			- `dataset (float)`: `Coordinates`: coordinates of the particle in comoving kpc/h
 			- `dataset (int)`: `ParticleIDs`: unique ID of the particle
 			- `dataset (float)`: `Potential`: potential of the particle in (km/s)^2/a
-			- `dataset (float)`: `GFM_StellarFormationTime`: formation time of `stars` particle in scale factor
+			- `dataset (float)`: `GFM_StellarFormationTime`: formation time of star particle in scale factor
