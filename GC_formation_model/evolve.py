@@ -179,9 +179,9 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
 
     if return_t_disrupt:
         if params['disrupt_mode'] == 'constant':
-            np.savetxt(fin_name[:-4]+'_p%g_t_disrupt_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
+            np.savetxt(fin_name[:-4]+'_p-%g_t_disrupt_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
         elif params['disrupt_mode'] == 'tidal':
-            np.savetxt(fin_name[:-4]+'_k%g_t_disrupt_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
+            np.savetxt(fin_name[:-4]+'_k-%g_t_disrupt_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
 
     if params['verbose']:
         print('########## evolution done ##########')

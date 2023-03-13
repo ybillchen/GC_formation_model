@@ -116,7 +116,7 @@ UVB_constraint = 'KM22'
 
 resultspath = '/n/holyscratch01/vogelsberger/billchen/temp/'
 
-verbose = False
+verbose = True
 
 params = {
     'mode':mode, 

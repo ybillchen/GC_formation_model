@@ -19,7 +19,7 @@ def run(params):
         logo.print_version()
         print('\nRuning model on %d halo(s).'%len(params['subs']))
 
-    allcat_name = params['allcat_base'] + '_p2%g_p3%g.txt'%(
+    allcat_name = params['allcat_base'] + '_p2-%g_p3-%g.txt'%(
         params['p2'], params['p3'])
 
     run_params = params
