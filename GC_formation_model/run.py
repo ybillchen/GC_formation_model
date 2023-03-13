@@ -7,7 +7,7 @@ from .form import form
 from .offset import offset
 from .assign import assign
 from .get_tid import get_tid
-# from .disrupt import disrupt
+from .disrupt import disrupt
 
 __all__ = ['run']
 
@@ -27,5 +27,5 @@ def run(params):
     # form(run_params)
     # offset(run_params)
     # assign(run_params)
-    get_tid(run_params)
-    # disrupt(run_params)
+    # get_tid(run_params)
+    disrupt(run_params)
