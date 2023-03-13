@@ -43,7 +43,7 @@ def assign(params):
     # loop over all subhalos 
     for j in range(len(hid_root)):
         if params['verbose']:
-            print(' ** NO. %d, halo id: %d'%(j,hid_root[j]))
+            print(' NO. %d, halo id: %d'%(j,hid_root[j]))
 
         params['rng'] = np.random.default_rng(params['seed']) # initialize seed
 

@@ -351,7 +351,7 @@ def form(params):
 
     for num_run, hid_num in enumerate(params['subs']):
         if params['verbose']:
-            print(' ** NO. %d, halo id: %d'%(num_run,hid_num))
+            print(' NO. %d, halo id: %d'%(num_run,hid_num))
 
         params['rng'] = np.random.default_rng(params['seed']) # initialize seed
 
@@ -374,12 +374,6 @@ def form(params):
 
         msub = np.max(m)
         mpbi = mpi[m == np.max(m)][0]
-
-        if params['run_all'] == False:
-            if ((msub  < 10**params['log_mh_min']) or 
-                (msub > 10**params['log_mh_max']) or 
-                (num_run >= params['N'])):
-                continue
 
         # Go through each halo along the tree and look for events satisfying Rm > p3.
         sm_arr = np.zeros(len(m))
