@@ -1,5 +1,7 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
+import numpy as np
+
 def evolve(params, snap_range=None, return_t_disrupt=False):
     z_list = params['redshift_snap']
     base = params['base']
