@@ -72,7 +72,6 @@ def assign(params):
 
             # load cutout snapshot of the subhalo
             fields = ['Coordinates', 'GFM_StellarFormationTime', 'ParticleIDs']
-            fields = ['Coordinates', 'ParticleIDs']                             ### temp !!!!!!
             # cutout = il.snapshot.loadSubhalo(base, snap_form_offset[i], 
             #     hid_offset[i], 'stars', fields=fields)
 
@@ -104,8 +103,7 @@ def assign(params):
 
                 continue
 
-            # a_s = cutout['GFM_StellarFormationTime']
-            a_s = 1 / (redshift_snap[snap_form_offset[i]]+1) * np.ones(cutout['count']) ### temp !!!!!!
+            a_s = cutout['GFM_StellarFormationTime']
             sid = cutout['ParticleIDs'].astype(int)
             pos = cutout['Coordinates']
 
