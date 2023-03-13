@@ -30,12 +30,11 @@ def load_halo(base, hid_root, hid, snap, parttype, fields=None):
 
     with h5py.File(filename, 'r') as f:
         d = f['snap_%d_halo_%d'%(snap,hid)][parttype]
+
+        if 'GFM_StellarFormationTime' in fields:
+            print(d.attrs['count'])
         res['count'] = d.attrs['count']
-        if res['count'] == 0:
-            for field in fields:
-                res[field] = []
-        else:
-            for field in fields:
-                res[field] = d[field][:]
+        for field in fields:
+            res[field] = d[field][:]
 
     return res
