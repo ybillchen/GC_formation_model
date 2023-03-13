@@ -44,11 +44,11 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
     t_form = params['cosmo'].cosmicTime(z_form, units='Gyr')
 
     # load GC id
-    gcid, quality = np.loadtxt(gcid_name, unpack=True, dtype='int64')
+    gcid, quality = np.loadtxt(gcid_name, ndmin=2, unpack=True, dtype='int64')
 
     # load root offset
     hid_root, idx_beg, idx_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
-        root_name, unpack=True, dtype='int64')
+        root_name, ndmin=2, unpack=True, dtype='int64')
 
     # calculate P_inverse and load tag
     if params['disrupt_mode'] == 'constant':
