@@ -351,8 +351,7 @@ def form(params):
 
     for num_run, hid_num in enumerate(params['subs']):
         if params['verbose']:
-            print('##### NO. %d'%num_run)
-            print('##### halo id: %d'%hid_num)
+            print(' ***** NO. %d, halo id: %d'%(num_run,hid_num))
 
         params['rng'] = np.random.default_rng(params['seed']) # initialize seed
 

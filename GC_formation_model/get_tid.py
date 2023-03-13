@@ -207,7 +207,7 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
             t4 += time.time() - t44 # calc eig
 
         if params['verbose']:
-            print('number %d, hid: %d, snap: %d, %d/%d found, time: %.1fs'%(
+            print(' NO. %d, hid: %d, snap: %d, %d/%d found, time: %.1fs'%(
                 i, hid_root[i], snap, count, len(idx_exist_gc), time.time()-t1))
             print(' - load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(t2,t3,t4))
 
@@ -245,8 +245,7 @@ def get_tid(params):
 
     for i in range(len(hid_root)):
         if params['verbose']:
-            print('##### NO. %d'%i)
-            print('##### halo id: %d'%hid_root[i])
+            print(' ***** NO. %d, halo id: %d'%(i,hid_root[i]))
 
         tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params)
 

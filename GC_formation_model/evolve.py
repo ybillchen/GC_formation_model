@@ -107,8 +107,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
 
     for i in range(len(hid_root)):
         if params['verbose']:
-            print('##### NO. %d'%i)
-            print('##### subhalo id: %d'%hid_root[i])
+            print(' ***** NO. %d, subhalo id: %d'%(i,hid_root[i]))
         # t0 = time.time()
 
         for j in range(snap_range):
