@@ -5,8 +5,8 @@ import numpy as np
 # mode: run or calibrate
 mode = 'run'
 
-# disrupt mode: constant, density, tidal, tidal_centrifugal, Mark_Gieles
-disrupt_mode = 'Mark_Gieles'
+# disrupt mode: constant, tidal
+disrupt_mode = 'tidal'
 
 # cosmological parameters
 h100 = 0.6774
@@ -21,10 +21,12 @@ kappa = 9.0
 # grid length in calculating tidal tensor, in kpc
 d_tid = 0.3 
 
-# x and y parameters for disruption
+# x and y parameters if disrupt_mode == 'tidal'
 disrupt_x = 2/3
 disrupt_y = 4/3
 
+# Normalized period of rotation for disruption if disrupt_mode == 'constant'
+pr = 0.5 
 
 # adjustable model parameters (calibrate mode) Below, we'll loop
 # over all combinations of p2_arr and p3_arr: if you want to just run
@@ -77,7 +79,6 @@ gaussian_process = True # whether to evole it with Gaussian process
 
 log_Mhmin = 8.0 # Min halo mass
 log_Mmin = 4.0 # Min cluster mass to draw from CIMF
-pr = 0.5 # Normalized period of rotation for disruption; t_tid \propto P
 
 t_lag = 0.01 # time lag for assigning stellar particles, in Gyr
 
