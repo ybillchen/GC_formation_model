@@ -14,16 +14,16 @@ Ob = 0.0486
 Om = 0.3089
 
 # adjustable model parameters (run mode)
-p2 = 8.8
-p3 = 0.58
-kappa = 9.0
+p2 = 18
+p3 = 0.5
+kappa = 2.5
 
 # grid length in calculating tidal tensor, in kpc
 d_tid = 0.3 
 
 # x and y parameters if disrupt_mode == 'tidal'
-disrupt_x = 2/3
-disrupt_y = 4/3
+disrupt_x = 2./3.
+disrupt_y = 4./3.
 
 # Normalized period of rotation for disruption if disrupt_mode == 'constant'
 pr = 0.5 
@@ -90,8 +90,6 @@ low_mass_attempt_N = 1 # number of attempts to for clusters if GC Mass is below 
 form_nuclear_cluster = True
 no_random_at_formation = False 
 
-# base path of TNG50-1
-base = '/n/holylfs05/LABS/hernquist_lab/IllustrisTNG/Runs/L35n2160TNG/output/' 
 base_tree = '/nfs/astro2/ybchen/tng50_halos/'
 base_halo = '/nfs/astro2/ybchen/tng50_halos/'
 
@@ -153,7 +151,6 @@ params = {
     'log_Mmin':log_Mmin, 
     'pr':pr, 
     't_lag':t_lag,
-    'base':base, 
     'base_tree':base_tree, 
     'base_halo':base_halo,
     'redshift_snap':redshift_snap, 
