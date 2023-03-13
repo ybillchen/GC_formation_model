@@ -93,7 +93,8 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
         P_inverse, tag = fix_P(P_inverse, tag)
 
     else:
-        print('Error disrupt_mode!')
+        if params['verbose']:
+            print('Error disrupt_mode!')
         return 0
 
     m_now = 10**logm_form
@@ -101,8 +102,9 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
     t_disrupt = -1 * np.ones(len(m_now))
 
     for i in range(len(hid_root)):
-        print('########## NO.', i+1, '##########')
-        print('subhalo id:', hid_root[i])
+        if params['verbose']:
+            print('##### NO. %d'%i)
+            print('##### subhalo id: %d'%hid_root[i])
         # t0 = time.time()
 
         for j in range(snap_range):

@@ -340,7 +340,8 @@ def organize_tree(tree, params):
 # Main calculation: loop over all halos in the merger tree
 def form(params):
 
-    print('########## formation model started ##########')
+    if params['verbose']:
+        print('########## formation model started ##########')
 
     Mmin = 10**params['log_Mmin']
 
@@ -349,8 +350,9 @@ def form(params):
     ug52 = schechter_interp.upper_gamma2(params['log_Mmin'])
 
     for num_run, hid_num in enumerate(params['subs']):
-        print('########## NO.', num_run, '##########')
-        print('halo id:', hid_num)
+        if params['verbose']:
+            print('##### NO. %d'%num_run)
+            print('##### halo id: %d'%hid_num)
 
         params['rng'] = np.random.default_rng(params['seed']) # initialize seed
 
@@ -359,7 +361,8 @@ def form(params):
         tree = loader.load_merger_tree(params['base_tree'], hid_num)
 
         t1 = time.time() # t1 - t0 is time for loading tree
-        print(' - load tree: %.2f s'%(t1-t0))
+        if params['verbose']:
+            print(' - load tree: %.2f s'%(t1-t0))
 
         organized_tree, dfeh, dsm = organize_tree(tree, params)
         if len(organized_tree) < 1:
@@ -367,7 +370,8 @@ def form(params):
         m, fp, sp, descid, subid, snapnum, mpi, subfindid = organized_tree
 
         t2 = time.time() # t2 - t1 is time for re-organizing tree
-        print(' - organize tree: %.2f s'%(t2-t1))
+        if params['verbose']:
+            print(' - organize tree: %.2f s'%(t2-t1))
 
         msub = np.max(m)
         mpbi = mpi[m == np.max(m)][0]
@@ -456,8 +460,9 @@ def form(params):
                     galaxy_metallicity, SM, is_mpb, subfindid[i], mgc_to_mmax, 
                     Mmin, ug52, snapnum[i], params))
 
-        t3 = time.time() # t3 - t2 is time for modeling gcs
-        print(' - model gc: %.2f s'%(t3-t2))
+        t3 = time.time() # t3 - t2 is time for modeling gcs 
+        if params['verbose']:
+            print(' - model gc: %.2f s'%(t3-t2))
 
         # All GCs that form, regardless of survival -- for use w/ allcat.txt
         GC_mets = np.array([cluster.metallicity for cluster in clusters])
@@ -495,10 +500,11 @@ def form(params):
             save_output = np.concatenate((save_output,output))
         
         t4 = time.time() # t4 - t3 is time for post-processing
-        print(' - post process: %.2f s'%(t4-t3))
+        if params['verbose']:
+            print(' - post process: %.2f s'%(t4-t3))
 
-        print('total time: %.2f s'%(t4-t0))
-        print('number of GCs:', len(clusters))
+            print('total time: %.2f s'%(t4-t0))
+            print('number of GCs:', len(clusters))
 
     header = ('subfindID(z=0) | logMh(z=0) | logM*(z=0) | logMh(zform) | logM*(zform)' +
         ' | logM(tform) | zform | feh | isMPB | subfindID(zfrom) | snapnum(zform) \n')
@@ -506,9 +512,6 @@ def form(params):
     np.savetxt(params['resultspath']+params['allcat_name'], save_output, header=header, 
         fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
 
-    print('########## all done ##########')
-
-    if num_run+1 < params['N'] and params['run_all'] == False:
-        print("Requested %d halos, but there were only %d halos stored in the mass range you requested. Model was run on all available halos."%(params['N'], num_run+1))
-    else:
-        print("Model was run on %d available halos."%(num_run+1))
+    if params['verbose']:
+        print('##### all done')
+        print("##### Model was run on %d available halos."%(num_run+1))

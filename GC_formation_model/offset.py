@@ -4,7 +4,8 @@ import numpy as np
 
 def offset(params):
 
-    print('########## offset calculation started ##########')
+    if params['verbose']:
+        print('########## offset calculation started ##########')
 
     fin_name = params['resultspath'] + params['allcat_name']
 
@@ -40,9 +41,10 @@ def offset(params):
 
         # at the begining of a subhalo
         if j == 0 or hid[j-1] != hid[np.clip(j,0,len(hid)-1)]:
-            print('########## NO.', num_run, '##########')
-            print('halo id:', hid[num_run])
-            
+            if params['verbose']:
+                print('##### NO. %d'%num_run)
+                print('##### halo id: %d'%hid[num_run])
+
             num_run += 1
 
             subfindids_root.append(hid[j])

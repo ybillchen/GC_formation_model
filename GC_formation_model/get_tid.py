@@ -206,18 +206,21 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
 
             t4 += time.time() - t44 # calc eig
 
-        print('number %d, hid: %d, snap: %d, %d/%d found, time: %.1fs'%(
-            i, hid_root[i], snap, count, len(idx_exist_gc), time.time()-t1))
-        print('number %d, hid: %d, snap: %d, load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(
-            i, hid_root[i], snap, t2, t3, t4))
+        if params['verbose']:
+            print('number %d, hid: %d, snap: %d, %d/%d found, time: %.1fs'%(
+                i, hid_root[i], snap, count, len(idx_exist_gc), time.time()-t1))
+            print(' - load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(
+                i, hid_root[i], snap, t2, t3, t4))
 
-    print('id: %d completed, total time: %.1f s'%(i, time.time()-t0))
+    if params['verbose']:
+        print('id: %d completed, total time: %.1f s'%(i, time.time()-t0))
 
     return tag, eig_1, eig_2, eig_3
 
 def get_tid(params):
 
-    print('########## tidal tensor calculation started ##########')
+    if params['verbose']:
+        print('########## tidal tensor calculation started ##########')
 
     time_lag = params['t_lag']
     base = params['base']
@@ -242,8 +245,9 @@ def get_tid(params):
     eig_3 = np.zeros([len(gcid), len(full_snap)])
 
     for i in range(len(hid_root)):
-        print('########## NO.', i, '##########')
-        print('halo id:', hid_root[i])
+        if params['verbose']:
+            print('##### NO. %d'%i)
+            print('##### halo id: %d'%hid_root[i])
 
         tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params)
 
