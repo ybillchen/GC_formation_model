@@ -105,7 +105,7 @@ def calc_eig_new(tree, pos_gc, pos, mass):
     return 20642 * np.linalg.eig(T)[0] # in Gyr^-2
 
 # get tidal tensor for one galaxy
-def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, tree, params):
+def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
     mpb_only = params['mpb_only']
     d_tid = params['d_tid'] * params['h100'] # in kpc/h
     z_list = params['redshift_snap']
@@ -114,6 +114,11 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, tree, params):
     print('########## number', i, '##########')
 
     t0 = time.time()
+    
+    # load merger tree
+    fields = ['SnapNum', 'SubfindID', 'SubhaloMass']
+    # tree = il.sublink.loadTree(base, 99, hid_root[i], fields, mpb_only)
+    tree = loader.load_merger_tree(params['base_tree'], hid_root[i], fields)
 
     if len(gcid.shape) > 1:
         gcid = gcid[0]
@@ -241,11 +246,6 @@ def get_tid(params):
     eig_1 = np.zeros([len(gcid), len(full_snap)])
     eig_2 = np.zeros([len(gcid), len(full_snap)])
     eig_3 = np.zeros([len(gcid), len(full_snap)])
-
-    # load merger tree
-    fields = ['SnapNum', 'SubfindID', 'SubhaloMass']
-    # tree = il.sublink.loadTree(base, 99, hid_root[i], fields, mpb_only)
-    tree = loader.load_merger_tree(params['base_tree'], hid_root[i], fields)
 
     print('pre-load data... done!')
 
