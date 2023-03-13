@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from . import astro_utils
+
 def evolve(params, snap_range=None, return_t_disrupt=False):
     z_list = params['redshift_snap']
     base = params['base']
