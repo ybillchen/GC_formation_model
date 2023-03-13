@@ -114,7 +114,7 @@ color_metallicity = 'CGL18'
 
 UVB_constraint = 'KM22'
 
-resultspath = '/n/holyscratch01/vogelsberger/billchen/temp/'
+resultspath = '/nfs/astro2/ybchen/temp/'
 
 verbose = True
 
