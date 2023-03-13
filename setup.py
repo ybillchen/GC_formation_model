@@ -5,10 +5,14 @@ from setuptools import setup, find_packages
 with open('README.md', 'r') as f:
     long_description = f.read()
 
+version = {}
+with open('GC_formation_model/version.py') as fp:
+    exec(fp.read(), version)
+
 setup(
     name = 'GC_formation_model',
     packages = find_packages(),
-    version = '0.0',
+    version = version['__version__'],
     url = 'https://github.com/ybillchen/GC_formation_model',
     license = 'BSD-3-Clause',
     author = 'Bill Chen',
