@@ -235,9 +235,6 @@ def get_tid(params):
     hid_root, idx_beg, idx_end = np.loadtxt(
         root_name, unpack=True, dtype='int64')[:3]
 
-    # existing GCs at this snapshot
-    idx_exist_gc = np.arange(idx_beg[i], idx_end[i])
-
     tag = np.zeros([len(gcid), len(full_snap)], dtype=int)
     eig_max = np.zeros([len(gcid), len(full_snap)])
     eig_1 = np.zeros([len(gcid), len(full_snap)])
@@ -258,10 +255,10 @@ def get_tid(params):
 
         tag_i, eig_1_i, eig_2_i, eig_3_i = get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params)
 
-        tag[idx_exist_gc] = tag_i
-        eig_1[idx_exist_gc] = eig_1_i
-        eig_2[idx_exist_gc] = eig_2_i
-        eig_3[idx_exist_gc] = eig_3_i
+        tag[idx_beg[i]:idx_end[i]] = tag_i
+        eig_1[idx_beg[i]:idx_end[i]] = eig_1_i
+        eig_2[idx_beg[i]:idx_end[i]] = eig_2_i
+        eig_3[idx_beg[i]:idx_end[i]] = eig_3_i
 
     # save data
     np.savetxt(fin_name[:-4]+'_tidtag.txt', tag, fmt='%d')
