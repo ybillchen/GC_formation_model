@@ -7,6 +7,7 @@ from scipy.interpolate import interp1d, LinearNDInterpolator
 import scipy.spatial as sp
 
 from . import astro_utils
+from . import loader
 
 def calc_eig(tree, pos_gc, pot_gc, pos, pot, d_tid):
     # phi in km^2/s^2
