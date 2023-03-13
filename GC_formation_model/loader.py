@@ -26,7 +26,7 @@ def load_halo(base, hid_root, hid, snap, parttype, fields=None):
     if fields is None:
         fields = ['Coordinates', 'ParticleIDs']
 
-    filename = base + 'halo_%d.hdf5_old'%hid_root
+    filename = base + 'halo_%d_old.hdf5'%hid_root
 
     with h5py.File(filename, 'r') as f:
         d = f['snap_%d_halo_%d'%(snap,hid)][parttype]
