@@ -21,6 +21,11 @@ kappa = 9.0
 # grid length in calculating tidal tensor, in kpc
 d_tid = 0.3 
 
+# x and y parameters for disruption
+disrupt_x = 2/3
+disrupt_y = 4/3
+
+
 # adjustable model parameters (calibrate mode) Below, we'll loop
 # over all combinations of p2_arr and p3_arr: if you want to just run
 # a single set of model params, then just make each array a list of
@@ -122,6 +127,8 @@ params = {
     'p3':p3, 
     'kappa':kappa, 
     'd_tid':d_tid,
+    'disrupt_x':disrupt_x,
+    'disrupt_y':disrupt_y,
     'p2_arr':p2_arr, 
     'p3_arr':p3_arr, 
     'kappa_arr':kappa_arr,

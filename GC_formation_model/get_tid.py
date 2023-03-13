@@ -254,6 +254,6 @@ def get_tid(params):
 
     # save data
     np.savetxt(fin_name[:-4]+'_tidtag.txt', tag, fmt='%d')
-    np.savetxt(fin_name[:-4]+'_tideig1.txt', eig_1, fmt='%.2e')
-    np.savetxt(fin_name[:-4]+'_tideig2.txt', eig_2, fmt='%.2e')
-    np.savetxt(fin_name[:-4]+'_tideig3.txt', eig_3, fmt='%.2e')
+    np.savetxt(fin_name[:-4]+'_tideig1.txt', eig_1, fmt='%.3e')
+    np.savetxt(fin_name[:-4]+'_tideig2.txt', eig_2, fmt='%.3e')
+    np.savetxt(fin_name[:-4]+'_tideig3.txt', eig_3, fmt='%.3e')
