@@ -127,8 +127,9 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
 
     for j in range(len(full_snap)):
 
-        if params['skip'][0] == i and params['skip'][1] == j:
-            continue
+        if not params['skip'] is None:
+            if params['skip'][0] == i and params['skip'][1] == j:
+                continue
 
         t1 = time.time()
         t2 = 0 # load halo
