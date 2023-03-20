@@ -117,9 +117,6 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
     fields = ['SnapNum', 'SubfindID', 'SubhaloMass']
     tree = loader.load_merger_tree(params['base_tree'], hid_root[i], fields)
 
-    if len(gcid.shape) > 1:
-        gcid = gcid[0]
-
     # existing GCs at this snapshot
     idx_exist_gc = np.arange(idx_beg[i], idx_end[i])
 
@@ -129,6 +126,9 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
     eig_3 = np.zeros([len(idx_exist_gc), len(full_snap)])
 
     for j in range(len(full_snap)):
+
+        if params['skip'][0] == i and params['skip'][1] == j:
+            continue
 
         t1 = time.time()
         t2 = 0 # load halo
