@@ -173,8 +173,10 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
             pos_gc = pos[idx_1]
             pot_gc = pot[idx_1]
 
-            if not len(xy): # if gc particles not found 
+            if len(xy) == 0: # if gc particles not found 
                 continue
+
+            count += len(xy)
 
             fields = ['Coordinates', 'Potential']
             cutout = loader.load_halo(params['base_halo'], hid_root[i], 
@@ -191,15 +193,20 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
             t44 = time.time()
             t3 += (t44 - t33) # build tree
 
-            # update the density matrix
-            tag[idx_2,j] = np.ones(len(xy), dtype=int)
-            count += len(xy)
-
-
             try:
                 eig = calc_eig(kdtree, pos_gc, pot_gc, pos, pot, d_tid) # in Gyr^-2
-            except Exception as e:
-                raise type(e)(e.message + 'Error happens at (i, j) == (%d, %d)'%(i,j))
+            except sp.qhull.QhullError as e:
+                # QHullError may occur. No perfect solution yet.
+
+                # Solution 1: raise an error labelling the halo ID and snapshot
+                # raise type(e)(e.message + 'Error happens at (i, j) == (%d, %d)'%(i,j))
+
+                # Solution 2: simply skip this subhalo
+                t4 += time.time() - t44 # calc eig
+                continue
+
+            # update the tag and eig matrices
+            tag[idx_2,j] = np.ones(len(xy), dtype=int)
 
             eig_sorted = np.sort(eig, axis=1)
 
