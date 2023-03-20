@@ -420,7 +420,7 @@ def form(params):
                 sm_arr[i] = SM
 
                 # Evolve feh using Gaussian process
-                gal_feh1 = MMR(sm1, znow, params)
+                gal_feh1 = MMR(SM, znow, params)
                 gal_feh = gal_feh1 + dfeh[i]
                 if gal_feh > params['max_feh']:  
                     gal_feh = params['max_feh']

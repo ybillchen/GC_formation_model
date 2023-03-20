@@ -1,6 +1,7 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
 import time
+import warnings
 
 import numpy as np
 from scipy.interpolate import interp1d, LinearNDInterpolator
@@ -55,6 +56,7 @@ def calc_eig(tree, pos_gc, pot_gc, pos, pot, d_tid):
         for j in range(len(idxs)):
             idx = idxs[j]
             phi = LinearNDInterpolator(pos[idx], pot[idx])
+
             pot_grid[i][j] = phi(grid[i][j])
 
     for i in range(13):
@@ -117,9 +119,6 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
     fields = ['SnapNum', 'SubfindID', 'SubhaloMass']
     tree = loader.load_merger_tree(params['base_tree'], hid_root[i], fields)
 
-    if len(gcid.shape) > 1:
-        gcid = gcid[0]
-
     # existing GCs at this snapshot
     idx_exist_gc = np.arange(idx_beg[i], idx_end[i])
 
@@ -129,6 +128,10 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
     eig_3 = np.zeros([len(idx_exist_gc), len(full_snap)])
 
     for j in range(len(full_snap)):
+
+        if not params['skip'] is None:
+            if params['skip'][0] == i and params['skip'][1] == j:
+                continue
 
         t1 = time.time()
         t2 = 0 # load halo
@@ -171,8 +174,10 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
             pos_gc = pos[idx_1]
             pot_gc = pot[idx_1]
 
-            if not len(xy): # if gc particles not found 
+            if len(xy) == 0: # if gc particles not found 
                 continue
+
+            count += len(xy)
 
             fields = ['Coordinates', 'Potential']
             cutout = loader.load_halo(params['base_halo'], hid_root[i], 
@@ -189,11 +194,17 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
             t44 = time.time()
             t3 += (t44 - t33) # build tree
 
-            # update the density matrix
-            tag[idx_2,j] = np.ones(len(xy), dtype=int)
-            count += len(xy)
+            try:
+                eig = calc_eig(kdtree, pos_gc, pot_gc, pos, pot, d_tid) # in Gyr^-2
+            except sp.qhull.QhullError as e:
+                # QhullError may occur. No perfect solution yet. Here we skip this subhalo
+                t4 += time.time() - t44 # calc eig
+                warnings.warn('A QhullError happens at NO. %d snap %d)!'%(i,full_snap[j]))
+                continue
 
-            eig = calc_eig(kdtree, pos_gc, pot_gc, pos, pot, d_tid) # in Gyr^-2
+            # update the tag and eig matrices
+            tag[idx_2,j] = np.ones(len(xy), dtype=int)
+
             eig_sorted = np.sort(eig, axis=1)
 
             eig_1[idx_2,j] = eig_sorted[:,2]

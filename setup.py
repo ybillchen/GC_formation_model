@@ -11,7 +11,7 @@ with open('GC_formation_model/version.py') as fp:
 
 setup(
     name = 'GC_formation_model',
-    packages = find_packages(),
+    packages = find_packages(where='GC_formation_model'),
     version = version['__version__'],
     url = 'https://github.com/ybillchen/GC_formation_model',
     license = 'BSD-3-Clause',
