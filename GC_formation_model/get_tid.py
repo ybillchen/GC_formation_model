@@ -1,6 +1,7 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
 import time
+import warnings
 
 import numpy as np
 from scipy.interpolate import interp1d, LinearNDInterpolator
@@ -196,13 +197,9 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
             try:
                 eig = calc_eig(kdtree, pos_gc, pot_gc, pos, pot, d_tid) # in Gyr^-2
             except sp.qhull.QhullError as e:
-                # QHullError may occur. No perfect solution yet.
-
-                # Solution 1: raise an error labelling the halo ID and snapshot
-                # raise type(e)(e.message + 'Error happens at (i, j) == (%d, %d)'%(i,j))
-
-                # Solution 2: simply skip this subhalo
+                # QhullError may occur. No perfect solution yet. Here we skip this subhalo
                 t4 += time.time() - t44 # calc eig
+                warnings.warn('A QhullError happens at NO. %d snap %d)!'%(i,full_snap[j]))
                 continue
 
             # update the tag and eig matrices

@@ -6,21 +6,13 @@
 
 A post-processing model for globular cluster formation in cosmological simulations.
 
-If you use this code for a publication, we kindly request you to acknowledge the following original papers.
+The code is open source under a [BSD 3-Clause License](LICENSE), which allows you to redistribute and modify the code with moderate limitations. If you use this code for a publication, we kindly request you to cite the following original papers.
 
 - [A. L. Muratov \& O. Y. Gnedin (2010)](https://ui.adsabs.harvard.edu/abs/2010ApJ...718.1266M/abstract), ApJ, **718**, 1266
 - [H. Li \& O. Y. Gnedin (2014)](https://ui.adsabs.harvard.edu/abs/2014ApJ...796...10L/abstract), ApJ, **796**, 10
 - [N. Choksi, O. Y. Gnedin, \& H. Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract), MNRAS, **480**, 2343
 - [Y. Chen \& O. Y. Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract), MNRAS, **514**, 4736
 - [Y. Chen \& O. Y. Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023arXiv230108218C/abstract), MNRAS submitted (arXiv:2301.08218)
-
-## Table of Contents
-
-- [Background](#background)
-- [Install](#install)
-- [Usage](#usage)
-- [Maintainers](#maintainers)
-- [License](#license)
 
 ## Background
 
@@ -50,9 +42,9 @@ The `-e` command allows you to make changes to the code.
 
 To start with, let's run the model with default parameters
 ```python
-from GC_formation_model import run
-from params_example import params
-run(params)
+>>> from GC_formation_model import run
+>>> from params_example import params
+>>> run(params)
 ```
 You may want to use your own paramters. Then simply replace `params_example` with the name of your paramter file.
 
@@ -65,7 +57,3 @@ Feel free to dive in! [Raise an issue](https://github.com/ybillchen/GC_formation
 
 - [@Yingtian (Bill) Chen](https://github.com/ybillchen)
 - [@Oleg Gnedin](https://github.com/ognedin)
-
-## License
-
-[BSD 3-Clause License](LICENSE) &copy; Bill Chen
