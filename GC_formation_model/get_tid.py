@@ -55,6 +55,7 @@ def calc_eig(tree, pos_gc, pot_gc, pos, pot, d_tid):
         for j in range(len(idxs)):
             idx = idxs[j]
             phi = LinearNDInterpolator(pos[idx], pot[idx])
+
             pot_grid[i][j] = phi(grid[i][j])
 
     for i in range(13):
@@ -194,7 +195,12 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
             tag[idx_2,j] = np.ones(len(xy), dtype=int)
             count += len(xy)
 
-            eig = calc_eig(kdtree, pos_gc, pot_gc, pos, pot, d_tid) # in Gyr^-2
+
+            try:
+                eig = calc_eig(kdtree, pos_gc, pot_gc, pos, pot, d_tid) # in Gyr^-2
+            except Exception as e:
+                raise type(e)(e.message + 'Error happens at (i, j) == (%d, %d)'%(i,j))
+
             eig_sorted = np.sort(eig, axis=1)
 
             eig_1[idx_2,j] = eig_sorted[:,2]
