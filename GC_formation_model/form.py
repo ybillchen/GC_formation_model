@@ -305,6 +305,8 @@ def organize_tree(tree, params):
         tlist = [params['cosmo'].cosmicTime(z, units = 'Gyr') for z in zlist]
         dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=2)
         dsm = gaussian_process_sm(params['rng'], tlist, zlist, l=2)
+        if params['regen_feh']:
+            dsm = gaussian_process_sm(params['rng_feh'], tlist, zlist, l=2)
 
         halos2.append(mpi_tree[:,0])
         dfeh2.append(dfeh[0])
@@ -354,6 +356,8 @@ def form(params):
             print(' NO. %d, halo id: %d'%(num_run,hid_num))
 
         params['rng'] = np.random.default_rng(params['seed']) # initialize seed
+        if params['regen_feh']:
+            params['rng_feh'] = np.random.default_rng(params['seed_feh']) # initialize seed for feh
 
         t0 = time.time()
 
@@ -497,8 +501,12 @@ def form(params):
     header = ('subfindID(z=0) | logMh(z=0) | logM*(z=0) | logMh(zform) | logM*(zform)' +
         ' | logM(tform) | zform | feh | isMPB | subfindID(zfrom) | snapnum(zform) \n')
 
-    np.savetxt(params['resultspath']+params['allcat_name'], save_output, header=header, 
-        fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
+    if params['regen_feh']:
+        np.savetxt(params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d.txt'%params['seed_feh'], 
+            save_output, header=header, fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
+    else:
+        np.savetxt(params['resultspath']+params['allcat_name'], save_output, header=header, 
+            fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
 
     if params['verbose']:
         print('########## formation model done ##########')
