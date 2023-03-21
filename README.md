@@ -69,6 +69,8 @@ We recommend you to contribute code to `GC_formation_model` following [GitHub fl
 6. If your pull request is approved, we will squash and merge your commits. 
 7. We will delete `new_feature` on GitHub when it's merged. You can choose to delete it loacally as well. 
 
+**_NOTE:_** Any slight modification may entirely change the random number generation! To keep repeatability of the model, please construct a new random generator for the need of new random numbers
+
 ## Maintainers
 
 - [@Yingtian (Bill) Chen](https://github.com/ybillchen)

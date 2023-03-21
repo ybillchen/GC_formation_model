@@ -1,5 +1,10 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
+# important note about randomness:
+# Any slight modification will change the random number generation entirely! 
+# To keep repeatability of the model, please construct a new random generator
+# for the need of new random numbers
+
 import os
 import sys
 import time
