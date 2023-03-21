@@ -38,7 +38,7 @@ def fix_P(P, tag):
                 tag[i][j] = tag[i][j+1]
     return P, tag
 
-def evolve(params, snap_range=None, return_t_disrupt=False):
+def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
 
     if params['verbose']:
         print('\n########## evolution started ##########')
@@ -171,16 +171,21 @@ def evolve(params, snap_range=None, return_t_disrupt=False):
     m_out[idx_valid] = np.log10(m_now[idx_valid])
 
     # save data
-    if params['disrupt_mode'] == 'constant':
-        np.savetxt(fin_name[:-4]+'_p-%g_logm_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), m_out, fmt='%.3f')
-    elif params['disrupt_mode'] == 'tidal':
-        np.savetxt(fin_name[:-4]+'_k-%g_logm_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), m_out, fmt='%.3f')
-
-    if return_t_disrupt:
+    if save_data:
         if params['disrupt_mode'] == 'constant':
-            np.savetxt(fin_name[:-4]+'_p-%g_t_disrupt_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
+            np.savetxt(fin_name[:-4]+'_p-%g_logm_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), m_out, fmt='%.3f')
         elif params['disrupt_mode'] == 'tidal':
-            np.savetxt(fin_name[:-4]+'_k-%g_t_disrupt_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
+            np.savetxt(fin_name[:-4]+'_k-%g_logm_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), m_out, fmt='%.3f')
+
+        if return_t_disrupt:
+            if params['disrupt_mode'] == 'constant':
+                np.savetxt(fin_name[:-4]+'_p-%g_t_disrupt_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
+            elif params['disrupt_mode'] == 'tidal':
+                np.savetxt(fin_name[:-4]+'_k-%g_t_disrupt_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
 
     if params['verbose']:
         print('########## evolution done ##########')
+
+    if return_t_disrupt:
+        return m_out, t_disrupt
+    return m_out

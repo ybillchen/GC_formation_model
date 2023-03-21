@@ -53,6 +53,24 @@ You may want to use your own paramters. Then simply replace `params_example` wit
 
 Feel free to dive in! [Raise an issue](https://github.com/ybillchen/GC_formation_model/issues/new) or submit pull requests.
 
+### Pull request protocol
+
+We recommend you to contribute code to `GC_formation_model` following [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow). To summarize, you submit a pull request via the following steps:
+
+1. Clone the repository.
+2. Create and checkout a new branch. For example, a new branch called `new_feature`.
+3. Make changes on `new_feature` and never touch the `main` branch again until you are ready to merge.
+4. When you feel ready, submit a pull request on GitHub.
+5. There may be conflicts. If so, you need to 
+	1. Checkout the `main` branch and pull from `origin`.
+	2. Rebase `new_feature` on `main` and address the conflicts (recommended).
+	3. Alternatively, you can compare `new_feature` with `main` and fix all conflicts.
+	4. Your pull request will update automatically.
+6. If your pull request is approved, we will squash and merge your commits. 
+7. We will delete `new_feature` on GitHub when it's merged. You can choose to delete it loacally as well. 
+
+**_NOTE:_** Any slight modification may entirely change the random number generation! To keep repeatability of the model, please construct a new random generator for the need of new random numbers
+
 ## Maintainers
 
 - [@Yingtian (Bill) Chen](https://github.com/ybillchen)

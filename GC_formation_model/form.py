@@ -1,5 +1,10 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
+# important note about randomness:
+# Any slight modification will change the random number generation entirely! 
+# To keep repeatability of the model, please construct a new random generator
+# for the need of new random numbers
+
 import os
 import sys
 import time
@@ -303,7 +308,10 @@ def organize_tree(tree, params):
 
         zlist = [params['redshift_snap'][s] for s in mpi_tree[5]]
         tlist = [params['cosmo'].cosmicTime(z, units = 'Gyr') for z in zlist]
-        dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=2)
+        if params['regen_feh']:
+            dfeh = gaussian_process(params['rng_feh'], tlist, params['sigma_mg'], l=2)
+        else:
+            dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=2)
         dsm = gaussian_process_sm(params['rng'], tlist, zlist, l=2)
 
         halos2.append(mpi_tree[:,0])
@@ -354,6 +362,8 @@ def form(params):
             print(' NO. %d, halo id: %d'%(num_run,hid_num))
 
         params['rng'] = np.random.default_rng(params['seed']) # initialize seed
+        if params['regen_feh']:
+            params['rng_feh'] = np.random.default_rng(params['seed_feh']) # initialize seed for feh
 
         t0 = time.time()
 
@@ -414,9 +424,9 @@ def form(params):
                 # Evolve sm using Gaussian process
                 sm1 = astro_utils.SMHM(mass, znow, scatter = False)
                 if params['sm_scat']:
-                    SM = sm1
-                else:
                     SM = np.max([sm1*(10**dsm[i]), sm_arr[progIdx]])
+                else:
+                    SM = sm1
                 sm_arr[i] = SM
 
                 # Evolve feh using Gaussian process
@@ -462,16 +472,17 @@ def form(params):
         GC_mhost_tform = np.array(
             [cluster.originHaloMass for cluster in clusters])
         GC_log_mhost_tform = np.log10(GC_mhost_tform)
-        GC_log_mstar_tform = np.round(np.log10(np.array(
-            [cluster.origin_sm for cluster in clusters])), 3)
-        GC_log_mgas_tform = np.round(np.log10(np.array(
-            [cluster.origin_mgas for cluster in clusters])), 3)
+        GC_log_mstar_tform = np.log10(np.array(
+            [cluster.origin_sm for cluster in clusters]))
+        GC_log_mgas_tform = np.log10(np.array(
+            [cluster.origin_mgas for cluster in clusters]))
         GC_ismpb = np.array([cluster.is_mpb for cluster in clusters]).astype(int)
         GC_idform = np.array([cluster.idform for cluster in clusters])
         GC_snapnum = np.array([cluster.snapnum for cluster in clusters])
 
         logmsub = np.log10(msub)
-        logms = np.log10(astro_utils.SMHM(10**logmsub, 0.0, scatter = False))
+        # logms = np.log10(astro_utils.SMHM(10**logmsub, 0.0, scatter = False))
+        logms = np.log10(np.max(sm_arr))*np.ones(len(clusters))
         GC_log_mstar_tform = np.log10(sm_arr[m == np.max(m)][0])*np.ones(len(clusters))
         
         #hid_num = int(fname[0:fname.find(".")])
@@ -497,8 +508,12 @@ def form(params):
     header = ('subfindID(z=0) | logMh(z=0) | logM*(z=0) | logMh(zform) | logM*(zform)' +
         ' | logM(tform) | zform | feh | isMPB | subfindID(zfrom) | snapnum(zform) \n')
 
-    np.savetxt(params['resultspath']+params['allcat_name'], save_output, header=header, 
-        fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
+    if params['regen_feh']:
+        np.savetxt(params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d.txt'%params['seed_feh'], 
+            save_output, header=header, fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
+    else:
+        np.savetxt(params['resultspath']+params['allcat_name'], save_output, header=header, 
+            fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
 
     if params['verbose']:
         print('########## formation model done ##########')
