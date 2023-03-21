@@ -186,4 +186,6 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
     if params['verbose']:
         print('########## evolution done ##########')
 
+    if return_t_disrupt:
+        return m_out, t_disrupt
     return m_out
