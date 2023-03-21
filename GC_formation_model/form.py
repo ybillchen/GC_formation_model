@@ -308,10 +308,11 @@ def organize_tree(tree, params):
 
         zlist = [params['redshift_snap'][s] for s in mpi_tree[5]]
         tlist = [params['cosmo'].cosmicTime(z, units = 'Gyr') for z in zlist]
-        dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=2)
-        dsm = gaussian_process_sm(params['rng'], tlist, zlist, l=2)
         if params['regen_feh']:
-            dsm = gaussian_process_sm(params['rng_feh'], tlist, zlist, l=2)
+            dfeh = gaussian_process(params['rng_feh'], tlist, params['sigma_mg'], l=2)
+        else:
+            dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=2)
+        dsm = gaussian_process_sm(params['rng'], tlist, zlist, l=2)
 
         halos2.append(mpi_tree[:,0])
         dfeh2.append(dfeh[0])
@@ -423,9 +424,9 @@ def form(params):
                 # Evolve sm using Gaussian process
                 sm1 = astro_utils.SMHM(mass, znow, scatter = False)
                 if params['sm_scat']:
-                    SM = sm1
-                else:
                     SM = np.max([sm1*(10**dsm[i]), sm_arr[progIdx]])
+                else:
+                    SM = sm1
                 sm_arr[i] = SM
 
                 # Evolve feh using Gaussian process
