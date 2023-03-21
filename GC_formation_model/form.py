@@ -472,16 +472,17 @@ def form(params):
         GC_mhost_tform = np.array(
             [cluster.originHaloMass for cluster in clusters])
         GC_log_mhost_tform = np.log10(GC_mhost_tform)
-        GC_log_mstar_tform = np.round(np.log10(np.array(
-            [cluster.origin_sm for cluster in clusters])), 3)
-        GC_log_mgas_tform = np.round(np.log10(np.array(
-            [cluster.origin_mgas for cluster in clusters])), 3)
+        GC_log_mstar_tform = np.log10(np.array(
+            [cluster.origin_sm for cluster in clusters]))
+        GC_log_mgas_tform = np.log10(np.array(
+            [cluster.origin_mgas for cluster in clusters]))
         GC_ismpb = np.array([cluster.is_mpb for cluster in clusters]).astype(int)
         GC_idform = np.array([cluster.idform for cluster in clusters])
         GC_snapnum = np.array([cluster.snapnum for cluster in clusters])
 
         logmsub = np.log10(msub)
-        logms = np.log10(astro_utils.SMHM(10**logmsub, 0.0, scatter = False))
+        # logms = np.log10(astro_utils.SMHM(10**logmsub, 0.0, scatter = False))
+        logms = np.log10(np.max(sm_arr))*np.ones(len(clusters))
         GC_log_mstar_tform = np.log10(sm_arr[m == np.max(m)][0])*np.ones(len(clusters))
         
         #hid_num = int(fname[0:fname.find(".")])
