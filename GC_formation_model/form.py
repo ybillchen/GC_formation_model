@@ -308,10 +308,9 @@ def organize_tree(tree, params):
 
         zlist = [params['redshift_snap'][s] for s in mpi_tree[5]]
         tlist = [params['cosmo'].cosmicTime(z, units = 'Gyr') for z in zlist]
+        dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=2)
         if params['regen_feh']:
             dfeh = gaussian_process(params['rng_feh'], tlist, params['sigma_mg'], l=2)
-        else:
-            dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=2)
         dsm = gaussian_process_sm(params['rng'], tlist, zlist, l=2)
 
         halos2.append(mpi_tree[:,0])
