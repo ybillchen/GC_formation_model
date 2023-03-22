@@ -396,7 +396,7 @@ def form(params):
 
             if fpID == -1 or len(subid[subid == fpID]) == 0:
                 # Then we've reached the first point along this track of the tree 
-                if not params['gaussian_process']:
+                if params['gaussian_process']:
                     if params['sm_scat']:
                         sm_arr[i] = sm1*(10**dsm[i])
                     else:
@@ -482,7 +482,7 @@ def form(params):
         logmsub = np.log10(msub)
         # logms = np.log10(astro_utils.SMHM(10**logmsub, 0.0, scatter = False))
         logms = np.log10(np.max(sm_arr))*np.ones(len(clusters))
-        GC_log_mstar_tform = np.log10(sm_arr[m == np.max(m)][0])*np.ones(len(clusters))
+        # GC_log_mstar_tform = np.log10(sm_arr[m == np.max(m)][0])*np.ones(len(clusters))
         
         #hid_num = int(fname[0:fname.find(".")])
         # hid_num = sub['id']
