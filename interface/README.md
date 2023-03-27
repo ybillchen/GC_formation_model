@@ -18,6 +18,7 @@ For computational efficiency, we use the `hdf5` format. For each halo (galaxy), 
 	- `dataset (int)`: `NextProgenitorID`: `SubhaloID` of the second progenitor
 	- `dataset (int)`: `DescendantID`: `SubhaloID` of the first descendant
 	- `dataset (float)`: `SubhaloPos`: positions of the halo (in comoving kpc/h)
+	- `dataset (float)`: `SubhaloVel`: velocities of the halo (in km/s)
 
 ### Particle output
 
@@ -26,6 +27,7 @@ For computational efficiency, we use the `hdf5` format. For each halo (galaxy), 
 		- `group`: `dm` or `stars` or `gas`: particle type
 			- `attrs (int)`: `count`: number of particles in this halo of a certain particle type
 			- `dataset (float)`: `Coordinates`: coordinates of the particle (in comoving kpc/h)
+			- `dataset (float)`: `Velocities`: velocities of the particle (in km/s)
 			- `dataset (int)`: `ParticleIDs`: unique ID of the particle
 			- `dataset (float)`: `Potential`: potential of the particle (in (km/s)^2/a)
 			- `dataset (float)`: `GFM_StellarFormationTime`: formation time of star particle (in scale factor)
