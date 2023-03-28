@@ -308,10 +308,10 @@ def organize_tree(tree, params):
 
         zlist = [params['redshift_snap'][s] for s in mpi_tree[5]]
         tlist = [params['cosmo'].cosmicTime(z, units = 'Gyr') for z in zlist]
-        dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=2)
+        dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=params['gauss_l'])
         if params['regen_feh']:
-            dfeh = gaussian_process(params['rng_feh'], tlist, params['sigma_mg'], l=2)
-        dsm = gaussian_process_sm(params['rng'], tlist, zlist, l=2)
+            dfeh = gaussian_process(params['rng_feh'], tlist, params['sigma_mg'], l=params['gauss_l'])
+        dsm = gaussian_process_sm(params['rng'], tlist, zlist, l=params['gauss_l_sm'])
 
         halos2.append(mpi_tree[:,0])
         dfeh2.append(dfeh[0])
@@ -508,7 +508,8 @@ def form(params):
         ' | logM(tform) | zform | feh | isMPB | subfindID(zfrom) | snapnum(zform) \n')
 
     if params['regen_feh']:
-        np.savetxt(params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d.txt'%params['seed_feh'], 
+        np.savetxt(params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d_sigg-%g_l-%g.txt'%(
+            params['seed_feh'], params['sigma_mg'], params['gauss_l']), 
             save_output, header=header, fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
     else:
         np.savetxt(params['resultspath']+params['allcat_name'], save_output, header=header, 
