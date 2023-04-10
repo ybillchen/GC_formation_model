@@ -360,9 +360,9 @@ def form(params):
         if params['verbose']:
             print(' NO. %d, halo id: %d'%(num_run,hid_num))
 
-        params['rng'] = np.random.default_rng(params['seed']) # initialize seed
+        params['rng'] = np.random.default_rng(params['seed']+hid_num) # initialize seed
         if params['regen_feh']:
-            params['rng_feh'] = np.random.default_rng(params['seed_feh']) # initialize seed for feh
+            params['rng_feh'] = np.random.default_rng(params['seed_feh']+hid_num+1) # initialize seed for feh
 
         t0 = time.time()
 
