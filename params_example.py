@@ -60,6 +60,12 @@ sigma_gas = 0.3 # Cold gas fraction ratio scatter, in dex
 sm_scat = True  
 gaussian_process = True # whether to evole it with Gaussian process
 
+gauss_l = 2 # correlation length of Gaussian process, in Gyr
+gauss_l_sm = 2 # correlation length of Gaussian process for stellar mass, in Gyr
+
+regen_feh = False
+seed_feh = 0 # seed for re-generate feh
+
 log_Mhmin = 8.0 # Min halo mass
 log_Mmin = 4.0 # Min cluster mass to draw from CIMF
 
@@ -95,6 +101,8 @@ color_metallicity = 'CGL18'
 
 UVB_constraint = 'KM22'
 
+skip = None
+
 resultspath = '/nfs/astro2/ybchen/temp/'
 
 verbose = True
@@ -112,6 +120,7 @@ params = {
     'disrupt_y':disrupt_y,
     'log_mc':log_mc, 
     'seed':seed,
+    'seed_feh':seed_feh,
     'mpb_only':mpb_only, 
     'mmr_slope':mmr_slope, 
     'mmr_pivot':mmr_pivot,
@@ -142,6 +151,10 @@ params = {
     'low_mass_attempt_N':low_mass_attempt_N,
     'no_random_at_formation':no_random_at_formation, 
     'gaussian_process':gaussian_process,
+    'gauss_l': gauss_l,
+    'gauss_l_sm': gauss_l_sm,
+    'regen_feh':regen_feh,
     'UVB_constraint':UVB_constraint, 
     'verbose':verbose,
+    'skip':skip,
     }
