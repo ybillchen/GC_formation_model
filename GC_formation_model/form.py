@@ -524,7 +524,7 @@ def form(params):
     np.savetxt(save_path, save_output, header=header, 
         fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
 
-    if params.has_key('exceed_stellar') and params['exceed_stellar']:
+    if 'exceed_stellar' in params and params['exceed_stellar']:
         np.savetxt(save_path[:-4]+'_exceed_stellar.txt', exceed_stellar_label, fmt='%d')
 
     if params['verbose']:
