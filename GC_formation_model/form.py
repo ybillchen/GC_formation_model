@@ -388,6 +388,7 @@ def form(params):
         sm_arr = np.zeros(len(m))
         gal_feh_arr = np.zeros(len(m))
         clusters = []
+        exceed_stellar_label = []
         for i in range(len(m)) : # For each halo in the merger tree
             mass = m[i] # Mass of this halo
             fpID = fp[i] # ID of the main progenitor
@@ -458,9 +459,16 @@ def form(params):
                 else:
                     galaxy_metallicity = MMR(SM, znow, params) 
                 is_mpb = mpi[i] == mpbi
-                clusters.extend(clusterFormation(Mg, mass, znow, 
+                new_clusters = clusterFormation(Mg, mass, znow, 
                     galaxy_metallicity, SM, is_mpb, subfindid[i], mgc_to_mmax, 
-                    Mmin, ug52, snapnum[i], params))
+                    Mmin, ug52, snapnum[i], params)
+                clusters.extend(new_clusters)
+                new_clusters_mass_tot = np.sum([cluster.mass for cluster in new_clusters])
+                if new_clusters_mass_tot > sm_arr[i] - sm_arr[progIdx]:
+                    # more GC mass than stellar mass, give a label
+                    exceed_stellar_label.extend([1] * len(new_clusters_mass_tot))
+                else:
+                    exceed_stellar_label.extend([0] * len(new_clusters_mass_tot))
 
         # All GCs that form, regardless of survival -- for use w/ allcat.txt
         GC_mets = np.array([cluster.metallicity for cluster in clusters])
@@ -508,12 +516,16 @@ def form(params):
         ' | logM(tform) | zform | feh | isMPB | subfindID(zfrom) | snapnum(zform) \n')
 
     if params['regen_feh']:
-        np.savetxt(params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d_sigg-%g_l-%g.txt'%(
-            params['seed_feh'], params['sigma_mg'], params['gauss_l']), 
-            save_output, header=header, fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
+        save_path = params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d_sigg-%g_l-%g.txt'%(
+            params['seed_feh'], params['sigma_mg'], params['gauss_l'])
     else:
-        np.savetxt(params['resultspath']+params['allcat_name'], save_output, header=header, 
-            fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
+        save_path = params['resultspath']+params['allcat_name']
+
+    np.savetxt(save_path, save_output, header=header, 
+        fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
+
+    if params.has_key('exceed_stellar') and params['exceed_stellar']:
+        np.savetxt(save_path[:-4]+'_exceed_stellar.txt', exceed_stellar_label, fmt='%d')
 
     if params['verbose']:
         print('########## formation model done ##########')
