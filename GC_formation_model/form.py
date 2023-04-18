@@ -466,9 +466,9 @@ def form(params):
                 new_clusters_mass_tot = np.sum([cluster.mass for cluster in new_clusters])
                 if new_clusters_mass_tot > sm_arr[i] - sm_arr[progIdx]:
                     # more GC mass than stellar mass, give a label
-                    exceed_stellar_label.extend([1] * len(new_clusters_mass_tot))
+                    exceed_stellar_label.extend([1] * len(new_clusters))
                 else:
-                    exceed_stellar_label.extend([0] * len(new_clusters_mass_tot))
+                    exceed_stellar_label.extend([0] * len(new_clusters))
 
         # All GCs that form, regardless of survival -- for use w/ allcat.txt
         GC_mets = np.array([cluster.metallicity for cluster in clusters])
