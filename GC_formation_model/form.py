@@ -356,6 +356,8 @@ def form(params):
     mgc_to_mmax = schechter_interp.generate(10**params['log_mc'], mmin = Mmin)
     ug52 = schechter_interp.upper_gamma2(params['log_Mmin'])
 
+    exceed_stellar_label = []
+
     for num_run, hid_num in enumerate(params['subs']):
         if params['verbose']:
             print(' NO. %d, halo id: %d'%(num_run,hid_num))
@@ -388,7 +390,6 @@ def form(params):
         sm_arr = np.zeros(len(m))
         gal_feh_arr = np.zeros(len(m))
         clusters = []
-        exceed_stellar_label = []
         for i in range(len(m)) : # For each halo in the merger tree
             mass = m[i] # Mass of this halo
             fpID = fp[i] # ID of the main progenitor
