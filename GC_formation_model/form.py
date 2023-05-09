@@ -471,7 +471,6 @@ def form(params):
                 new_clusters = clusterFormation(Mg, mass, znow, 
                     galaxy_metallicity, SM, is_mpb, subfindid[i], mgc_to_mmax, 
                     Mmin, ug52, snapnum[i], params)
-                clusters.extend(new_clusters)
                 new_clusters_mass_tot = np.sum([cluster.mass for cluster in new_clusters])
 
                 if 'fix_stellar' in params and params['fix_stellar']:
@@ -485,15 +484,19 @@ def form(params):
                             if gal_feh > params['max_feh']:  
                                 gal_feh = params['max_feh']
                             gal_feh_arr[i] = gal_feh
-                            galaxy_metallicity = gal_feh
+                            dgalaxy_metallicity = gal_feh - galaxy_metallicity
                         else:
-                            galaxy_metallicity = MMR(SM, znow, params)
+                            dgalaxy_metallicity = MMR(SM, znow, params) - galaxy_metallicity
+                        for cluster in new_clusters:
+                            cluster.metallicity += dgalaxy_metallicity
 
                 if new_clusters_mass_tot > sm_arr[i] - sm_arr[progIdx]:
                     # more GC mass than stellar mass, give a label
                     exceed_stellar_label.extend([1] * len(new_clusters))
                 else:
                     exceed_stellar_label.extend([0] * len(new_clusters))
+
+                clusters.extend(new_clusters)
 
 
         # All GCs that form, regardless of survival -- for use w/ allcat.txt
