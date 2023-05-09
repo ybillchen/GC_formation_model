@@ -390,6 +390,8 @@ def form(params):
         sm_arr = np.zeros(len(m))
         gal_feh_arr = np.zeros(len(m))
         clusters = []
+        if 'fix_stellar' in params and params['fix_stellar']:
+            sm_correct = 0
         for i in range(len(m)) : # For each halo in the merger tree
             mass = m[i] # Mass of this halo
             fpID = fp[i] # ID of the main progenitor
@@ -407,6 +409,8 @@ def form(params):
                     # Assign a "seed" stellar mass which we will grow self-consistently
                     sm_arr[i] = astro_utils.SMHM(mass, znow, 
                         scatter = params['sm_scat'])
+                if 'fix_stellar' in params and params['fix_stellar']:
+                    sm_correct = 0
                 continue
 
             # Identify index of first progenitor in data 
@@ -428,6 +432,8 @@ def form(params):
                     SM = np.max([sm1*(10**dsm[i]), sm_arr[progIdx]])
                 else:
                     SM = sm1
+                if 'fix_stellar' in params and params['fix_stellar']:
+                    SM = SM + sm_correct
                 sm_arr[i] = SM
 
                 # Evolve feh using Gaussian process
@@ -451,6 +457,8 @@ def form(params):
                 if SM < 0: 
                     # Only happens in a couple very weird cases at very high redshift
                     SM = sm_arr[progIdx]
+                if 'fix_stellar' in params and params['fix_stellar']:
+                    SM = SM + sm_correct
                 sm_arr[i] = SM
 
             Mg = gasMass(SM, mass, znow, params) 
@@ -465,11 +473,28 @@ def form(params):
                     Mmin, ug52, snapnum[i], params)
                 clusters.extend(new_clusters)
                 new_clusters_mass_tot = np.sum([cluster.mass for cluster in new_clusters])
+
+                if 'fix_stellar' in params and params['fix_stellar']:
+                    if new_clusters_mass_tot > sm_arr[i]:
+                        sm_correct = new_clusters_mass_tot - SM
+                        SM = new_clusters_mass_tot
+                        sm_arr[i] = SM
+                        if params['gaussian_process']:
+                            gal_feh1 = MMR(SM, znow, params)
+                            gal_feh = gal_feh1 + dfeh[i]
+                            if gal_feh > params['max_feh']:  
+                                gal_feh = params['max_feh']
+                            gal_feh_arr[i] = gal_feh
+                            galaxy_metallicity = gal_feh
+                        else:
+                            galaxy_metallicity = MMR(SM, znow, params)
+
                 if new_clusters_mass_tot > sm_arr[i] - sm_arr[progIdx]:
                     # more GC mass than stellar mass, give a label
                     exceed_stellar_label.extend([1] * len(new_clusters))
                 else:
                     exceed_stellar_label.extend([0] * len(new_clusters))
+
 
         # All GCs that form, regardless of survival -- for use w/ allcat.txt
         GC_mets = np.array([cluster.metallicity for cluster in clusters])
