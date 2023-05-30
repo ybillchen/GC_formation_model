@@ -94,7 +94,10 @@ def MMR(SM, z, params) :
 
     local = params['mmr_slope']*(np.log10(SM) - params['mmr_pivot']) 
     evolution = params['mmr_evolution']*np.log10(1+z)
-    fe_h = local - evolution
+    if 'mmr0' in params:
+        fe_h = local - evolution + params['mmr0']
+    else:
+        fe_h = local - evolution
 
     # The old implementation. Now we use Gaussian process
     if not params['gaussian_process']:

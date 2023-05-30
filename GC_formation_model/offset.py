@@ -42,7 +42,7 @@ def offset(params):
         # at the begining of a subhalo
         if j == 0 or hid[j-1] != hid[np.clip(j,0,len(hid)-1)]:
             if params['verbose']:
-                print(' NO. %d, halo id: %d'%(num_run,hid[num_run]))
+                print(' NO. %d, halo id: %d'%(num_run,params['subs'][num_run]))
 
             num_run += 1
 
