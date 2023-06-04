@@ -548,8 +548,13 @@ def form(params):
         ' | logM(tform) | zform | feh | isMPB | subfindID(zfrom) | snapnum(zform) \n')
 
     if params['regen_feh']:
-        save_path = params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d_sigg-%g_l-%g.txt'%(
-            params['seed_feh'], params['sigma_mg'], params['gauss_l'])
+        if 'test_mmr' in params and params['test_mmr']:
+            save_path = params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d_sigg-%g_l-%g_sm-%g_sz-%g_m0-%g.txt'%(
+                params['seed_feh'], params['sigma_mg'], params['gauss_l'], 
+                params['mmr_slope'], params['mmr_evolution'], params['mmr0'])
+        else:
+            save_path = params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d_sigg-%g_l-%g.txt'%(
+                params['seed_feh'], params['sigma_mg'], params['gauss_l'])
     else:
         save_path = params['resultspath']+params['allcat_name']
 
