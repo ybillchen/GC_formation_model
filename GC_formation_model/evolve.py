@@ -65,7 +65,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
     hid, logmh, logms, logmh_form, logms_form, logm_form, z_form, feh, \
         ismpb, hid_form, snapnum_form = np.loadtxt(fin_name, unpack=True)
 
-    logm_form *= mu
+    logm_form += np.log10(mu)
 
     # setting indices to int type
     hid = hid.astype(int)
