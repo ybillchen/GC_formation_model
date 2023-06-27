@@ -163,9 +163,10 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
             # update snap_now
             snap_now[idx_exist_gc] = snap * np.ones(len(idx_exist_gc), dtype=int)
 
-        if len(idx_exist_gc):
-            m_now[idx_exist_gc] = m_now[idx_exist_gc] * (1-ml.massFraction(feh[idx_exist_gc], 
-                t_snap - t_form[idx_exist_gc]))
+        # not used
+        # if len(idx_exist_gc):
+        #     m_now[idx_exist_gc] = m_now[idx_exist_gc] * (1-ml.massFraction(feh[idx_exist_gc], 
+        #         t_snap - t_form[idx_exist_gc]))
 
     idx_valid = np.where(
         (snapnum_form < full_snap[snap_range-1]) & (tag[:,snap_range-1]>0) & (m_now > 0))[0]
