@@ -58,11 +58,14 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
     if snap_range is None:
         snap_range = len(full_snap)
 
-    ml = MassLoss(params['path_massloss'])
+    # ml = MassLoss(params['path_massloss']) # not used
+    mu = params['mu_sev']
 
     # load GC catalog
     hid, logmh, logms, logmh_form, logms_form, logm_form, z_form, feh, \
         ismpb, hid_form, snapnum_form = np.loadtxt(fin_name, unpack=True)
+
+    logm_form *= mu
 
     # setting indices to int type
     hid = hid.astype(int)
