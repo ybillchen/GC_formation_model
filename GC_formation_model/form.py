@@ -372,6 +372,7 @@ def form(params):
         t0 = time.time()
 
         tree = loader.load_merger_tree(params['base_tree'], hid_num)
+        mpbi = tree['MainLeafProgenitorID'][(tree['SubfindID']==hid_num)&(tree['SnapNum']==99)][0]
 
         t1 = time.time() # t1 - t0 is time for loading tree
         if params['verbose']:
@@ -388,8 +389,7 @@ def form(params):
 
         # msub = np.max(m)
         # mpbi = mpi[m == np.max(m)][0]
-        msub = m[(subfindid==hid_num)&(snapnum==np.max(snapnum))][0]
-        mpbi = mpi[(subfindid==hid_num)&(snapnum==np.max(snapnum))][0]
+        msub = np.max(m[mpi==mpbi])
 
         # Go through each halo along the tree and look for events satisfying Rm > p3.
         sm_arr = np.zeros(len(m))
