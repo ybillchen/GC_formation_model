@@ -38,7 +38,7 @@ def fix_P(P, tag):
                 tag[i][j] = tag[i][j+1]
     return P, tag
 
-def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
+def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_snap=None):
 
     if params['verbose']:
         print('\n########## evolution started ##########')
@@ -57,6 +57,9 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
 
     if snap_range is None:
         snap_range = len(full_snap)
+
+    if not at_snap is None:
+        assert at_snap <= full_snap[snap_range-1]
 
     # ml = MassLoss(params['path_massloss']) # not used
     mu = params['mu_sev']
@@ -115,6 +118,10 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
         for j in range(snap_range):
             # t1 = time.time()
 
+            if not at_snap is None:
+                if at_snap <= full_snap[j]:
+                    snap = at_snap
+
             snap = full_snap[j]
             z_snap = z_list[snap]
             scale_a = 1 / (1 + z_snap)
@@ -163,6 +170,9 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
             # update snap_now
             snap_now[idx_exist_gc] = snap * np.ones(len(idx_exist_gc), dtype=int)
 
+            if not at_snap is None:
+                if at_snap <= full_snap[j]:
+                    break
         # not used
         # if len(idx_exist_gc):
         #     m_now[idx_exist_gc] = m_now[idx_exist_gc] * (1-ml.massFraction(feh[idx_exist_gc], 
