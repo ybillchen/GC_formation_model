@@ -386,8 +386,10 @@ def form(params):
         if params['verbose']:
             print('  - organize tree: %.2f s'%(t2-t1))
 
-        msub = np.max(m)
-        mpbi = mpi[m == np.max(m)][0]
+        # msub = np.max(m)
+        # mpbi = mpi[m == np.max(m)][0]
+        msub = m[(subfindid==hid_num)&(snapnum==np.max(snapnum))][0]
+        mpbi = mpi[(subfindid==hid_num)&(snapnum==np.max(snapnum))][0]
 
         # Go through each halo along the tree and look for events satisfying Rm > p3.
         sm_arr = np.zeros(len(m))
