@@ -31,7 +31,11 @@ class MassLoss(object):
 def fix_P(P, tag):
     for i in range(len(P)):
         if tag[i][-1] == 0:
-            continue
+            if tag[i][-2] != 0:
+                P[i][-1] = P[i][-2]
+                tag[i][-1] = tag[i][-2]
+            else:
+                continue
         for j in range(len(P[0])-1, -1, -1):
             if tag[i][j] == 0:
                 P[i][j] = P[i][j+1]
