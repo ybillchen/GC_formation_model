@@ -290,7 +290,7 @@ def assign(params):
                 r2_s = (x**2 + y**2 + z**2) * (scale_a / params['cosmo'].h)**2 # in kpc
 
                 # select stars with valid scale factor (0-1)
-                idx_valid_s = np.where( (a_s>=0) & (a_s<=1) & (r2_s<9))[0] 
+                idx_valid_s = np.where( (a_s>=0) & (a_s<=1) & (r2_s<params['rmax_form']**2))[0] 
                 a_s = a_s[idx_valid_s]
                 sid = sid[idx_valid_s]
 
