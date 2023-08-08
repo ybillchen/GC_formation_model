@@ -372,7 +372,8 @@ def form(params):
         t0 = time.time()
 
         tree = loader.load_merger_tree(params['base_tree'], hid_num)
-        mpbi = tree['MainLeafProgenitorID'][(tree['SubfindID']==hid_num)&(tree['SnapNum']==99)][0]
+        mpbi = tree['MainLeafProgenitorID'][(tree['SubfindID']==hid_num)&\
+            (tree['SnapNum']==np.max(params['full_snap']))][0]
 
         t1 = time.time() # t1 - t0 is time for loading tree
         if params['verbose']:

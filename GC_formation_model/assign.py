@@ -78,7 +78,7 @@ def assign(params):
             hpos = tree['SubhaloPos'][idx_in_tree]
 
             if 'collisionless_only' in params and params['collisionless_only']:
-                rs = tree['ScaleRad'][idx_in_tree]
+                rs = tree['ScaleRad'][idx_in_tree] / params['h100'] # in kpc
 
                 fields = ['Coordinates', 'ParticleIDs', 'Masses']
                 cutout = loader.load_halo(params['base_halo'], hid_root[j], 
@@ -95,7 +95,7 @@ def assign(params):
                 idx_sort_r2_dm = np.argsort(r2_dm)
                 dmid = dmid[idx_sort_r2_dm]
                 r2_dm = r2_dm[idx_sort_r2_dm]
-                mass = cutout['Masses'][idx_sort_r2_dm]
+                mass = cutout['Masses'][idx_sort_r2_dm] # in Msun
 
                 # select dm particles in rs*frac_rc
                 idx_in = np.where(r2_dm < (rs*params['frac_rs'])**2)[0]
