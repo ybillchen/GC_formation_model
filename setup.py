@@ -21,7 +21,7 @@ setup(
     long_description = long_description,
     long_description_content_type = 'text/markdown',
     install_requires = ['numpy', 'scipy', 'h5py'],
-    python_requires = '>=3.8',
+    python_requires = '>=3.6',
     classifiers = [
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: BSD License',
