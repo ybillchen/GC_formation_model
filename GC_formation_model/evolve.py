@@ -28,12 +28,15 @@ class MassLoss(object):
             return sint(t_alive)
 
 # fix missing snaps for P
-def fix_P(P, tag):
+def fix_P(P, tag, fix_first=False):
     for i in range(len(P)):
         if tag[i][-1] == 0:
-            if tag[i][-2] != 0:
-                P[i][-1] = P[i][-2]
-                tag[i][-1] = tag[i][-2]
+            if fix_first:
+                if tag[i][-2] != 0:
+                    P[i][-1] = P[i][-2]
+                    tag[i][-1] = tag[i][-2]
+                else:
+                    continue
             else:
                 continue
         for j in range(len(P[0])-1, -1, -1):
@@ -42,7 +45,7 @@ def fix_P(P, tag):
                 tag[i][j] = tag[i][j+1]
     return P, tag
 
-def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_snap=None):
+def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_snap=None, fix_first=False):
 
     if params['verbose']:
         print('\n########## evolution started ##########')
@@ -103,7 +106,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
         P_inverse = params['kappa'] * np.sqrt(tideige) / 150
         tag_name = fin_name[:-4] + '_tidtag.txt'
         tag = np.loadtxt(tag_name, dtype='int64')
-        P_inverse, tag = fix_P(P_inverse, tag)
+        P_inverse, tag = fix_P(P_inverse, tag, fix_first)
 
     else:
         if params['verbose']:
