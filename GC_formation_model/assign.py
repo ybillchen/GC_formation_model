@@ -66,6 +66,14 @@ def assign(params):
 
         # loop over all GC formation events
         for i in range(idx_beg_in_off[j], idx_end_in_off[j]):
+            if 'full_snap_only' in params and params['full_snap_only']:
+                # a flag to avoid repeating and make the code faster
+                if i == 0:
+                    switch_to_next_halo = True
+                elif hid_offset[i] == hid_offset[i-1]:
+                    switch_to_next_halo = False
+                else:
+                    switch_to_next_halo = True
 
             idx_in_tree = np.where( (tree['SnapNum']==snap_form_offset[i]) &
                 (tree['SubfindID']==hid_offset[i]) )[0][0]
@@ -260,8 +268,9 @@ def assign(params):
                 # load cutout snapshot of the subhalo
                 fields = ['Coordinates', 'GFM_StellarFormationTime', 'ParticleIDs']
                 if 'full_snap_only' in params and params['full_snap_only']:
-                    cutout = loader.load_halo(params['base_halo'], hid_root[j], 
-                        hid_offset_full_snap[i], snap_form_offset_full_snap[i], 'stars', fields)
+                    if switch_to_next_halo:
+                        cutout = loader.load_halo(params['base_halo'], hid_root[j], 
+                            hid_offset_full_snap[i], snap_form_offset_full_snap[i], 'stars', fields)
                 else:
                     cutout = loader.load_halo(params['base_halo'], hid_root[j], 
                         hid_offset[i], snap_form_offset[i], 'stars', fields)
@@ -271,14 +280,15 @@ def assign(params):
                     fields = ['Coordinates', 'ParticleIDs']
 
                     if 'full_snap_only' in params and params['full_snap_only']:
-                        cutout = loader.load_halo(params['base_halo'], hid_root[j], 
-                            hid_offset_full_snap[i], snap_form_offset_full_snap[i], 'dm', fields)
+                        if switch_to_next_halo:
+                            cutout_dm = loader.load_halo(params['base_halo'], hid_root[j], 
+                                hid_offset_full_snap[i], snap_form_offset_full_snap[i], 'dm', fields)
                     else:
-                        cutout = loader.load_halo(params['base_halo'], hid_root[j], 
+                        cutout_dm = loader.load_halo(params['base_halo'], hid_root[j], 
                             hid_offset[i], snap_form_offset[i], 'dm', fields)
 
-                    pos = cutout['Coordinates']
-                    dmid = cutout['ParticleIDs'].astype(int)
+                    pos = cutout_dm['Coordinates']
+                    dmid = cutout_dm['ParticleIDs'].astype(int)
                     x = pos[:,0] - hpos[0]
                     y = pos[:,1] - hpos[1]
                     z = pos[:,2] - hpos[2]
@@ -288,9 +298,11 @@ def assign(params):
                     idx_sort_r1_dm = np.argsort(r2_dm)
                     dmid = dmid[idx_sort_r1_dm]
 
-                    for dm in dmid[:num_gc]:
-                        gcid.append(dm)
-                        quality.append(0)
+                    gcid.extend(dmid[:num_gc])
+                    quality.extend([0]*num_gc)
+                    # for dm in dmid[:num_gc]:
+                    #     gcid.append(dm)
+                    #     quality.append(0)
 
                     continue
 
@@ -322,25 +334,29 @@ def assign(params):
                 if len(idx_in_lag_max) < num_gc:
                     # if there are not enough sellar particles in this subhalo
                     # first, fill all stellar particles
-                    for s, t in zip(sid[idx_in_lag_max], t_s[idx_in_lag_max]):
-                        gcid.append(s)
-                        if t > t_form - time_lag:
-                            quality.append(2)
-                        else:
-                            quality.append(1)
+                    gcid.extend(sid[idx_in_lag_max])
+                    qlt = (t_s[idx_in_lag_max]>(t_form-time_lag)).astype(int) + 1
+                    quality.extend(qlt)
+                    # for s, t in zip(sid[idx_in_lag_max], t_s[idx_in_lag_max]):
+                    #     gcid.append(s)
+                    #     if t > t_form - time_lag:
+                    #         quality.append(2)
+                    #     else:
+                    #         quality.append(1)
 
                     # second, use dm particles
                     hpos = tree['SubhaloPos'][idx_in_tree]
                     fields = ['Coordinates', 'ParticleIDs']
                     if 'full_snap_only' in params and params['full_snap_only']:
-                        cutout = loader.load_halo(params['base_halo'], hid_root[j], 
-                            hid_offset_full_snap[i], snap_form_offset_full_snap[i], 'dm', fields)
+                        if switch_to_next_halo:
+                            cutout_dm = loader.load_halo(params['base_halo'], hid_root[j], 
+                                hid_offset_full_snap[i], snap_form_offset_full_snap[i], 'dm', fields)
                     else:
-                        cutout = loader.load_halo(params['base_halo'], hid_root[j], 
+                        cutout_dm = loader.load_halo(params['base_halo'], hid_root[j], 
                             hid_offset[i], snap_form_offset[i], 'dm', fields)
 
-                    pos = cutout['Coordinates']
-                    dmid = cutout['ParticleIDs'].astype(int)
+                    pos = cutout_dm['Coordinates']
+                    dmid = cutout_dm['ParticleIDs'].astype(int)
                     x = pos[:,0] - hpos[0]
                     y = pos[:,1] - hpos[1]
                     z = pos[:,2] - hpos[2]
@@ -350,9 +366,8 @@ def assign(params):
                     idx_sort_r1_dm = np.argsort(r2_dm)
                     dmid = dmid[idx_sort_r1_dm]
 
-                    for dm in dmid[:num_gc-len(idx_in_lag_max)]:
-                        gcid.append(dm)
-                        quality.append(0)
+                    gcid.extend(dmid[:num_gc-len(idx_in_lag_max)])
+                    quality.extend([0]*(num_gc-len(idx_in_lag_max)))
 
                 elif len(idx_in_lag_min) < num_gc:
                     # if there are enough stellar particles in this subhalo, but not 
@@ -365,20 +380,27 @@ def assign(params):
                     sid = sid[idx_sort_t_s]
                     t_s = t_s[idx_sort_t_s]
 
-                    for s, t in zip(sid[:num_gc], t_s[:num_gc]):
-                        gcid.append(s)
-                        if t > t_form - time_lag:
-                            quality.append(2)
-                        else:
-                            quality.append(1)
+
+                    gcid.extend(sid[:num_gc])
+                    qlt = (t_s[:num_gc]>(t_form-time_lag)).astype(int) + 1
+                    quality.extend(qlt)
+                    # for s, t in zip(sid[:num_gc], t_s[:num_gc]):
+                    #     gcid.append(s)
+                    #     if t > t_form - time_lag:
+                    #         quality.append(2)
+                    #     else:
+                    #         quality.append(1)
 
                 else:
                     # if there are enough stellar particles in time_lag, 
                     # just randomly pick
                     sid = sid[params['rng'].choice(idx_in_lag_min, num_gc, replace=False)]
-                    for s in sid:
-                        gcid.append(s)
-                        quality.append(2)
+
+                    gcid.extend(sid)
+                    quality.extend([2]*num_gc)
+                    # for s in sid:
+                    #     gcid.append(s)
+                    #     quality.append(2)
 
     output = np.array([gcid, quality], dtype=int).T
     header = 'GC ID'
