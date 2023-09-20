@@ -2,7 +2,9 @@
 
 import numpy as np
 
-def offset(params):
+from . import loader
+
+def get_offset(params):
 
     if params['verbose']:
         print('\n########## offset calculation started ##########')
@@ -82,3 +84,84 @@ def offset(params):
 
     if params['verbose']:
         print('########## offset calculation done ##########')
+
+def find_next_full_snap(params):
+    if params['verbose']:
+        print('\n########## finding next full snap started ##########')
+
+    time_lag = params['t_lag']
+    redshift_snap = params['redshift_snap']
+    fin_name = params['resultspath'] + params['allcat_name']
+    root_name = fin_name[:-4] + '_offset_root.txt'
+    offset_name = fin_name[:-4] + '_offset.txt'
+
+    hid, logmh, logms, logmh_form, logms_form, logm_form, z_form, feh, \
+        ismpb, hid_form, snapnum_form = np.loadtxt(fin_name, ndmin=2, unpack=True)
+
+    # setting indices to int type
+    hid = hid.astype(int)
+    ismpb = ismpb.astype(int)
+    hid_form = hid_form.astype(int)
+    snapnum_form = snapnum_form.astype(int)
+
+    hid_root, idx_root_beg, idx_root_end, idx_beg_in_off, idx_end_in_off = np.loadtxt(
+        root_name, ndmin=2, unpack=True, dtype=int)
+
+    snap_form_offset, hid_offset, idx_beg, idx_end = np.loadtxt(
+        offset_name, ndmin=2, unpack=True, dtype=int)
+
+    snap_form_offset_new = np.zeros_like(snap_form_offset)
+    hid_offset_new = np.zeros_like(hid_offset)
+
+    for j in range(len(hid_root)):
+        if params['verbose']:
+            print(' NO. %d, halo id: %d'%(j,hid_root[j]))
+
+
+        tree = loader.load_merger_tree(params['base_tree'], hid_root[j])
+        mpbi = tree['MainLeafProgenitorID'][(tree['SubfindID']==hid_root[j])&\
+            (tree['SnapNum']==np.max(params['full_snap']))][0]
+
+        # loop over all GC formation events
+        for i in range(idx_beg_in_off[j], idx_end_in_off[j]):
+            if snap_form_offset[i] in params['full_snap']:
+                continue
+
+            snap = snap_form_offset[i] 
+
+            idx_in_tree = np.where( (tree['SnapNum']==snap) &
+                (tree['SubfindID']==hid_offset[i]) )[0][0]
+
+            desc_id = tree['DescendantID'][idx_in_tree]
+
+            idx_desc = np.where( (tree['SnapNum']>snap) &
+                (tree['SubhaloID']==desc_id) )[0]
+            assert len(idx_desc) == 1
+           
+            snap = tree['SnapNum'][idx_desc[0]]
+
+            while not snap in params['full_snap']:
+
+                desc_id = tree['DescendantID'][idx_desc[0]]
+
+                idx_desc = np.where( (tree['SnapNum']>snap) &
+                    (tree['SubhaloID']==desc_id) )[0]
+                assert len(idx_desc) == 1
+
+                snap = tree['SnapNum'][idx_desc[0]]
+
+            snap_form_offset_new[i] = snap
+            hid_offset_new[i] = tree['SubfindID'][idx_desc[0]]
+
+    output = np.array([snap_form_offset_new, hid_offset_new, idx_beg, idx_end], dtype=int).T
+    header = 'Snapnum | SubfindID | BeginIdx | EndIdx+1'
+    np.savetxt(fin_name[:-4]+'_offset_full_snap.txt', output, fmt='%d ', header=header)
+
+    if params['verbose']:
+        print('########## finding next full snap done ##########')
+
+
+def offset(params):
+    get_offset(params)
+    if 'full_snap_only' in params and params['full_snap_only']:
+        find_next_full_snap(params)

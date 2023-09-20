@@ -33,6 +33,11 @@ def assign(params):
     snap_form_offset, hid_offset, idx_beg, idx_end = np.loadtxt(
         offset_name, ndmin=2, unpack=True, dtype=int)
 
+    if 'full_snap_only' in params and params['full_snap_only']:
+        offset_full_snap_name = offset_name[:-4] + '_full_snap.txt'
+        snap_form_offset_full_snap, hid_offset_full_snap, idx_beg, idx_end = np.loadtxt(
+            offset_full_snap_name, ndmin=2, unpack=True, dtype=int)
+
     gcid = []
     quality = [] 
     # quality: 
@@ -254,14 +259,23 @@ def assign(params):
             else: # params['collisionless_only'] == False
                 # load cutout snapshot of the subhalo
                 fields = ['Coordinates', 'GFM_StellarFormationTime', 'ParticleIDs']
-                cutout = loader.load_halo(params['base_halo'], hid_root[j], 
-                    hid_offset[i], snap_form_offset[i], 'stars', fields)
+                if 'full_snap_only' in params and params['full_snap_only']:
+                    cutout = loader.load_halo(params['base_halo'], hid_root[j], 
+                        hid_offset_full_snap[i], snap_form_offset_full_snap[i], 'stars', fields)
+                else:
+                    cutout = loader.load_halo(params['base_halo'], hid_root[j], 
+                        hid_offset[i], snap_form_offset[i], 'stars', fields)
 
                 if cutout['count'] == 0:
                     # if there is no sellar particles in this subhalo, use dm particles
                     fields = ['Coordinates', 'ParticleIDs']
-                    cutout = loader.load_halo(params['base_halo'], hid_root[j], 
-                        hid_offset[i], snap_form_offset[i], 'dm', fields)
+
+                    if 'full_snap_only' in params and params['full_snap_only']:
+                        cutout = loader.load_halo(params['base_halo'], hid_root[j], 
+                            hid_offset_full_snap[i], snap_form_offset_full_snap[i], 'dm', fields)
+                    else:
+                        cutout = loader.load_halo(params['base_halo'], hid_root[j], 
+                            hid_offset[i], snap_form_offset[i], 'dm', fields)
 
                     pos = cutout['Coordinates']
                     dmid = cutout['ParticleIDs'].astype(int)
@@ -318,8 +332,12 @@ def assign(params):
                     # second, use dm particles
                     hpos = tree['SubhaloPos'][idx_in_tree]
                     fields = ['Coordinates', 'ParticleIDs']
-                    cutout = loader.load_halo(params['base_halo'], hid_root[j], 
-                        hid_offset[i], snap_form_offset[i], 'dm', fields)
+                    if 'full_snap_only' in params and params['full_snap_only']:
+                        cutout = loader.load_halo(params['base_halo'], hid_root[j], 
+                            hid_offset_full_snap[i], snap_form_offset_full_snap[i], 'dm', fields)
+                    else:
+                        cutout = loader.load_halo(params['base_halo'], hid_root[j], 
+                            hid_offset[i], snap_form_offset[i], 'dm', fields)
 
                     pos = cutout['Coordinates']
                     dmid = cutout['ParticleIDs'].astype(int)
