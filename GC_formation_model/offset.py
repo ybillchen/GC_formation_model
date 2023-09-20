@@ -110,8 +110,8 @@ def find_next_full_snap(params):
     snap_form_offset, hid_offset, idx_beg, idx_end = np.loadtxt(
         offset_name, ndmin=2, unpack=True, dtype=int)
 
-    snap_form_offset_new = np.zeros_like(snap_form_offset)
-    hid_offset_new = np.zeros_like(hid_offset)
+    snap_form_offset_new = np.copy(snap_form_offset)
+    hid_offset_new = np.copy(hid_offset)
 
     for j in range(len(hid_root)):
         if params['verbose']:
