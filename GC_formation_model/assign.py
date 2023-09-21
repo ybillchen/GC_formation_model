@@ -324,9 +324,12 @@ def assign(params):
                 z_s = -1 + 1./a_s # redshift of stars
                 t_s = np.array(params['cosmo'].cosmicTime(z_s, units = 'Gyr'))
 
+                tt = params['cosmo'].cosmicTime(
+                    redshift_snap[snap_form_offset_full_snap[i]], units = 'Gyr')
+
                 print(len(t_s))
                 if len(t_s) > 0:
-                    print(np.max(t_s), np.min(t_s), t_form, t_form - time_lag)
+                    print(np.max(t_s), np.min(t_s), t_form, tt)
 
                 # minimum time lag is time_lag
                 idx_in_lag_min = np.where((t_s < t_form) & (t_s > t_form - time_lag))[0]
