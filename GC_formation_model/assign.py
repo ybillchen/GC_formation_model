@@ -75,8 +75,11 @@ def assign(params):
                 else:
                     switch_to_next_halo = True
 
-            idx_in_tree = np.where( (tree['SnapNum']==snap_form_offset[i]) &
-                (tree['SubfindID']==hid_offset[i]) )[0][0]
+                idx_in_tree = np.where( (tree['SnapNum']==snap_form_offset_full_snap[i]) &
+                    (tree['SubfindID']==hid_offset_full_snap[i]) )[0][0]
+            else:
+                idx_in_tree = np.where( (tree['SnapNum']==snap_form_offset[i]) &
+                    (tree['SubfindID']==hid_offset[i]) )[0][0]
 
             num_gc = idx_end[i] - idx_beg[i] # number of GCs formed at the subhalo
 
