@@ -275,6 +275,7 @@ def assign(params):
                     cutout = loader.load_halo(params['base_halo'], hid_root[j], 
                         hid_offset[i], snap_form_offset[i], 'stars', fields)
 
+                print(cutout['count'])
                 if cutout['count'] == 0:
                     # if there is no sellar particles in this subhalo, use dm particles
                     fields = ['Coordinates', 'ParticleIDs']
@@ -330,6 +331,8 @@ def assign(params):
                 # maximum time lag is half the time interval between snapshots
                 idx_in_lag_max = np.where((t_s < t_form) & 
                     (t_s > t_form - max(dt/2, time_lag) ))[0]
+
+                print('star particle candidates:', idx_in_lag_max)
 
                 if len(idx_in_lag_max) < num_gc:
                     # if there are not enough sellar particles in this subhalo
