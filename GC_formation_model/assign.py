@@ -331,8 +331,12 @@ def assign(params):
                 idx_in_lag_min = np.where((t_s < t_form) & (t_s > t_form - time_lag))[0]
 
                 # maximum time lag is half the time interval between snapshots
+                if 'max_lag_ratio' in params and params['max_lag_ratio']:
+                    max_lag_ratio = params['max_lag_ratio']
+                else:
+                    max_lag_ratio = 0.5
                 idx_in_lag_max = np.where((t_s < t_form) & 
-                    (t_s > t_form - max(dt/2, time_lag) ))[0]
+                    (t_s > t_form - max(dt*max_lag_ratio, time_lag) ))[0]
 
                 if len(idx_in_lag_max) < num_gc:
                     # if there are not enough sellar particles in this subhalo
