@@ -92,6 +92,11 @@ def assign(params):
             scale_a = 1 / (1 + redshift_snap[snap_form_offset[i]])
 
             hpos = tree['SubhaloPos'][idx_in_tree]
+            mh = tree['SubhaloMass'][idx_in_tree] * 1e10 / params['h100'] # in Msun
+            if mh < 10**params['log_Mhmin']:
+                gcid.extend([-1]*num_gc)
+                quality.extend([-1]*num_gc)
+                continue
 
             if 'collisionless_only' in params and params['collisionless_only']:
                 rs = tree['ScaleRad'][idx_in_tree] / params['h100'] # in kpc
