@@ -132,7 +132,7 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params, k=-1):
     else:
         iterlist = [k]
 
-    for j in riterlist:
+    for j in iterlist:
 
         if not params['skip'] is None:
             if params['skip'][0] == i and params['skip'][1] == j:
