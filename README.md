@@ -12,7 +12,10 @@ The code is open source under a [BSD 3-Clause License](LICENSE), which allows yo
 - [H. Li \& O. Y. Gnedin (2014)](https://ui.adsabs.harvard.edu/abs/2014ApJ...796...10L/abstract), ApJ, **796**, 10
 - [N. Choksi, O. Y. Gnedin, \& H. Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract), MNRAS, **480**, 2343
 - [Y. Chen \& O. Y. Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract), MNRAS, **514**, 4736
-- [Y. Chen \& O. Y. Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023arXiv230108218C/abstract), MNRAS submitted (arXiv:2301.08218)
+- [Y. Chen \& O. Y. Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023MNRAS.522.5638C/abstract), MNRAS, **522**, 5638
+- [Y. Chen \& O. Y. Gnedin (2024)](https://ui.adsabs.harvard.edu/abs/2023arXiv230913374C/abstract), MNRAS accepted (arXiv:2309.13374)
+
+We also provide a toolkit for parallelization. If you are planning to use the toolkit, please contact us for access!
 
 ## Background
 
