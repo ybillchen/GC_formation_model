@@ -1,6 +1,6 @@
 # GC_formation_model
 
-[![version](https://img.shields.io/badge/version-0.1-blue.svg)](https://github.com/ybillchen/GC_formation_model)
+[![version](https://img.shields.io/badge/version-0.2-blue.svg)](https://github.com/ybillchen/GC_formation_model)
 [![license](https://img.shields.io/github/license/ybillchen/GC_formation_model)](LICENSE)
 [![workflows](https://img.shields.io/github/actions/workflow/status/ybillchen/GC_formation_model/build.yaml?logo=github)](https://github.com/ybillchen/GC_formation_model/actions/workflows/build.yaml)
 
@@ -13,13 +13,14 @@ The code is open source under a [BSD 3-Clause License](LICENSE), which allows yo
 - [N. Choksi, O. Y. Gnedin, \& H. Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract), MNRAS, **480**, 2343
 - [Y. Chen \& O. Y. Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract), MNRAS, **514**, 4736
 - [Y. Chen \& O. Y. Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023MNRAS.522.5638C/abstract), MNRAS, **522**, 5638
-- [Y. Chen \& O. Y. Gnedin (2024)](https://ui.adsabs.harvard.edu/abs/2023arXiv230913374C/abstract), MNRAS accepted (arXiv:2309.13374)
+- [Y. Chen \& O. Y. Gnedin (2024a)](https://ui.adsabs.harvard.edu/abs/2023arXiv230913374C/abstract), MNRAS, **527**, 3692
+- [Y. Chen \& O. Y. Gnedin (2024b)](https://ui.adsabs.harvard.edu/abs/2024arXiv240117420C/abstract), MNRAS, **527**, 3692
 
 We also provide a toolkit for parallelization. If you are planning to use the toolkit, please contact us for access!
 
 ## Background
 
-This is a long developing project starting from [Muratov \& Gnedin (2010)](https://ui.adsabs.harvard.edu/abs/2010ApJ...718.1266M/abstract). Some important milestones are [Li \& Gnedin (2014)](https://ui.adsabs.harvard.edu/abs/2014ApJ...796...10L/abstract), [Choksi, Gnedin, \& Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract), and [Chen \& Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract). This version is the most recent model by [Chen \& Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023arXiv230108218C/abstract). 
+This is a long developing project starting from [Muratov \& Gnedin (2010)](https://ui.adsabs.harvard.edu/abs/2010ApJ...718.1266M/abstract). Some important milestones are [Li \& Gnedin (2014)](https://ui.adsabs.harvard.edu/abs/2014ApJ...796...10L/abstract), [Choksi, Gnedin, \& Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract), [Chen \& Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract), and [Chen \& Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023arXiv230108218C/abstract). This version is the most recent model by [Chen \& Gnedin (2024a)](https://ui.adsabs.harvard.edu/abs/2023arXiv230913374C/abstract). 
 
 ## Install
 

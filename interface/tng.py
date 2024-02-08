@@ -44,34 +44,56 @@ def handle_halo(sim_base, save_base, hid, mh_min=1e8, parttypes=None, fields_lis
     ntot = len(tree['SubhaloMass'])
 
     filename = save_base + 'halo_%d.hdf5'%hid
-    if os.path.exists(filename):
-        os.remove(filename)
+    if not os.path.exists(filename):
+        with h5py.File(filename, 'w') as f:
+            f.attrs['completed'] = False
 
+    n = 0
 
     with h5py.File(filename, 'w') as f:
-        for h, s, m in zip(tree['SubfindID'], tree['SnapNum'], tree['SubhaloMass']):
-            
-            d = f.create_group('snap_%d_halo_%d'%(s,h))
+        f.attrs['completed'] = False
+        if not f.attrs['completed']:
+            for h, s, m in zip(tree['SubfindID'], tree['SnapNum'], tree['SubhaloMass']):
+                # if m * 1e10 / h100 < mh_min: # skip small halos
+                #     continue
 
-            for parttype, fields, dtypes in zip(parttypes, fields_list, dtypes_list):
-                if not s in full_snap:
-                    fs = fields[:-1]
-                    ds = dtypes[:-1]
-                else:
-                    fs = fields
-                    ds = dtypes
-                d2 = d.create_group(parttype)
-                cutout = il.snapshot.loadSubhalo(sim_base, s, h, parttype, fields=fs)
+                n += 1 
+                # if n % 100 == 0:
+                    # print(n, ntot)
 
-                if cutout['count'] == 0: # no particle
-                    d2.attrs['count'] = 0
-                    for field, dtype in zip(fs, ds):
-                        d2.create_dataset(field, data=[], dtype=dtype)
+                if not 'snap_%d_halo_%d'%(s,h) in f:
+                    d = f.create_group('snap_%d_halo_%d'%(s,h))
+                    d.attrs['completed'] = False
 
-                else:
-                    d2.attrs['count'] = len(cutout[fs[0]])
-                    for field, dtype in zip(fs, ds):
-                        d2.create_dataset(field, data=cutout[field], dtype=dtype)
+                d = f['snap_%d_halo_%d'%(s,h)]
+
+                if d.attrs['completed']:
+                    continue
+
+
+                for parttype, fields, dtypes in zip(parttypes, fields_list, dtypes_list):
+                    if not s in full_snap:
+                        fs = fields[:-1]
+                        ds = dtypes[:-1]
+                    else:
+                        fs = fields
+                        ds = dtypes
+                    d2 = d.create_group(parttype)
+                    cutout = il.snapshot.loadSubhalo(sim_base, s, h, parttype, fields=fs)
+
+                    if cutout['count'] == 0: # no particle
+                        d2.attrs['count'] = 0
+                        for field, dtype in zip(fs, ds):
+                            d2.create_dataset(field, data=[], dtype=dtype)
+
+                    else:
+                        d2.attrs['count'] = len(cutout[fs[0]])
+                        for field, dtype in zip(fs, ds):
+                            d2.create_dataset(field, data=cutout[field], dtype=dtype)
+
+                d.attrs['completed'] = True
+
+            f.attrs['completed'] = True
 
     print('handle_halo hid: %d done'%hid)
 
