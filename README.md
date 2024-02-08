@@ -14,7 +14,7 @@ The code is open source under a [BSD 3-Clause License](LICENSE), which allows yo
 - [Y. Chen \& O. Y. Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract), MNRAS, **514**, 4736
 - [Y. Chen \& O. Y. Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023MNRAS.522.5638C/abstract), MNRAS, **522**, 5638
 - [Y. Chen \& O. Y. Gnedin (2024a)](https://ui.adsabs.harvard.edu/abs/2023arXiv230913374C/abstract), MNRAS, **527**, 3692
-- [Y. Chen \& O. Y. Gnedin (2024b)](https://ui.adsabs.harvard.edu/abs/2024arXiv240117420C/abstract), MNRAS, **527**, 3692
+- [Y. Chen \& O. Y. Gnedin (2024b)](https://ui.adsabs.harvard.edu/abs/2024arXiv240117420C/abstract), OJAp submitted (arXiv:2401.17420)
 
 We also provide a toolkit for parallelization. If you are planning to use the toolkit, please contact us for access!
 
