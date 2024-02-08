@@ -107,7 +107,7 @@ def calc_eig_new(tree, pos_gc, pos, mass):
     return 20642 * np.linalg.eig(T)[0] # in Gyr^-2
 
 # get tidal tensor for one galaxy
-def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
+def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params, k=-1):
     mpb_only = params['mpb_only']
     d_tid = params['d_tid'] * params['h100'] # in kpc/h
     z_list = params['redshift_snap']
@@ -127,7 +127,12 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
     eig_2 = np.zeros([len(idx_exist_gc), len(full_snap)])
     eig_3 = np.zeros([len(idx_exist_gc), len(full_snap)])
 
-    for j in range(len(full_snap)):
+    if k < 0:
+        iterlist = range(len(full_snap))
+    else:
+        iterlist = [k]
+
+    for j in iterlist:
 
         if not params['skip'] is None:
             if params['skip'][0] == i and params['skip'][1] == j:
@@ -218,10 +223,13 @@ def get_tid_unit(i, gcid, hid_root, idx_beg, idx_end, params):
                 i, hid_root[i], snap, count, len(idx_exist_gc), time.time()-t1))
             print('   - load halo: %.1fs, build tree: %.1fs, calc eig: %.1fs'%(t2,t3,t4))
 
-    if params['verbose']:
+    if params['verbose'] and k < 0:
         print(' NO. %d, halo id: %d completed, total time: %.1f s'%(i, hid_root[i], time.time()-t0))
 
-    return tag, eig_1, eig_2, eig_3
+    if k < 0:
+        return tag, eig_1, eig_2, eig_3
+
+    return tag[:,j], eig_1[:,j], eig_2[:,j], eig_3[:,j]
 
 def get_tid(params):
 

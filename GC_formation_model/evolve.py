@@ -28,17 +28,24 @@ class MassLoss(object):
             return sint(t_alive)
 
 # fix missing snaps for P
-def fix_P(P, tag):
+def fix_P(P, tag, fix_first=False):
     for i in range(len(P)):
         if tag[i][-1] == 0:
-            continue
+            if fix_first:
+                if tag[i][-2] != 0:
+                    P[i][-1] = P[i][-2]
+                    tag[i][-1] = tag[i][-2]
+                else:
+                    continue
+            else:
+                continue
         for j in range(len(P[0])-1, -1, -1):
             if tag[i][j] == 0:
                 P[i][j] = P[i][j+1]
                 tag[i][j] = tag[i][j+1]
     return P, tag
 
-def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
+def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_snap=None, fix_first=False):
 
     if params['verbose']:
         print('\n########## evolution started ##########')
@@ -58,11 +65,17 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
     if snap_range is None:
         snap_range = len(full_snap)
 
-    ml = MassLoss(params['path_massloss'])
+    if not at_snap is None:
+        assert at_snap <= full_snap[snap_range-1]
+
+    # ml = MassLoss(params['path_massloss']) # not used
+    mu = params['mu_sev']
 
     # load GC catalog
     hid, logmh, logms, logmh_form, logms_form, logm_form, z_form, feh, \
         ismpb, hid_form, snapnum_form = np.loadtxt(fin_name, unpack=True)
+
+    logm_form += np.log10(mu)
 
     # setting indices to int type
     hid = hid.astype(int)
@@ -93,7 +106,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
         P_inverse = params['kappa'] * np.sqrt(tideige) / 150
         tag_name = fin_name[:-4] + '_tidtag.txt'
         tag = np.loadtxt(tag_name, dtype='int64')
-        P_inverse, tag = fix_P(P_inverse, tag)
+        P_inverse, tag = fix_P(P_inverse, tag, fix_first)
 
     else:
         if params['verbose']:
@@ -111,6 +124,10 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
 
         for j in range(snap_range):
             # t1 = time.time()
+
+            if not at_snap is None:
+                if at_snap <= full_snap[j]:
+                    snap = at_snap
 
             snap = full_snap[j]
             z_snap = z_list[snap]
@@ -160,9 +177,13 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
             # update snap_now
             snap_now[idx_exist_gc] = snap * np.ones(len(idx_exist_gc), dtype=int)
 
-        if len(idx_exist_gc):
-            m_now[idx_exist_gc] = m_now[idx_exist_gc] * (1-ml.massFraction(feh[idx_exist_gc], 
-                t_snap - t_form[idx_exist_gc]))
+            if not at_snap is None:
+                if at_snap <= full_snap[j]:
+                    break
+        # not used
+        # if len(idx_exist_gc):
+        #     m_now[idx_exist_gc] = m_now[idx_exist_gc] * (1-ml.massFraction(feh[idx_exist_gc], 
+        #         t_snap - t_form[idx_exist_gc]))
 
     idx_valid = np.where(
         (snapnum_form < full_snap[snap_range-1]) & (tag[:,snap_range-1]>0) & (m_now > 0))[0]
@@ -172,16 +193,18 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True):
 
     # save data
     if save_data:
+        if at_snap is None:
+            at_snap = full_snap[snap_range-1]
         if params['disrupt_mode'] == 'constant':
-            np.savetxt(fin_name[:-4]+'_p-%g_logm_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), m_out, fmt='%.3f')
+            np.savetxt(fin_name[:-4]+'_p-%g_logm_snap%d.txt'%(params['pr'],at_snap), m_out, fmt='%.3f')
         elif params['disrupt_mode'] == 'tidal':
-            np.savetxt(fin_name[:-4]+'_k-%g_logm_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), m_out, fmt='%.3f')
+            np.savetxt(fin_name[:-4]+'_k-%g_logm_snap%d.txt'%(params['kappa'],at_snap), m_out, fmt='%.3f')
 
         if return_t_disrupt:
             if params['disrupt_mode'] == 'constant':
-                np.savetxt(fin_name[:-4]+'_p-%g_t_disrupt_snap%d.txt'%(params['pr'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
+                np.savetxt(fin_name[:-4]+'_p-%g_t_disrupt_snap%d.txt'%(params['pr'],at_snap), t_disrupt, fmt='%.3f')
             elif params['disrupt_mode'] == 'tidal':
-                np.savetxt(fin_name[:-4]+'_k-%g_t_disrupt_snap%d.txt'%(params['kappa'],full_snap[snap_range-1]), t_disrupt, fmt='%.3f')
+                np.savetxt(fin_name[:-4]+'_k-%g_t_disrupt_snap%d.txt'%(params['kappa'],at_snap), t_disrupt, fmt='%.3f')
 
     if params['verbose']:
         print('########## evolution done ##########')

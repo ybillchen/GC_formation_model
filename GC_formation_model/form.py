@@ -94,7 +94,10 @@ def MMR(SM, z, params) :
 
     local = params['mmr_slope']*(np.log10(SM) - params['mmr_pivot']) 
     evolution = params['mmr_evolution']*np.log10(1+z)
-    fe_h = local - evolution
+    if 'mmr0' in params:
+        fe_h = local - evolution + params['mmr0']
+    else:
+        fe_h = local - evolution
 
     # The old implementation. Now we use Gaussian process
     if not params['gaussian_process']:
@@ -308,10 +311,10 @@ def organize_tree(tree, params):
 
         zlist = [params['redshift_snap'][s] for s in mpi_tree[5]]
         tlist = [params['cosmo'].cosmicTime(z, units = 'Gyr') for z in zlist]
-        dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=2)
+        dfeh = gaussian_process(params['rng'], tlist, params['sigma_mg'], l=params['gauss_l'])
         if params['regen_feh']:
-            dfeh = gaussian_process(params['rng_feh'], tlist, params['sigma_mg'], l=2)
-        dsm = gaussian_process_sm(params['rng'], tlist, zlist, l=2)
+            dfeh = gaussian_process(params['rng_feh'], tlist, params['sigma_mg'], l=params['gauss_l'])
+        dsm = gaussian_process_sm(params['rng'], tlist, zlist, l=params['gauss_l_sm'])
 
         halos2.append(mpi_tree[:,0])
         dfeh2.append(dfeh[0])
@@ -356,17 +359,21 @@ def form(params):
     mgc_to_mmax = schechter_interp.generate(10**params['log_mc'], mmin = Mmin)
     ug52 = schechter_interp.upper_gamma2(params['log_Mmin'])
 
+    exceed_stellar_label = []
+
     for num_run, hid_num in enumerate(params['subs']):
         if params['verbose']:
             print(' NO. %d, halo id: %d'%(num_run,hid_num))
 
-        params['rng'] = np.random.default_rng(params['seed']) # initialize seed
+        params['rng'] = np.random.default_rng(params['seed']+hid_num) # initialize seed
         if params['regen_feh']:
-            params['rng_feh'] = np.random.default_rng(params['seed_feh']) # initialize seed for feh
+            params['rng_feh'] = np.random.default_rng(params['seed_feh']+hid_num+1) # initialize seed for feh
 
         t0 = time.time()
 
         tree = loader.load_merger_tree(params['base_tree'], hid_num)
+        mpbi = tree['MainLeafProgenitorID'][(tree['SubfindID']==hid_num)&\
+            (tree['SnapNum']==np.max(params['full_snap']))][0]
 
         t1 = time.time() # t1 - t0 is time for loading tree
         if params['verbose']:
@@ -381,13 +388,16 @@ def form(params):
         if params['verbose']:
             print('  - organize tree: %.2f s'%(t2-t1))
 
-        msub = np.max(m)
-        mpbi = mpi[m == np.max(m)][0]
+        # msub = np.max(m)
+        # mpbi = mpi[m == np.max(m)][0]
+        msub = np.max(m[mpi==mpbi])
 
         # Go through each halo along the tree and look for events satisfying Rm > p3.
         sm_arr = np.zeros(len(m))
         gal_feh_arr = np.zeros(len(m))
         clusters = []
+        if 'fix_stellar' in params and params['fix_stellar']:
+            sm_correct = 0
         for i in range(len(m)) : # For each halo in the merger tree
             mass = m[i] # Mass of this halo
             fpID = fp[i] # ID of the main progenitor
@@ -405,6 +415,8 @@ def form(params):
                     # Assign a "seed" stellar mass which we will grow self-consistently
                     sm_arr[i] = astro_utils.SMHM(mass, znow, 
                         scatter = params['sm_scat'])
+                if 'fix_stellar' in params and params['fix_stellar']:
+                    sm_correct = 0
                 continue
 
             # Identify index of first progenitor in data 
@@ -426,6 +438,8 @@ def form(params):
                     SM = np.max([sm1*(10**dsm[i]), sm_arr[progIdx]])
                 else:
                     SM = sm1
+                if 'fix_stellar' in params and params['fix_stellar']:
+                    SM = SM + sm_correct
                 sm_arr[i] = SM
 
                 # Evolve feh using Gaussian process
@@ -449,6 +463,8 @@ def form(params):
                 if SM < 0: 
                     # Only happens in a couple very weird cases at very high redshift
                     SM = sm_arr[progIdx]
+                if 'fix_stellar' in params and params['fix_stellar']:
+                    SM = SM + sm_correct
                 sm_arr[i] = SM
 
             Mg = gasMass(SM, mass, znow, params) 
@@ -458,9 +474,36 @@ def form(params):
                 else:
                     galaxy_metallicity = MMR(SM, znow, params) 
                 is_mpb = mpi[i] == mpbi
-                clusters.extend(clusterFormation(Mg, mass, znow, 
+                new_clusters = clusterFormation(Mg, mass, znow, 
                     galaxy_metallicity, SM, is_mpb, subfindid[i], mgc_to_mmax, 
-                    Mmin, ug52, snapnum[i], params))
+                    Mmin, ug52, snapnum[i], params)
+                new_clusters_mass_tot = np.sum([cluster.mass for cluster in new_clusters])
+
+                if 'fix_stellar' in params and params['fix_stellar']:
+                    if new_clusters_mass_tot > sm_arr[i]:
+                        sm_correct = new_clusters_mass_tot - SM
+                        SM = new_clusters_mass_tot
+                        sm_arr[i] = SM
+                        if params['gaussian_process']:
+                            gal_feh1 = MMR(SM, znow, params)
+                            gal_feh = gal_feh1 + dfeh[i]
+                            if gal_feh > params['max_feh']:  
+                                gal_feh = params['max_feh']
+                            gal_feh_arr[i] = gal_feh
+                            dgalaxy_metallicity = gal_feh - galaxy_metallicity
+                        else:
+                            dgalaxy_metallicity = MMR(SM, znow, params) - galaxy_metallicity
+                        for cluster in new_clusters:
+                            cluster.metallicity += dgalaxy_metallicity
+
+                if new_clusters_mass_tot > sm_arr[i] - sm_arr[progIdx]:
+                    # more GC mass than stellar mass, give a label
+                    exceed_stellar_label.extend([1] * len(new_clusters))
+                else:
+                    exceed_stellar_label.extend([0] * len(new_clusters))
+
+                clusters.extend(new_clusters)
+
 
         # All GCs that form, regardless of survival -- for use w/ allcat.txt
         GC_mets = np.array([cluster.metallicity for cluster in clusters])
@@ -508,11 +551,21 @@ def form(params):
         ' | logM(tform) | zform | feh | isMPB | subfindID(zfrom) | snapnum(zform) \n')
 
     if params['regen_feh']:
-        np.savetxt(params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d.txt'%params['seed_feh'], 
-            save_output, header=header, fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
+        if 'test_mmr' in params and params['test_mmr']:
+            save_path = params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d_sigg-%g_l-%g_sm-%g_sz-%g_m0-%g.txt'%(
+                params['seed_feh'], params['sigma_mg'], params['gauss_l'], 
+                params['mmr_slope'], params['mmr_evolution'], params['mmr0'])
+        else:
+            save_path = params['resultspath']+params['allcat_name'][:-4]+'_regen_feh_s-%d_sigg-%g_l-%g.txt'%(
+                params['seed_feh'], params['sigma_mg'], params['gauss_l'])
     else:
-        np.savetxt(params['resultspath']+params['allcat_name'], save_output, header=header, 
-            fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
+        save_path = params['resultspath']+params['allcat_name']
+
+    np.savetxt(save_path, save_output, header=header, 
+        fmt='%d %6.3f %6.3f %6.3f %6.3f %6.3f %5.3f %6.3f %d %d %d')
+
+    if 'exceed_stellar' in params and params['exceed_stellar']:
+        np.savetxt(save_path[:-4]+'_exceed_stellar.txt', exceed_stellar_label, fmt='%d')
 
     if params['verbose']:
         print('########## formation model done ##########')
