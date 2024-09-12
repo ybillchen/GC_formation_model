@@ -120,15 +120,18 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
     snap_now = np.copy(snapnum_form)
     t_disrupt = -1 * np.ones(len(m_now))
 
+    if not os.path.exists(mass_list_dir):
+            os.mkdir(mass_list_dir)
+
+
+
     for i in range(len(hid_root)): ##iterates through the subhalos
         if params['verbose']:
             print(' NO. %d, subhalo id: %d'%(i,hid_root[i]))
         # t0 = time.time()
 
 
-        if not os.path.exists(mass_list_dir): ##this currently runs for every subhalo
-            os.mkdir(mass_list_dir)
-
+        
         for j in range(snap_range): ##iterates through the snapshots
             # t1 = time.time()
 
