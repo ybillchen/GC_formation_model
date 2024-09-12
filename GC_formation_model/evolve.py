@@ -54,6 +54,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
     redshift_snap = params['redshift_snap']
     full_snap = params['full_snap']
     fin_name = params['resultspath'] + params['allcat_name']
+    mass_list_path = params['resultspath'] + "snap_mass/" + params['allcat_name']
     gcid_name = fin_name[:-4] + '_gcid.txt'
     root_name = fin_name[:-4] + '_offset_root.txt'
     offset_name = fin_name[:-4] + '_offset.txt'
@@ -75,8 +76,8 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
     hid, logmh, logms, logmh_form, logms_form, logm_form, z_form, feh, \
         ismpb, hid_form, snapnum_form = np.loadtxt(fin_name, unpack=True)
 
-    logm_form += np.log10(mu)
-
+    logm_form += np.log10(mu) # Performs stellar evolution step – logm_form is the initial mass of the GC. Mu = 0.55
+    # After this step, logm_form is the mass of the GC after stellar evolution.
     # setting indices to int type
     hid = hid.astype(int)
     ismpb = ismpb.astype(int)
@@ -122,7 +123,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
             print(' NO. %d, subhalo id: %d'%(i,hid_root[i]))
         # t0 = time.time()
 
-        for j in range(snap_range):
+        for j in range(snap_range): ##iterates through the snapshots
             # t1 = time.time()
 
             if not at_snap is None:
@@ -151,11 +152,11 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
 
             mi = 10**logm_form[idx_exist_gc]
             t_tid = 10 * (mi/2e5)**params['disrupt_x'] * (m_now[idx_exist_gc]/mi)**params['disrupt_y'] / \
-                np.clip(P_inverse[idx_exist_gc,j], 1e-10, None)
+                np.clip(P_inverse[idx_exist_gc,j], 1e-10, None) ## Eq 11 in CG 23 – Calculates the Mass loss rate
 
             t_iso = 1e10 # i.e., no iso disruption. 17 * (m_now[idx_exist_gc]/2e5) # in Gyr
 
-            idx_tid = np.where(np.greater(t_iso, t_tid))[0]
+            idx_tid = np.where(np.greater(t_iso, t_tid))[0] 
             idx_iso = np.where(np.less_equal(t_iso, t_tid))[0]
 
             if len(idx_tid):
@@ -164,7 +165,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
                 dt = t_tid[idx_tid] / gamma
                 k1 = 1 - (t_snap-t_now[idx_tid]) / dt
                 k1 = np.clip(k1, 0, 1)
-                m_now[idx_exist_gc[idx_tid]] = m_now[idx_exist_gc[idx_tid]] * k1**(1/gamma)
+                m_now[idx_exist_gc[idx_tid]] = m_now[idx_exist_gc[idx_tid]] * k1**(1/gamma) ##updated mass of the cluster
 
                 idx_d = np.where((dt - (t_snap-t_now[idx_tid])) <= 0)[0] # disrupted
                 t_disrupt[idx_exist_gc[idx_tid[idx_d]]] = t_now[idx_tid[idx_d]] + dt[idx_d]
@@ -173,6 +174,9 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
             # iso dominated
                 m_now[idx_exist_gc[idx_iso]] = m_now[idx_exist_gc[idx_iso]] - \
                     (t_snap-t_now[idx_iso]) * (2e5/17) * np.ones(len(idx_iso))
+                
+            mass_list = -1*np.ones(len(m_now))
+            np.savetxt(mass_list_path[:-4]+'_mass_snap%d.txt'%snap, mass_list, fmt='%.3f')
 
             # update snap_now
             snap_now[idx_exist_gc] = snap * np.ones(len(idx_exist_gc), dtype=int)
@@ -180,6 +184,8 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
             if not at_snap is None:
                 if at_snap <= full_snap[j]:
                     break
+
+        
         # not used
         # if len(idx_exist_gc):
         #     m_now[idx_exist_gc] = m_now[idx_exist_gc] * (1-ml.massFraction(feh[idx_exist_gc], 
