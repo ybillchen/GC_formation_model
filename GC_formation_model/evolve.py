@@ -2,6 +2,7 @@
 
 import numpy as np
 from scipy.interpolate import interp1d
+import os
 
 class MassLoss(object):
     def __init__(self, path):
@@ -54,7 +55,8 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
     redshift_snap = params['redshift_snap']
     full_snap = params['full_snap']
     fin_name = params['resultspath'] + params['allcat_name']
-    mass_list_path = params['resultspath'] + "snap_mass/" + params['allcat_name']
+    mass_list_dir = params['resultspath'] + "snap_mass/"
+    mass_list_name = mass_list_dir + params['allcat_name']
     gcid_name = fin_name[:-4] + '_gcid.txt'
     root_name = fin_name[:-4] + '_offset_root.txt'
     offset_name = fin_name[:-4] + '_offset.txt'
@@ -118,10 +120,14 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
     snap_now = np.copy(snapnum_form)
     t_disrupt = -1 * np.ones(len(m_now))
 
-    for i in range(len(hid_root)):
+    for i in range(len(hid_root)): ##iterates through the subhalos
         if params['verbose']:
             print(' NO. %d, subhalo id: %d'%(i,hid_root[i]))
         # t0 = time.time()
+
+
+        if not os.path.exists(mass_list_dir): ##this currently runs for every subhalo
+            os.mkdir(mass_list_dir)
 
         for j in range(snap_range): ##iterates through the snapshots
             # t1 = time.time()
@@ -176,7 +182,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
                     (t_snap-t_now[idx_iso]) * (2e5/17) * np.ones(len(idx_iso))
                 
             mass_list = -1*np.ones(len(m_now))
-            np.savetxt(mass_list_path[:-4]+'_mass_snap%d.txt'%snap, mass_list, fmt='%.3f')
+            np.savetxt(mass_list_name[:-4]+'_mass_snap%d.txt'%snap, mass_list, fmt='%.3f')
 
             # update snap_now
             snap_now[idx_exist_gc] = snap * np.ones(len(idx_exist_gc), dtype=int)
