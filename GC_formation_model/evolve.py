@@ -186,7 +186,7 @@ def evolve(params, snap_range=None, return_t_disrupt=False, save_data=True, at_s
                 
             
             mass_list = np.zeros(len(m_now))
-            mass_list[idx_exist_gc] = m_now[idx_exist_gc]
+            mass_list[idx_exist_gc[idx_tid]] = m_now[idx_exist_gc[idx_tid]]
             np.savetxt(mass_list_name[:-4]+'_mass_snap%d.txt'%snap, mass_list, fmt='%.3f')
 
             # update snap_now
