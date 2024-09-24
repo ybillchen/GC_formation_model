@@ -22,4 +22,4 @@ def print_papers():
     print(r' - Y. Chen & O. Y. Gnedin (2022), MNRAS, 514, 4736 (arXiv:2203.00599)')
     print(r' - Y. Chen & O. Y. Gnedin (2023), MNRAS, 522, 5638 (arXiv:2301.08218)')
     print(r' - Y. Chen & O. Y. Gnedin (2024a), MNRAS, 527, 3692 (arXiv:2309.13374)')
-    print(r' - Y. Chen & O. Y. Gnedin (2024b), OJAp submitted (arXiv:2401.17420)')
+    print(r' - Y. Chen & O. Y. Gnedin (2024b), OJAp, 7, 23 (arXiv:2401.17420)')
