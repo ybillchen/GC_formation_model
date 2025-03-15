@@ -357,7 +357,7 @@ def assign(params):
                     #         quality.append(1)
 
                     # second, repeat or use dm particles
-                    if 'allow_repeat' in params and params['allow_repeat']:
+                    if 'allow_repeat' in params and params['allow_repeat'] and len(idx_in_lag_max) > 0:
                         # repeat used particles
                         num_now = num_gc - len(idx_in_lag_max)
                         while num_now > 0.5:
