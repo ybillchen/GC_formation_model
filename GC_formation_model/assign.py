@@ -356,30 +356,43 @@ def assign(params):
                     #     else:
                     #         quality.append(1)
 
-                    # second, use dm particles
-                    hpos = tree['SubhaloPos'][idx_in_tree]
-                    fields = ['Coordinates', 'ParticleIDs']
-                    if 'full_snap_only' in params and params['full_snap_only']:
-                        if switch_to_next_halo:
-                            cutout_dm = loader.load_halo(params['base_halo'], hid_root[j], 
-                                hid_offset_full_snap[i], snap_form_offset_full_snap[i], 'dm', fields)
+                    # second, repeat or use dm particles
+                    if 'allow_repet' in params and params['allow_repeat']:
+                        # repeat used particles
+                        num_now = num_gc - len(idx_in_lag_max)
+                        while num_now > 0.5:
+                            if num_now >= len(idx_in_lag_max):
+                                gcid.extend(sid[idx_in_lag_max])
+                                quality.extend(qlt)
+                            else:
+                                gcid.extend(sid[idx_in_lag_max][:num_now])
+                                quality.extend(qlt[:num_now])
+                            num_now -= len(idx_in_lag_max)
                     else:
-                        cutout_dm = loader.load_halo(params['base_halo'], hid_root[j], 
-                            hid_offset[i], snap_form_offset[i], 'dm', fields)
+                        # use dm particles
+                        hpos = tree['SubhaloPos'][idx_in_tree]
+                        fields = ['Coordinates', 'ParticleIDs']
+                        if 'full_snap_only' in params and params['full_snap_only']:
+                            if switch_to_next_halo:
+                                cutout_dm = loader.load_halo(params['base_halo'], hid_root[j], 
+                                    hid_offset_full_snap[i], snap_form_offset_full_snap[i], 'dm', fields)
+                        else:
+                            cutout_dm = loader.load_halo(params['base_halo'], hid_root[j], 
+                                hid_offset[i], snap_form_offset[i], 'dm', fields)
 
-                    pos = cutout_dm['Coordinates']
-                    dmid = cutout_dm['ParticleIDs'].astype(int)
-                    x = pos[:,0] - hpos[0]
-                    y = pos[:,1] - hpos[1]
-                    z = pos[:,2] - hpos[2]
-                    r2_dm = x**2 + y**2 + z**2
+                        pos = cutout_dm['Coordinates']
+                        dmid = cutout_dm['ParticleIDs'].astype(int)
+                        x = pos[:,0] - hpos[0]
+                        y = pos[:,1] - hpos[1]
+                        z = pos[:,2] - hpos[2]
+                        r2_dm = x**2 + y**2 + z**2
 
-                    # select the closest dm particles to center
-                    idx_sort_r1_dm = np.argsort(r2_dm)
-                    dmid = dmid[idx_sort_r1_dm]
+                        # select the closest dm particles to center
+                        idx_sort_r1_dm = np.argsort(r2_dm)
+                        dmid = dmid[idx_sort_r1_dm]
 
-                    gcid.extend(dmid[:num_gc-len(idx_in_lag_max)])
-                    quality.extend([0]*(num_gc-len(idx_in_lag_max)))
+                        gcid.extend(dmid[:num_gc-len(idx_in_lag_max)])
+                        quality.extend([0]*(num_gc-len(idx_in_lag_max)))
 
                 elif len(idx_in_lag_min) < num_gc:
                     # if there are enough stellar particles in this subhalo, but not 
