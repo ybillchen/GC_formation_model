@@ -13,14 +13,14 @@ The code is open source under a [BSD 3-Clause License](LICENSE), which allows yo
 - [N. Choksi, O. Y. Gnedin, \& H. Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract), MNRAS, **480**, 2343
 - [Y. Chen \& O. Y. Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract), MNRAS, **514**, 4736
 - [Y. Chen \& O. Y. Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023MNRAS.522.5638C/abstract), MNRAS, **522**, 5638
-- [Y. Chen \& O. Y. Gnedin (2024a)](https://ui.adsabs.harvard.edu/abs/2023arXiv230913374C/abstract), MNRAS, **527**, 3692
-- [Y. Chen \& O. Y. Gnedin (2024b)](https://ui.adsabs.harvard.edu/abs/2024arXiv240117420C/abstract), OJAp submitted (arXiv:2401.17420)
+- [Y. Chen \& O. Y. Gnedin (2024a)](https://ui.adsabs.harvard.edu/abs/2024MNRAS.527.3692C/abstract), MNRAS, **527**, 3692
+- [Y. Chen \& O. Y. Gnedin (2024b)](https://ui.adsabs.harvard.edu/abs/2024OJAp....7E..23C/abstract), OJAp, **7**, 23
 
 We also provide a toolkit for parallelization. If you are planning to use the toolkit, please contact us for access!
 
 ## Background
 
-This is a long developing project starting from [Muratov \& Gnedin (2010)](https://ui.adsabs.harvard.edu/abs/2010ApJ...718.1266M/abstract). Some important milestones are [Li \& Gnedin (2014)](https://ui.adsabs.harvard.edu/abs/2014ApJ...796...10L/abstract), [Choksi, Gnedin, \& Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract), [Chen \& Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract), and [Chen \& Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023arXiv230108218C/abstract). This version is the most recent model by [Chen \& Gnedin (2024a)](https://ui.adsabs.harvard.edu/abs/2023arXiv230913374C/abstract). 
+This is a long developing project starting from [Muratov \& Gnedin (2010)](https://ui.adsabs.harvard.edu/abs/2010ApJ...718.1266M/abstract). Some important milestones are [Li \& Gnedin (2014)](https://ui.adsabs.harvard.edu/abs/2014ApJ...796...10L/abstract), [Choksi, Gnedin, \& Li (2018)](https://ui.adsabs.harvard.edu/abs/2018MNRAS.480.2343C/abstract), [Chen \& Gnedin (2022)](https://ui.adsabs.harvard.edu/abs/2022MNRAS.514.4736C/abstract), and [Chen \& Gnedin (2023)](https://ui.adsabs.harvard.edu/abs/2023arXiv230108218C/abstract). This version is the most recent model by [Chen \& Gnedin (2024a)](https://ui.adsabs.harvard.edu/abs/2024MNRAS.527.3692C/abstract). 
 
 ## Install
 
