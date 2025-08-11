@@ -407,9 +407,6 @@ def assign(params):
                         idx_sort_r1_dm = np.argsort(r2_dm)
                         dmid = dmid[idx_sort_r1_dm]
 
-                        gcid.extend(dmid[:num_gc-len(idx_in_lag_max)])
-                        quality.extend([0]*(num_gc-len(idx_in_lag_max)))
-
                     if len(dmid) >= num_gc-len(idx_in_lag_max):
                         # there are enough DM particles
                         gcid.extend(dmid[:num_gc-len(idx_in_lag_max)])
