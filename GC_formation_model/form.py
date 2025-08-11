@@ -548,7 +548,7 @@ def form(params):
             print('  number of GCs:', len(clusters))
 
     header = ('subfindID(z=0) | logMh(z=0) | logM*(z=0) | logMh(zform) | logM*(zform)' +
-        ' | logM(tform) | zform | feh | isMPB | subfindID(zfrom) | snapnum(zform) \n')
+        ' | logM(zform) | zform | feh | isMPB | subfindID(zform) | snapnum(zform) \n')
 
     if params['regen_feh']:
         if 'test_mmr' in params and params['test_mmr']:
