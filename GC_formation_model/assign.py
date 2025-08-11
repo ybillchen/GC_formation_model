@@ -407,24 +407,24 @@ def assign(params):
                         idx_sort_r1_dm = np.argsort(r2_dm)
                         dmid = dmid[idx_sort_r1_dm]
 
-                    if len(dmid) >= num_gc-len(idx_in_lag_max):
-                        # there are enough DM particles
-                        gcid.extend(dmid[:num_gc-len(idx_in_lag_max)])
-                        quality.extend([0]*(num_gc-len(idx_in_lag_max)))
-                    else:
-                        # there are not enough DM particles
-                        # then, we have to repeat
+                        if len(dmid) >= num_gc-len(idx_in_lag_max):
+                            # there are enough DM particles
+                            gcid.extend(dmid[:num_gc-len(idx_in_lag_max)])
+                            quality.extend([0]*(num_gc-len(idx_in_lag_max)))
+                        else:
+                            # there are not enough DM particles
+                            # then, we have to repeat
 
-                        # repeat used particles
-                        num_now = num_gc-len(idx_in_lag_max)
-                        while num_now > 0.5:
-                            if num_now >= len(dmid):
-                                gcid.extend(dmid)
-                                quality.extend([0]*len(dmid))
-                            else:
-                                gcid.extend(dmid[:num_now])
-                                quality.extend([0]*num_now)
-                            num_now -= len(dmid)
+                            # repeat used particles
+                            num_now = num_gc-len(idx_in_lag_max)
+                            while num_now > 0.5:
+                                if num_now >= len(dmid):
+                                    gcid.extend(dmid)
+                                    quality.extend([0]*len(dmid))
+                                else:
+                                    gcid.extend(dmid[:num_now])
+                                    quality.extend([0]*num_now)
+                                num_now -= len(dmid)
 
                 elif len(idx_in_lag_min) < num_gc:
                     # if there are enough stellar particles in this subhalo, but not 
