@@ -55,9 +55,11 @@ def calc_eig(tree, pos_gc, pot_gc, pos, pot, d_tid):
         idxs = tree.query(grid[i], k=8)[1]
         for j in range(len(idxs)):
             idx = idxs[j]
-            phi = LinearNDInterpolator(pos[idx], pot[idx])
+            # center on the grid point: raw box coordinates (~1e4 kpc/h) vs
+            # neighbor separations (~0.1 kpc/h) lose precision in Qhull
+            phi = LinearNDInterpolator(pos[idx] - grid[i][j], pot[idx])
 
-            pot_grid[i][j] = phi(grid[i][j])
+            pot_grid[i][j] = phi(np.zeros(3))
 
     for i in range(13):
         idx_nan_1 = np.where(np.isnan(pot_grid[i]))[0]
