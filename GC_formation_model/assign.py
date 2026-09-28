@@ -1,6 +1,7 @@
 # Licensed under BSD-3-Clause License - see LICENSE
 
 import time
+from itertools import zip_longest
 
 import numpy as np
 import scipy.spatial as sp
@@ -217,8 +218,6 @@ def assign(params):
                         peaks_idxs.append(idxs_peak_i[idxs_peak_i!=peaks_dm[k]])
                         peaks_surrounding.extend(peaks_idxs[k])
 
-                        pos_list.append(pos[peaks_dm[k]])
-                        hid_list.append(hid_offset[i])
 
                     peaks_surrounding = np.unique(peaks_surrounding)
                     len_old = len(peaks_surrounding)
@@ -243,11 +242,11 @@ def assign(params):
                     mask_not_peak = np.ones(len(idx_in), dtype=bool)
                     mask_not_peak[peaks_dm] = False
                     mask_not_peak[peaks_surrounding] = False
-                    permuted_idx_in = np.r_[idx_in[peaks_dm], np.random.permutation(idx_in[peaks_surrounding]), 
-                        np.random.permutation(idx_in[mask_not_peak])] 
+                    permuted_idx_in = np.r_[idx_in[peaks_dm], params['rng'].permutation(idx_in[peaks_surrounding]),
+                        params['rng'].permutation(idx_in[mask_not_peak])]
                     dmid[idx_in] = dmid[permuted_idx_in]
                 else:
-                    dmid[idx_in] = np.random.permutation(dmid[idx_in])
+                    dmid[idx_in] = params['rng'].permutation(dmid[idx_in])
 
                 # avoid duplicated id
                 k = 0

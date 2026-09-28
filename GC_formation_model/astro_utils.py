@@ -155,7 +155,17 @@ def fSMHM(x, alpha, delta, gamma) :
         val = -np.log10(10**(alpha*x)+1)
     return val
 
-def SMHMparameters(z) : #standard Behroozi relation (Mvir)
+def _smhm_scatter(z, scatter, rng):
+    """Draw SMHM scatter only when requested, from an explicit generator."""
+    if not scatter:
+        return 0.0
+    if rng is None:
+        raise ValueError('SMHM scatter requires an explicit rng (numpy.random.Generator)')
+    a = 1.0 / (1.0 + z)
+    return rng.normal(0, .218 - .023 * (a - 1))
+
+
+def SMHMparameters(z, *, scatter=False, rng=None) : #standard Behroozi relation (Mvir)
     a = 1./(1.+z)
     nu = np.exp(-4*(a**2))
 
@@ -168,10 +178,10 @@ def SMHMparameters(z) : #standard Behroozi relation (Mvir)
     alpha = -1.412 + (.713*(a-1))*nu
     delta = 3.508 + (2.608*(a-1) + (-0.043*z))*nu
     gamma = 0.316 + (1.319*(a-1) + (0.279*z))*nu
-    xi = np.random.normal(0,.218 - .023*(a-1)) #scatter
+    xi = _smhm_scatter(z, scatter, rng)
     return m1, alpha, delta, gamma, eps, xi
 
-def SMHMparameters2(z): #Kravtsov+ 2014 M200 (no scatter) 
+def SMHMparameters2(z, *, scatter=False, rng=None): #Kravtsov+ 2014 M200
     a = 1./(1.+z)
     nu = np.exp(-4*(a**2))
     log_eps = -1.618
@@ -184,10 +194,10 @@ def SMHMparameters2(z): #Kravtsov+ 2014 M200 (no scatter)
     delta = 4.345
     gamma = 0.619
 
-    xi = np.random.normal(0,.218 - .023*(a-1)) #scatter
+    xi = _smhm_scatter(z, scatter, rng)
     return m1, alpha, delta, gamma, eps, xi
 
-def SMHMparameters3(z): #Kravtsov+ 2014 Mvir (no scatter)
+def SMHMparameters3(z, *, scatter=False, rng=None): #Kravtsov+ 2014 Mvir
     a = 1./(1+z)
     nu = np.exp(-4*a*a)
     log_eps = -1.663
@@ -200,17 +210,18 @@ def SMHMparameters3(z): #Kravtsov+ 2014 Mvir (no scatter)
     delta = 4.290
     gamma = 0.595
 
-    xi = np.random.normal(0,.218 - .023*(a-1)) #scatter
+    xi = _smhm_scatter(z, scatter, rng)
     return m1, alpha, delta, gamma, eps, xi
 
-def SMHM(Mh, z, k = False, scatter = False, mdef = 'm200') : 
+def SMHM(Mh, z, k = False, scatter = False, mdef = 'm200', *, rng=None) :
+    """Return stellar mass; scatter=True requires an explicit rng."""
     if(not k):
-        m1, alpha, delta, gamma, eps, xi = SMHMparameters(z) 
+        m1, alpha, delta, gamma, eps, xi = SMHMparameters(z, scatter=scatter, rng=rng)
     else:
         if(mdef == 'm200'):
-            m1, alpha, delta, gamma, eps, xi = SMHMparameters2(z) 
+            m1, alpha, delta, gamma, eps, xi = SMHMparameters2(z, scatter=scatter, rng=rng)
         else: #Mvir
-            m1, alpha, delta, gamma, eps, xi = SMHMparameters3(z)
+            m1, alpha, delta, gamma, eps, xi = SMHMparameters3(z, scatter=scatter, rng=rng)
     logSM  = np.log10(eps*m1)+fSMHM(np.log10(Mh/m1), alpha, delta, gamma) - fSMHM(0, alpha, delta, gamma) 
     if(scatter):
     	logSM += xi

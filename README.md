@@ -53,6 +53,32 @@ To start with, let's run the model with default parameters
 You may want to use your own paramters. Then simply replace `params_example` with the name of your paramter file.
 
 
+## Reproducible randomness
+
+Formation uses a generator seeded with `seed + halo_id`; assignment resets its
+existing generator to `seed` for each galaxy. SMHM scatter has an independent
+per-galaxy stream constructed from `SeedSequence([seed, halo_id, 0x534D484D])`,
+so it does not advance the cluster-formation stream. Collisionless assignment
+permutations now use the explicit assignment generator.
+
+`astro_utils.SMHM(..., scatter=False)` and the three `SMHMparameters*` functions
+are deterministic by default and consume no random draws. Their parameter
+functions retain the six-value return format, with `xi=0` without scatter.
+For scatter, pass an explicit generator:
+
+```python
+import numpy as np
+from GC_formation_model import astro_utils
+
+rng = np.random.default_rng(123)
+stellar_mass = astro_utils.SMHM(1e11, 0, scatter=True, rng=rng)
+```
+
+`scatter=True` without `rng` raises `ValueError`. Optional paths that previously
+used NumPy's global RNG produce a new, reproducible realization. Existing seeded
+formation and stellar-assignment streams are retained. Repeatability assumes
+fixed inputs, parameters, and numerical software versions.
+
 ## Contribute
 
 Feel free to dive in! [Raise an issue](https://github.com/ybillchen/GC_formation_model/issues/new) or submit pull requests.

@@ -366,6 +366,10 @@ def form(params):
             print(' NO. %d, halo id: %d'%(num_run,hid_num))
 
         params['rng'] = np.random.default_rng(params['seed']+hid_num) # initialize seed
+        # Independent SMHM stream, keyed by halo rather than list position.
+        # Fixed stream identifier is the ASCII code for SMHM; never use hash().
+        params['rng_smhm'] = np.random.default_rng(np.random.SeedSequence(
+            [int(params['seed']), int(hid_num), 0x534D484D]))
         if params['regen_feh']:
             params['rng_feh'] = np.random.default_rng(params['seed_feh']+hid_num+1) # initialize seed for feh
 
@@ -414,7 +418,7 @@ def form(params):
                 else:
                     # Assign a "seed" stellar mass which we will grow self-consistently
                     sm_arr[i] = astro_utils.SMHM(mass, znow, 
-                        scatter = params['sm_scat'])
+                        scatter = params['sm_scat'], rng=params['rng_smhm'])
                 if 'fix_stellar' in params and params['fix_stellar']:
                     sm_correct = 0
                 continue
